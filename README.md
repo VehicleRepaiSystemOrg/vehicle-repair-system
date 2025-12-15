@@ -144,3 +144,51 @@ Follow these rules to prevent conflicts and keep our repository clean.
 - **"Angular Live Development Server is listening on 0.0.0.0:4200":** This is a SUCCESS message. Open your browser to localhost:4200.
 - **"Port 5000 is already in use":** You might have a manual node server running. Kill all terminals and try again.
 - **"Exited with code 0":** If a container crashes immediately, check the logs or ask the Team Lead.
+
+---
+
+## 7. Folder structure
+
+src/
+└── app/
+├── app.config.ts # (Global Providers & Config)
+├── app.routes.ts # (Root Routing)
+├── app.component.ts # (Root Component)
+│
+├── core/ # [SINGLETONS] Services & logic loaded ONCE
+│ ├── guards/ # (auth.guard.ts, admin.guard.ts)
+│ ├── interceptors/ # (jwt.interceptor.ts, error.interceptor.ts)
+│ ├── services/ # (auth.service.ts, api.service.ts)
+│ └── models/ # (Global Interfaces: user.model.ts, api-response.model.ts)
+│
+├── shared/ # [REUSABLE] Dumb UI components used across features
+│ ├── components/ # (btn-primary, data-table, loader)
+│ ├── directives/ # (click-outside, role-permission)
+│ ├── pipes/ # (currency-format, date-format)
+│ └── utils/ # (validators, helper-functions)
+│
+├── features/ # [DOMAINS] Separate folder for each business feature
+│ ├── auth/
+│ │ ├── login/ # (login.component.ts|html|scss)
+│ │ ├── register/ # (register.component.ts|html|scss)
+│ │ └── auth.routes.ts
+│ │
+│ ├── dashboard/ # (Admin & User Dashboards)
+│ │ ├── components/ # (stats-card, recent-activity - used ONLY here)
+│ │ ├── pages/ # (admin-dashboard, mechanic-dashboard)
+│ │ └── dashboard.routes.ts
+│ │
+│ ├── repairs/ # (Repair Job Management)
+│ │ ├── components/
+│ │ ├── pages/ # (job-list, job-detail, create-job)
+│ │ └── repairs.routes.ts
+│ │
+│ └── inventory/ # (Parts & Stock)
+│
+├── layout/ # [SHELL] Global structural components
+│ ├── header/
+│ ├── footer/
+│ ├── sidebar/
+│ └── main-layout/ # (Wrapper that holds Sidebar + RouterOutlet)
+│
+└── environments/ # (environment.ts, environment.prod.ts)
