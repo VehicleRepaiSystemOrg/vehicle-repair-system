@@ -6,19 +6,16 @@ A full-stack web application to manage vehicle repairs, customers, and inventory
 
 ## 1. Prerequisites
 
-Before you begin, ensure you have the following software installed on your computer.
+Before you begin, ensure you have the following software installed:
 
-- **Node.js and npm:** [Download Here](https://nodejs.org/)
+- **Docker Desktop:** [Download Here](https://www.docker.com/products/docker-desktop/) (Required for recommended setup)
 - **Git:** [Download Here](https://git-scm.com/downloads)
-- **Angular CLI:** Open your terminal and run:
-  ```
-  npm install -g @angular/cli
-  ```
 - **VS Code:** [Download Here](https://code.visualstudio.com/) (Recommended)
+- _(Optional)_ Node.js & Angular CLI (Only needed if running manually without Docker)
 
 ---
 
-## 2. First-Time Setup
+## 2. Setup Instructions
 
 Follow these steps exactly to get the project running on your machine.
 
@@ -29,59 +26,70 @@ Follow these steps exactly to get the project running on your machine.
     cd vehicle-repair-system
     ```
 
-2.  **Get Environment Variables:**
-    The project requires a `.env` file to connect to the database. **Ask the Team Lead** for the content of this file.
-
-3.  **Create the `.env` File:**
-
+2.  **Environment Setup:**
+    The project requires a `.env` file for the backend to connect to the database.
+    - **Ask the Team Lead** for the secure content of this file.
     - Navigate to the `/server` directory.
     - Create a new file named `.env`.
-    - Paste the content you received from the Team Lead into this file.
+    - Paste the content you received.
 
-4.  **Install Dependencies:**
-    You need to do this for both the backend and frontend.
+---
+
+## 3. Running the Application (Docker Method - Recommended)
+
+We use Docker to run the Frontend, Backend, and Database simultaneously with a single command. This avoids version conflicts.
+
+1.  **Start the Project:**
+    Open your terminal in the root folder (where `docker-compose.yml` is) and run:
 
     ```
-    # Install backend dependencies
-    cd server
-    npm install
+    docker-compose up --build
+    ```
 
-    # Install frontend dependencies
-    cd ../client
-    npm install
+    > _Note: The first run may take 5-10 minutes to download dependencies and build the images._
+
+2.  **Access the App:**
+
+    - **Frontend (Angular):** [http://localhost:4200](http://localhost:4200)
+    - **Backend (API):** [http://localhost:5000](http://localhost:5000)
+
+3.  **Stop the Project:**
+    Press `Ctrl + C` in the terminal, or run:
+    ```
+    docker-compose down
     ```
 
 ---
 
-## 3. Running the Application
+## 4. Running Manually (Fallback Method)
 
-This project requires **two separate terminals** running at the same time.
+Use this method _only_ if Docker is not working on your machine.
 
-### Terminal 1: Backend Server
+1.  **Install Dependencies:**
 
-Navigate to the server folder
-cd server
+    ```
+    cd server && npm install
+    cd ../client && npm install
+    ```
 
-Start the server in development mode
-npm run dev
+2.  **Run Backend (Terminal 1):**
 
-> The server will start on `http://localhost:5000`.
+    ```
+    cd server
+    npm run dev
+    ```
 
-### Terminal 2: Frontend App
-
-Navigate to the client folder
-cd client
-
-Start the Angular app
-ng serve
-
-> The application will be available at `http://localhost:4200`.
+3.  **Run Frontend (Terminal 2):**
+    ```
+    cd client
+    ng serve
+    ```
 
 **Troubleshooting:** If the server fails to connect to the database, your IP address might not be whitelisted. Contact the Team Lead to get your IP added to the MongoDB Atlas settings.
 
 ---
 
-## 4. Git Workflow & Contribution Guide
+## 5. Git Workflow & Contribution Guide
 
 Follow these rules to prevent conflicts and keep our repository clean.
 
@@ -103,13 +111,10 @@ Follow these rules to prevent conflicts and keep our repository clean.
     ```
     # Example for a new feature
     git checkout -b feature/user-login-page
-
-    # Example for fixing a bug
-    git checkout -b bugfix/navbar-alignment
     ```
 
 3.  **Do Your Work:**
-    Write your code and save your files as you normally would.
+    Write your code. If using Docker, the app will auto-reload when you save files.
 
 4.  **Commit Your Changes:**
     Commit your work with a clear, descriptive message.
@@ -127,8 +132,15 @@ Follow these rules to prevent conflicts and keep our repository clean.
     ```
 
 6.  **Create a Pull Request (PR):**
-    - Go to the project's GitHub repository page in your browser.
-    - A yellow banner will appear for your recently pushed branch. Click **"Compare & pull request"**.
-    - Ensure the target is correct: **base: `develop`** ← **compare: `your-feature-branch`**.
-    - Add a title, a brief description of your changes, and create the pull request.
-    - Assign another team member to review your code before it gets merged.
+    - Go to the project's GitHub repository page.
+    - Click **"Compare & pull request"** on the yellow banner.
+    - Ensure the target is: **base: `develop`** ← **compare: `feature/user-login-page`**.
+    - Add a description and assign a reviewer.
+
+---
+
+## 6. Troubleshooting Docker
+
+- **"Angular Live Development Server is listening on 0.0.0.0:4200":** This is a SUCCESS message. Open your browser to localhost:4200.
+- **"Port 5000 is already in use":** You might have a manual node server running. Kill all terminals and try again.
+- **"Exited with code 0":** If a container crashes immediately, check the logs or ask the Team Lead.

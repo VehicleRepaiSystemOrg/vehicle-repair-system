@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  server:
+    build: ./server
+    container_name: repair-system-server
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    container_name: repair-system-client
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    # KEY CHANGE: Use the script defined in package.json
+    command: npm start
+    depends_on:
+      - server
+
+  mongo:
+    image: mongo:latest
+    container_name: repair-system-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    command: ["mongod", "--quiet", "--logpath", "/dev/null"]
+
+volumes:
+  mongo-data:
