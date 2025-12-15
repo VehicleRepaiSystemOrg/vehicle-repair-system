@@ -147,48 +147,46 @@ Follow these rules to prevent conflicts and keep our repository clean.
 
 ---
 
-## 7. Folder structure
+## 7. Project Architecture & Folder Structure
 
-src/
-└── app/
-├── app.config.ts # (Global Providers & Config)
-├── app.routes.ts # (Root Routing)
-├── app.component.ts # (Root Component)
-│
-├── core/ # [SINGLETONS] Services & logic loaded ONCE
-│ ├── guards/ # (auth.guard.ts, admin.guard.ts)
-│ ├── interceptors/ # (jwt.interceptor.ts, error.interceptor.ts)
-│ ├── services/ # (auth.service.ts, api.service.ts)
-│ └── models/ # (Global Interfaces: user.model.ts, api-response.model.ts)
-│
-├── shared/ # [REUSABLE] Dumb UI components used across features
-│ ├── components/ # (btn-primary, data-table, loader)
-│ ├── directives/ # (click-outside, role-permission)
-│ ├── pipes/ # (currency-format, date-format)
-│ └── utils/ # (validators, helper-functions)
-│
-├── features/ # [DOMAINS] Separate folder for each business feature
-│ ├── auth/
-│ │ ├── login/ # (login.component.ts|html|scss)
-│ │ ├── register/ # (register.component.ts|html|scss)
-│ │ └── auth.routes.ts
-│ │
-│ ├── dashboard/ # (Admin & User Dashboards)
-│ │ ├── components/ # (stats-card, recent-activity - used ONLY here)
-│ │ ├── pages/ # (admin-dashboard, mechanic-dashboard)
-│ │ └── dashboard.routes.ts
-│ │
-│ ├── repairs/ # (Repair Job Management)
-│ │ ├── components/
-│ │ ├── pages/ # (job-list, job-detail, create-job)
-│ │ └── repairs.routes.ts
-│ │
-│ └── inventory/ # (Parts & Stock)
-│
-├── layout/ # [SHELL] Global structural components
-│ ├── header/
-│ ├── footer/
-│ ├── sidebar/
-│ └── main-layout/ # (Wrapper that holds Sidebar + RouterOutlet)
-│
-└── environments/ # (environment.ts, environment.prod.ts)
+Do not place files randomly.
+
+### 📂 `src/app/core/` (Singleton Services)
+
+- **Purpose:** Logic and services that are loaded _once_ for the entire app.
+- **What goes here:**
+  - `services/` (AuthService, ApiService)
+  - `guards/` (AuthGuard, AdminGuard)
+  - `interceptors/` (JwtInterceptor)
+  - `models/` (Global TypeScript Interfaces like User, Vehicle)
+- **Rule:** Never import Core modules into Shared or Features.
+
+### 📂 `src/app/shared/` (Reusable UI)
+
+- **Purpose:** "Dumb" components used in multiple features.
+- **What goes here:**
+  - `components/` (LoadingSpinner, DataTable, AlertMessage)
+  - `pipes/` (CurrencyFormat, DateFormat)
+  - `directives/` (ClickOutside)
+- **Rule:** These components should not have dependencies on specific features.
+
+### 📂 `src/app/features/` (The Application Pages)
+
+- **Purpose:** Where the actual business logic lives. segregated by domain.
+- **Sub-folders:**
+  - `auth/` (Login, Register pages)
+  - `dashboard/` (Admin & User dashboard layouts)
+  - `repairs/` (Job lists, Job details, Create job forms)
+  - `inventory/` (Parts list, Stock management)
+- **Structure inside a feature:**
+  - `pages/` (The full view components mapped to routes)
+  - `components/` (Smaller components used _only_ within this feature)
+
+### 📂 `src/app/layout/` (Global Shell)
+
+- **Purpose:** Structural components that wrap the application.
+- **What goes here:**
+  - `header/` (Navigation bar)
+  - `sidebar/` (Admin sidebar)
+  - `footer/`
+  - `main-layout/` (Wrapper component containing `<router-outlet>`)
