@@ -1,4 +1,4 @@
-<vrms-auth-shell [heroImageUrl]="heroImageUrl">
+<app-auth-shell [heroImageUrl]="heroImageUrl">
   <div class="auth-form">
     <h1 class="auth-form__title">Hi, Sir</h1>
     <p class="auth-form__subtitle">Enter your OTP Code to access your dashboard.</p>
@@ -16,11 +16,13 @@
         formControlName="otp"
       />
 
-      <div class="auth-form__hint" *ngIf="form.controls.otp.touched && form.controls.otp.invalid">
-        Enter a valid OTP.
+      @if (form.controls.otp.touched && form.controls.otp.invalid) {
+      <div class="auth-form__hint">Enter a valid OTP.</div>
+      } @if (errorMessage) {
+      <div class="auth-form__error">
+        {{ errorMessage }}
       </div>
-
-      <div class="auth-form__error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      }
 
       <button class="btn btn--primary" type="submit" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Verifying...' : 'Log in' }}
@@ -33,4 +35,4 @@
       <a class="auth-form__support" routerLink="/support"> Trouble logging in? Contact support </a>
     </form>
   </div>
-</vrms-auth-shell>
+</app-auth-shell>

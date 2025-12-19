@@ -1,4 +1,4 @@
-<vrms-auth-shell [heroImageUrl]="heroImageUrl">
+<app-auth-shell [heroImageUrl]="heroImageUrl">
   <div class="auth-form">
     <h1 class="auth-form__title">Welcome Back</h1>
     <p class="auth-form__subtitle">Enter your mobile number to access your dashboard.</p>
@@ -20,14 +20,13 @@
         />
       </div>
 
-      <div
-        class="auth-form__hint"
-        *ngIf="form.controls.phoneLocal.touched && form.controls.phoneLocal.invalid"
-      >
-        Enter a valid phone number.
+      @if (form.controls.phoneLocal.touched && form.controls.phoneLocal.invalid) {
+      <div class="auth-form__hint">Enter a valid phone number.</div>
+      } @if (errorMessage) {
+      <div class="auth-form__error">
+        {{ errorMessage }}
       </div>
-
-      <div class="auth-form__error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      }
 
       <button class="btn btn--primary" type="submit" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Sending...' : 'Get OTP →' }}
@@ -36,4 +35,4 @@
       <a class="auth-form__support" routerLink="/support"> Trouble logging in? Contact support </a>
     </form>
   </div>
-</vrms-auth-shell>
+</app-auth-shell>

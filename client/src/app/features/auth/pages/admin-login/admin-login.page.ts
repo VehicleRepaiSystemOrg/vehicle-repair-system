@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthShellComponent } from '../../components/auth-shell/auth-shell.component';
@@ -7,8 +6,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   standalone: true,
-  selector: 'vrms-admin-login-page',
-  imports: [NgIf, ReactiveFormsModule, RouterLink, AuthShellComponent],
+  selector: 'app-admin-login-page',
+  imports: [ReactiveFormsModule, RouterLink, AuthShellComponent],
   templateUrl: './admin-login.page.html',
   styleUrl: './admin-login.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

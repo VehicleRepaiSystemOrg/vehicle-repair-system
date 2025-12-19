@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthShellComponent } from '../../components/auth-shell/auth-shell.component';
@@ -7,8 +6,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   standalone: true,
-  selector: 'vrms-customer-otp-page',
-  imports: [NgIf, ReactiveFormsModule, RouterLink, AuthShellComponent],
+  selector: 'app-customer-otp-page',
+  imports: [ReactiveFormsModule, RouterLink, AuthShellComponent],
   templateUrl: './customer-otp.page.html',
   styleUrl: './customer-otp.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,7 +68,9 @@ export class CustomerOtpPageComponent implements OnInit {
     this.isSubmitting = true;
 
     this.auth.requestCustomerOtp(this.phoneE164).subscribe({
-      next: () => (this.isSubmitting = false),
+      next: () => {
+        this.isSubmitting = false;
+      },
       error: () => {
         this.isSubmitting = false;
         this.errorMessage = 'Unable to resend OTP. Please try again later.';

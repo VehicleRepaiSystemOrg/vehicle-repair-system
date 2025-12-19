@@ -1,4 +1,4 @@
-<vrms-auth-shell [heroImageUrl]="heroImageUrl">
+<app-auth-shell [heroImageUrl]="heroImageUrl">
   <div class="auth-form">
     <h1 class="auth-form__title">Welcome Back</h1>
     <p class="auth-form__subtitle">Enter your details to access your dashboard.</p>
@@ -13,12 +13,10 @@
         placeholder=""
         formControlName="email"
       />
-      <div
-        class="auth-form__hint"
-        *ngIf="form.controls.email.touched && form.controls.email.invalid"
-      >
-        Enter a valid email.
-      </div>
+
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+      <div class="auth-form__hint">Enter a valid email.</div>
+      }
 
       <label class="auth-form__label auth-form__label--spaced" for="password">Password</label>
       <input
@@ -29,14 +27,14 @@
         placeholder=""
         formControlName="password"
       />
-      <div
-        class="auth-form__hint"
-        *ngIf="form.controls.password.touched && form.controls.password.invalid"
-      >
-        Password must be at least 6 characters.
-      </div>
 
-      <div class="auth-form__error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+      <div class="auth-form__hint">Password must be at least 6 characters.</div>
+      } @if (errorMessage) {
+      <div class="auth-form__error">
+        {{ errorMessage }}
+      </div>
+      }
 
       <button class="btn btn--primary" type="submit" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Signing in...' : 'Log in' }}
@@ -45,4 +43,4 @@
       <a class="auth-form__support" routerLink="/support"> Trouble logging in? Contact support </a>
     </form>
   </div>
-</vrms-auth-shell>
+</app-auth-shell>

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'vrms-auth-shell',
+  selector: 'app-auth-shell',
   standalone: true,
   templateUrl: './auth-shell.component.html',
   styleUrl: './auth-shell.component.scss',
