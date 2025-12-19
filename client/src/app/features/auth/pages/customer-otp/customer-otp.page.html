@@ -1,0 +1,36 @@
+<vrms-auth-shell [heroImageUrl]="heroImageUrl">
+  <div class="auth-form">
+    <h1 class="auth-form__title">Hi, Sir</h1>
+    <p class="auth-form__subtitle">Enter your OTP Code to access your dashboard.</p>
+
+    <form class="auth-form__body" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="auth-form__label" for="otp">OTP</label>
+
+      <input
+        id="otp"
+        class="text-input"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        placeholder=""
+        formControlName="otp"
+      />
+
+      <div class="auth-form__hint" *ngIf="form.controls.otp.touched && form.controls.otp.invalid">
+        Enter a valid OTP.
+      </div>
+
+      <div class="auth-form__error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <button class="btn btn--primary" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Verifying...' : 'Log in' }}
+      </button>
+
+      <button class="btn btn--ghost" type="button" (click)="resend()" [disabled]="isSubmitting">
+        Resend OTP
+      </button>
+
+      <a class="auth-form__support" routerLink="/support"> Trouble logging in? Contact support </a>
+    </form>
+  </div>
+</vrms-auth-shell>

@@ -1,0 +1,46 @@
+<div class="auth-shell">
+  <section class="auth-shell__left" aria-label="Authentication form">
+    <div class="auth-shell__left-inner">
+      <div class="auth-shell__brand" aria-label="VRMS">
+        <div class="auth-shell__logo"></div>
+        <div class="auth-shell__name">VRMS</div>
+      </div>
+
+      <ng-content></ng-content>
+    </div>
+  </section>
+
+  <aside
+    class="auth-shell__right"
+    [style.backgroundImage]="
+      'linear-gradient(rgba(30,30,30,.80), rgba(30,30,30,.80)), url(' + heroImageUrl + ')'
+    "
+    aria-label="Product intro"
+  >
+    <div class="auth-shell__hero">
+      <div class="auth-shell__badge">⚙</div>
+
+      <h2 class="auth-shell__headline">
+        Streamline Your<br />
+        <span class="auth-shell__headline-accent">Service Operations</span>
+      </h2>
+
+      <p class="auth-shell__sub">
+        Experience the next generation of workshop management.<br />
+        Track repairs, manage customers, and optimize workflow all in one place.
+      </p>
+
+      <div class="auth-shell__social-proof">
+        <div class="auth-shell__avatars" aria-hidden="true">
+          <span class="auth-shell__avatar"></span>
+          <span class="auth-shell__avatar"></span>
+          <span class="auth-shell__avatar"></span>
+        </div>
+        <div class="auth-shell__proof-text">
+          <div class="auth-shell__proof-strong">2k+ Mechanics</div>
+          <div class="auth-shell__proof-muted">Trust VRMS daily</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
