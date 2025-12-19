@@ -42,8 +42,8 @@ export class AdminLoginPageComponent {
       next: async (tokens) => {
         this.isSubmitting = false;
 
-        // TODO (backend integration): store tokens + role.
-        // localStorage.setItem('accessToken', tokens.accessToken);
+        // TODO: replace with TokenStorageService.
+        localStorage.setItem('accessToken', tokens.accessToken);
 
         await this.router.navigateByUrl('/admin/dashboard');
       },

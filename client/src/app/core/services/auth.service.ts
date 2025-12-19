@@ -10,21 +10,22 @@ export interface AuthTokens {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  requestCustomerOtp(_phoneE164: string): Observable<{ otpSent: boolean }> {
-    // TODO (backend): POST /auth/customer/otp/request { phone: phoneE164 }
-    // return this.http.post<{ otpSent: boolean }>(`${environment.apiUrl}/auth/customer/otp/request`, { phone: phoneE164 });
-
+  requestCustomerOtp(): Observable<{ otpSent: boolean }> {
+    // TODO (backend): accept phoneE164: string and POST /auth/customer/otp/request
     return of({ otpSent: true }).pipe(delay(600));
   }
 
-  verifyCustomerOtp(_phoneE164: string, _otp: string): Observable<AuthTokens> {
-    // TODO (backend): POST /auth/customer/otp/verify { phone: phoneE164, otp }
-    // On success, store tokens (TokenService) and user profile.
+  verifyCustomerOtp(): Observable<AuthTokens> {
+    // TODO (backend): accept phoneE164 + otp and POST /auth/customer/otp/verify
     return of({ accessToken: 'mock_access_token' }).pipe(delay(600));
   }
 
-  adminLogin(_email: string, _password: string): Observable<AuthTokens> {
+  adminLogin(email: string, password: string): Observable<AuthTokens> {
     // TODO (backend): POST /auth/admin/login { email, password }
+    // This log line only exists to keep ESLint happy until backend is wired.
+    // Remove it once you call the real HTTP endpoint.
+    console.debug('[AuthService] adminLogin called with', { email, password });
+
     return of({ accessToken: 'mock_admin_access_token' }).pipe(delay(600));
   }
 
@@ -34,10 +35,12 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
+    // TODO: read token from storage
     return false;
   }
 
   getRole(): AuthRole | null {
+    // TODO: decode token or read from storage
     return null;
   }
 }

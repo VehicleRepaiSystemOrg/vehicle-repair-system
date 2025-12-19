@@ -41,7 +41,7 @@ export class CustomerLoginPageComponent {
     this.isSubmitting = true;
     sessionStorage.setItem('vrms_customer_phone', phoneE164);
 
-    this.auth.requestCustomerOtp(phoneE164).subscribe({
+    this.auth.requestCustomerOtp().subscribe({
       next: async () => {
         this.isSubmitting = false;
         await this.router.navigateByUrl('/login/otp');
