@@ -1,0 +1,116 @@
+:host {
+  --vrms-dark: #1e1e1e;
+  --vrms-red: #ff1313;
+  --vrms-white: #ffffff;
+  --vrms-border: rgba(30, 30, 30, 0.18);
+  --vrms-muted: rgba(30, 30, 30, 0.55);
+  display: block;
+}
+
+.auth-form__title {
+  margin: 0 0 6px;
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+}
+
+.auth-form__subtitle {
+  margin: 0 0 26px;
+  color: var(--vrms-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.auth-form__label {
+  display: block;
+  font-weight: 700;
+  font-size: 12px;
+  margin: 0 0 8px;
+  color: var(--vrms-dark);
+}
+
+.phone-field {
+  display: grid;
+  grid-template-columns: 44px 64px 1fr;
+  align-items: center;
+  border: 1px solid var(--vrms-border);
+  border-radius: 10px;
+  height: 44px;
+  overflow: hidden;
+  background: var(--vrms-white);
+}
+
+.phone-field__icon {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: rgba(30, 30, 30, 0.5);
+  border-right: 1px solid var(--vrms-border);
+}
+
+.phone-field__code {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-weight: 700;
+  color: rgba(30, 30, 30, 0.7);
+  border-right: 1px solid var(--vrms-border);
+}
+
+.phone-field__input {
+  height: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--vrms-dark);
+}
+
+.auth-form__hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 19, 19, 0.9);
+}
+
+.auth-form__error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 19, 19, 0.08);
+  color: rgba(255, 19, 19, 0.95);
+  font-size: 12px;
+}
+
+.btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  margin-top: 14px;
+  box-shadow: 0 10px 22px rgba(255, 19, 19, 0.18);
+}
+
+.btn--primary {
+  background: var(--vrms-red);
+  color: var(--vrms-white);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.auth-form__support {
+  display: block;
+  margin-top: 12px;
+  color: rgba(30, 30, 30, 0.55);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.auth-form__support:hover {
+  text-decoration: underline;
+}

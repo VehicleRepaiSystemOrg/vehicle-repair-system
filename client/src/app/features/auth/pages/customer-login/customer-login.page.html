@@ -1,0 +1,38 @@
+<app-auth-shell [heroImageUrl]="heroImageUrl">
+  <div class="auth-form">
+    <h1 class="auth-form__title">Welcome Back</h1>
+    <p class="auth-form__subtitle">Enter your mobile number to access your dashboard.</p>
+
+    <form class="auth-form__body" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="auth-form__label" for="phoneLocal">Phone Number</label>
+
+      <div class="phone-field">
+        <div class="phone-field__icon" aria-hidden="true">📞</div>
+        <div class="phone-field__code" aria-label="Country code">+94</div>
+        <input
+          id="phoneLocal"
+          class="phone-field__input"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          placeholder="770162838"
+          formControlName="phoneLocal"
+        />
+      </div>
+
+      @if (form.controls.phoneLocal.touched && form.controls.phoneLocal.invalid) {
+      <div class="auth-form__hint">Enter a valid phone number.</div>
+      } @if (errorMessage) {
+      <div class="auth-form__error">
+        {{ errorMessage }}
+      </div>
+      }
+
+      <button class="btn btn--primary" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Sending...' : 'Get OTP →' }}
+      </button>
+
+      <a class="auth-form__support" routerLink="/support"> Trouble logging in? Contact support </a>
+    </form>
+  </div>
+</app-auth-shell>
