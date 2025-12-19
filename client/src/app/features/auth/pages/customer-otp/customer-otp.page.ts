@@ -47,11 +47,11 @@ export class CustomerOtpPageComponent implements OnInit {
     this.isSubmitting = true;
     const otp = this.form.controls.otp.value.trim();
 
-    this.auth.verifyCustomerOtp().subscribe({
+    this.auth.verifyCustomerOtp(this.phoneE164, otp).subscribe({
       next: async (tokens) => {
         this.isSubmitting = false;
 
-        // TODO (backend integration): replace with a dedicated TokenStorageService.
+        // TODO (backend integration): store tokens securely.
         localStorage.setItem('accessToken', tokens.accessToken);
 
         await this.router.navigateByUrl('/dashboard');

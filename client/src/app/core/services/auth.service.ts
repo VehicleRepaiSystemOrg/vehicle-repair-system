@@ -15,8 +15,8 @@ export class AuthService {
     return of({ otpSent: true }).pipe(delay(600));
   }
 
-  verifyCustomerOtp(): Observable<AuthTokens> {
-    // TODO (backend): accept phoneE164 + otp and POST /auth/customer/otp/verify
+  verifyCustomerOtp(phoneE164: string, otp: string): Observable<AuthTokens> {
+    console.debug('[AuthService] verifyCustomerOtp called with', { phoneE164, otp });
     return of({ accessToken: 'mock_access_token' }).pipe(delay(600));
   }
 
