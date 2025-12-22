@@ -1,0 +1,81 @@
+<div class="page">
+  <header class="page__header">
+    <h1 class="page__title">Account Settings</h1>
+    <p class="page__subtitle">Manage your personal info and vehicle details</p>
+  </header>
+
+  <div class="settings-layout">
+    
+    <aside class="profile-card">
+      <div class="profile-avatar">
+        <span class="avatar-initials">CN</span> <button class="btn-icon-edit" type="button" title="Upload Photo">
+          📷
+        </button>
+      </div>
+      <div class="profile-info">
+        <h2 class="profile-name">Customer Name</h2>
+        <span class="profile-role">Vehicle Owner</span>
+      </div>
+    </aside>
+
+    <section class="form-panel">
+      <form class="form" [formGroup]="form" (ngSubmit)="save()">
+        
+        <div class="form-section">
+          <h3 class="section-title">Personal Information</h3>
+          
+          <div class="grid-2">
+            <div class="form__group">
+              <label class="form__label" for="name">Full Name</label>
+              <input id="name" class="input" type="text" formControlName="name" placeholder="Ex: John Doe" />
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="phone">Phone Number</label>
+              <div class="input-action-group">
+                <input id="phone" class="input" type="tel" formControlName="phone" readonly />
+                <button class="btn-text" type="button" (click)="changePhone()">Change</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="form-section">
+          <h3 class="section-title">Vehicle Details</h3>
+
+          <div class="grid-2">
+            <div class="form__group">
+              <label class="form__label" for="vehicleMake">Make</label>
+              <input id="vehicleMake" class="input" type="text" formControlName="vehicleMake" placeholder="Ex: Toyota" />
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="vehicleModel">Model</label>
+              <input id="vehicleModel" class="input" type="text" formControlName="vehicleModel" placeholder="Ex: Camry" />
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="vehicleYear">Year</label>
+              <input id="vehicleYear" class="input" type="text" formControlName="vehicleYear" placeholder="Ex: 2022" />
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="licensePlate">License Plate</label>
+              <div class="plate-input-wrapper">
+                <input id="licensePlate" class="input input--plate" type="text" formControlName="licensePlate" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn--secondary" type="button">Cancel</button>
+          <button class="btn btn--primary" type="submit">Save Changes</button>
+        </div>
+
+      </form>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="topbar">
+  <div class="topbar__spacer"></div>
+
+  <div class="topbar__search">
+    <span class="topbar__icon" aria-hidden="true">🔎</span>
+    <input class="topbar__input" type="search" placeholder="Search" [(ngModel)]="search" />
+  </div>
+
+  <button
+    class="topbar__bell"
+    type="button"
+    aria-label="Notifications"
+    routerLink="/dashboard/notifications"
+  >
+    🔔
+  </button>
+</div>

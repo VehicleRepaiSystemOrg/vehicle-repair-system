@@ -1,0 +1,222 @@
+/* Variables */
+:host {
+  --vrms-red: #e63946;
+  --vrms-dark: #1d3557;
+  --text-main: #2b2d42;
+  --text-muted: #8d99ae;
+  --bg-input: #f8fafc;
+  --border-light: #edf2f4;
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.03);
+  --radius: 16px;
+}
+
+.page {
+  padding: 0 10px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+.page__header { margin-bottom: 24px; }
+.page__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+}
+.page__subtitle {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* --- Layout (Sidebar + Main) --- */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* --- Profile Sidebar --- */
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  background: var(--vrms-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 16px;
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.btn-icon-edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-name { margin: 0; font-size: 18px; font-weight: 800; color: var(--text-main); }
+.profile-role { color: var(--text-muted); font-size: 13px; margin-top: 4px; font-weight: 600; text-transform: uppercase;}
+
+/* --- Form Panel --- */
+.form-panel {
+  background: white;
+  padding: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Input Styling */
+.input {
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--bg-input);
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  background: white;
+  border-color: var(--vrms-dark);
+  box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.1);
+}
+
+/* Input with Action (Phone) */
+.input-action-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-action-group .input { width: 100%; padding-right: 70px; }
+.btn-text {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--vrms-red);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* License Plate styling */
+.input--plate {
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 30px 0;
+}
+
+/* --- Buttons --- */
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn {
+  height: 46px;
+  padding: 0 24px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn--primary {
+  background: var(--vrms-red);
+  color: white;
+  border: none;
+}
+.btn--primary:hover { background: #d62839; }
+
+.btn--secondary {
+  background: white;
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+}
+.btn--secondary:hover { background: var(--bg-input); }
+
+/* Responsive */
+@media (max-width: 850px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .profile-card { flex-direction: row; text-align: left; gap: 20px; justify-content: flex-start; padding: 20px;}
+  .profile-avatar { margin: 0; width: 60px; height: 60px; font-size: 20px; }
+}
+
+@media (max-width: 600px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  .form-actions { flex-direction: column-reverse; }
+  .btn { width: 100%; }
+}

@@ -1,0 +1,68 @@
+<div class="service-history-page">
+  
+  <header class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Service History</h1>
+      <p class="page-subtitle">View and manage your vehicle maintenance records</p>
+    </div>
+    </header>
+
+  <section class="history-card">
+    <div class="table-responsive">
+      <div class="history-table" role="table">
+        
+        <div class="table-header" role="row">
+          <div class="th col-date">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Date
+          </div>
+          <div class="th col-type">Service Type</div>
+          <div class="th col-work">Work Performed</div>
+          <div class="th col-parts">Parts Used</div>
+          <div class="th col-action"></div> </div>
+
+        <div class="table-body">
+          @for (row of rows; track row.date) {
+            <div class="table-row" role="row">
+            
+            <div class="td col-date">
+              <span class="date-text">{{ row.date | date:'MMM d, y' }}</span>
+            </div>
+
+            <div class="td col-type">
+              <span class="badge" 
+                [ngClass]="{
+                  'badge--blue': row.type === 'Oil Change', 
+                  'badge--orange': row.type === 'Brake Service' || row.type === 'Inspection',
+                  'badge--purple': row.type === 'Alignment' || row.type === 'Tire Rotation'
+                }">
+                {{ row.type }}
+              </span>
+            </div>
+
+            <div class="td col-work">
+              <span class="cell-label">Work:</span>
+              <p class="text-content">{{ row.workPerformed }}</p>
+            </div>
+
+            <div class="td col-parts">
+              <span class="cell-label">Parts:</span>
+              <p class="text-content text-muted">{{ row.partsUsed || '—' }}</p>
+            </div>
+
+            <div class="td col-action">
+              <!-- TODO (backend): Wire "View Invoice" link to navigate with invoice ID -->
+              <!-- routerLink="/dashboard/invoice-overview/:invoiceId" - Need to add invoiceId to row data -->
+              <a routerLink="/dashboard/invoice-overview" class="btn-icon-label">
+                <span>View Invoice</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+            </div>
+          </div>
+          }
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>

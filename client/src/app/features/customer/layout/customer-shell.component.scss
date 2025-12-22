@@ -1,0 +1,40 @@
+:host {
+  --vrms-dark: #1e1e1e;
+  --vrms-red: #ff1313;
+  --vrms-white: #ffffff;
+
+  --bg: #f4f2f3;
+  --panel: #ffffff;
+  --muted: rgba(30, 30, 30, 0.55);
+  --border: rgba(30, 30, 30, 0.10);
+
+  display: block;
+}
+
+.shell {
+  min-height: 100vh;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.shell__sidebar {
+  background: #f6f6f6;
+  border-right: 1px solid var(--border);
+}
+
+.shell__main {
+  display: grid;
+  grid-template-rows: 72px 1fr;
+}
+
+.shell__topbar {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+}
+
+.shell__content {
+  padding: 18px 28px 28px;
+}

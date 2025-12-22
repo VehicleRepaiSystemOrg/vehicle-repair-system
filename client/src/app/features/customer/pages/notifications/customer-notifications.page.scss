@@ -1,0 +1,250 @@
+// --- Design Tokens / Variables ---
+:host {
+  --color-bg-main: #f0f2f5;
+  --color-bg-card: #ffffff;
+
+  --color-text-primary: #1a1f36;
+  --color-text-secondary: #4f566b;
+  --color-text-tertiary: #8792a2;
+
+  --color-primary: #ff3b30; // Keeping your original red
+  --color-primary-hover: #d63026;
+  --color-primary-light: #fff1f0;
+
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+
+  --radius-lg: 16px;
+  --radius-md: 12px;
+
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// --- Base Styles ---
+.notifications-page {
+  font-family: var(--font-family);
+  max-width: 1000px; // Slightly narrower for better readability
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: var(--color-bg-main);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+// --- Header ---
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+// --- Buttons ---
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 99px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+
+  &--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.2);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: 0 6px 16px rgba(255, 59, 48, 0.3);
+    transform: translateY(-1px);
+  }
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid #e5e7eb;
+
+  &:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    color: var(--color-text-primary);
+  }
+}
+
+// --- Main Card ---
+.notifications-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  // Removed padding here, moved to individual rows for edge-to-edge feel
+  overflow: hidden; // Ensures children don't bleed out corners
+}
+
+// --- Notification Row ---
+.notification-row {
+  display: flex;
+  align-items: flex-start; // Align top so button doesn't stretch
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--color-bg-card);
+  border-bottom: 1px solid #f1f3f5;
+  border-left: 4px solid transparent; // Default transparent border
+  transition: background-color 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+     background-color: #fcfcfd;
+     // Optional: show button only on hover for desktop
+     // .btn--ghost { opacity: 1; }
+  }
+
+  // Modifiers for types
+  &--success {
+    border-left-color: var(--color-success);
+    .notification-row__icon-box { color: var(--color-success); background: var(--color-success-light); }
+  }
+
+  &--info {
+    border-left-color: var(--color-info);
+    .notification-row__icon-box { color: var(--color-info); background: var(--color-info-light); }
+  }
+
+  &--warning {
+    border-left-color: var(--color-warning);
+    .notification-row__icon-box { color: var(--color-warning); background: var(--color-warning-light); }
+  }
+}
+
+
+.notification-row__left {
+  display: flex;
+  gap: 1.25rem;
+  flex: 1; // Allows text area to take available space
+}
+
+// The container for the SVG icon
+.notification-row__icon-box {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px; // Squircle shape
+  display: grid;
+  place-items: center;
+  // Default color if no modifier exists
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.notification-row__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+// New header area within content to hold title and time on same line
+.notification-row__header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.notification-row__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+}
+
+.notification-row__message {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.notification-row__time {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+// --- Mobile Responsive ---
+@media (max-width: 640px) {
+  .notifications-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .btn { width: 100%; } // Full width main button
+  }
+
+  .notification-row {
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative; // Needed for absolute positioning if desired
+
+    .btn--ghost {
+        align-self: flex-end; // Align button to the right
+        width: auto;
+        margin-top: 0.5rem;
+    }
+  }
+
+  .notification-row__left {
+      width: 100%;
+  }
+
+  .notification-row__header {
+      justify-content: space-between;
+      width: 100%;
+  }
+}
+

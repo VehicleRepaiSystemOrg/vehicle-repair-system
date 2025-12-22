@@ -54,7 +54,7 @@ export class CustomerOtpPageComponent implements OnInit {
         // TODO (backend integration): store tokens securely.
         localStorage.setItem('accessToken', tokens.accessToken);
 
-        await this.router.navigateByUrl('/dashboard');
+        await this.router.navigateByUrl('/dashboard/overview', { replaceUrl: true });
       },
       error: () => {
         this.isSubmitting = false;

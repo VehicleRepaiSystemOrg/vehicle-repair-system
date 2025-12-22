@@ -1,0 +1,76 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1 class="page__title">Warranty Tracking</h1>
+      <div class="page__welcome">
+        <span class="welcome-text">Tracking for</span>
+        <span class="vehicle-badge">{{ vehicleLabel }}</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section__header">
+      <h2 class="section__title">Active Coverage</h2>
+      <span class="badge-count">Running</span>
+    </div>
+
+    @if (active$ | async; as rows) {
+      <div class="card-grid">
+        @for (row of rows; track row.purchaseDate + row.coveredItems) {
+          <div class="warranty-card">
+            <div class="warranty-card__top">
+              <span class="provider-label">{{ row.provider }}</span>
+              <span class="pill pill--active">Active</span>
+            </div>
+            
+            <div class="warranty-card__body">
+              <div class="info-group">
+                <span class="info-label">Covered Components</span>
+                <div class="info-value highlight">{{ row.coveredItems }}</div>
+              </div>
+              
+              <div class="date-row">
+                <div class="date-group">
+                  <span class="date-label">Purchased</span>
+                  <span>{{ row.purchaseDate }}</span>
+                </div>
+                <div class="date-arrow">&rarr;</div>
+                <div class="date-group">
+                  <span class="date-label">Expires</span>
+                  <span class="text-danger">{{ row.expirationDate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="section section--spaced">
+    <div class="section__header">
+      <h2 class="section__title">Expired History</h2>
+    </div>
+
+    @if (expired$ | async; as rows) {
+      <div class="history-list">
+        <div class="history-row history-row--head">
+          <div>Provider</div>
+          <div>Covered Items</div>
+          <div>Expiration Date</div>
+          <div class="text-right">Status</div>
+        </div>
+
+        @for (row of rows; track row.purchaseDate + row.coveredItems) {
+          <div class="history-row">
+            <div class="row-provider">{{ row.provider }}</div>
+            <div class="row-item">{{ row.coveredItems }}</div>
+            <div class="row-date">{{ row.expirationDate }}</div>
+            <div class="text-right"><span class="pill pill--expired">Expired</span></div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

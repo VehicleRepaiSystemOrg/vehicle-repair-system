@@ -1,0 +1,86 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1 class="page__title">Dashboard Overview</h1>
+      <div class="page__sub">Welcome Back, Customer Name</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="book">
+      <div class="book__left">
+        <div class="book__left-inner">
+          <div class="book__headline">Ready to Book?</div>
+          <div class="book__desc">
+            Schedule your appointment online and skip the wait. We'll confirm your slot shortly.
+          </div>
+
+          <div class="book__info">
+            <div class="book__info-row">
+              <span class="book__icon" aria-hidden="true">📞</span>
+              <div>
+                <div class="book__label">CALL US 24/7</div>
+                <div class="book__value">+1 (555) 123-4567</div>
+              </div>
+            </div>
+
+            <div class="book__info-row">
+              <span class="book__icon" aria-hidden="true">📍</span>
+              <div>
+                <div class="book__label">LOCATION</div>
+                <div class="book__value">123 Garage Lane, Motor City</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book__right">
+        <div class="book__title">Online Request</div>
+
+        <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form__grid">
+            <div class="form__field">
+              <label class="form__label" for="fullName">Full Name</label>
+              <input id="fullName" class="input" type="text" formControlName="fullName" placeholder="John Doe" />
+            </div>
+
+            <div class="form__field">
+              <label class="form__label" for="phoneNumber">Phone Number</label>
+              <input id="phoneNumber" class="input" type="tel" formControlName="phoneNumber" placeholder="(555) 000-0000" />
+            </div>
+
+            <div class="form__field">
+              <label class="form__label" for="vehicle">Vehicle Make &amp; Model</label>
+              <input id="vehicle" class="input" type="text" formControlName="vehicle" placeholder="e.g. 2018 Toyota Camry" />
+            </div>
+
+            <div class="form__field">
+              <label class="form__label" for="preferredDate">Preferred Date</label>
+              <input id="preferredDate" class="input" type="date" formControlName="preferredDate" />
+            </div>
+          </div>
+
+          <div class="form__field">
+            <label class="form__label" for="serviceNeeded">Service Needed</label>
+            <select id="serviceNeeded" class="input" formControlName="serviceNeeded">
+              <option>Oil Change</option>
+              <option>Brake Inspection</option>
+              <option>Tire Rotation</option>
+              <option>Diagnostics</option>
+            </select>
+          </div>
+
+          <div class="form__field">
+            <label class="form__label" for="description">Description of Issue</label>
+            <textarea id="description" class="textarea" rows="4" formControlName="description" placeholder="Please describe the issue..."></textarea>
+          </div>
+
+          <button class="btn btn--primary btn--full" type="submit">
+            Submit Request →
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

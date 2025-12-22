@@ -1,0 +1,27 @@
+<div class="sidebar">
+  <div class="sidebar__profile">
+    <div class="sidebar__avatar" aria-hidden="true"></div>
+    <div>
+      <div class="sidebar__name">Customer Name</div>
+      <div class="sidebar__role">Customer portal</div>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav" aria-label="Customer navigation">
+    <a routerLink="/dashboard/overview" routerLinkActive="is-active" class="sidebar__link">Dashboard</a>
+    <a routerLink="/dashboard/my-repairs" routerLinkActive="is-active" class="sidebar__link">My Repairs</a>
+    <a routerLink="/dashboard/warranty" routerLinkActive="is-active" class="sidebar__link">Warranty Tracking</a>
+    <a routerLink="/dashboard/service-reminder" routerLinkActive="is-active" class="sidebar__link">Service Reminder</a>
+    <a routerLink="/dashboard/settings" routerLinkActive="is-active" class="sidebar__link">Settings</a>
+
+     <!-- TODO (backend): Wire logout button to call AuthService.logout() before navigation -->
+     <!-- Should clear authentication tokens and user session, then navigate to login -->
+     <button
+       type="button"
+       class="sidebar__logout"
+       routerLink="/login"
+     >
+       Logout
+     </button>
+  </nav>
+</div>
