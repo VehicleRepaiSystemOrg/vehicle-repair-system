@@ -11,10 +11,7 @@ export const routes: Routes = [
   // TODO: Replace with your real dashboard routes/components
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./features/dashboard/pages/user-dashboard.stub').then(
-        (m) => m.UserDashboardStubComponent
-      ),
+    loadChildren: () => import('./features/customer/customer.routes').then(m => m.CUSTOMER_ROUTES),
   },
   {
     path: 'admin/dashboard',

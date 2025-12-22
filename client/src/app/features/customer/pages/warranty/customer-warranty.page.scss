@@ -1,0 +1,209 @@
+/* Variables matching previous design */
+:host {
+  --vrms-red: #e63946;
+  --vrms-green: #10b981;
+  --vrms-dark: #1d3557;
+  --text-main: #2b2d42;
+  --text-muted: #8d99ae;
+  --border-light: #edf2f4;
+  --bg-surface: #ffffff;
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-hover: 0 8px 20px rgba(0,0,0,0.08);
+  --radius: 16px;
+}
+
+.page {
+  padding: 0 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+.page__header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+  letter-spacing: -0.5px;
+}
+
+.page__welcome {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcome-text { color: var(--text-muted); font-size: 14px; }
+.vehicle-badge {
+  background: var(--text-muted);
+  color: white;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* --- Section Headers --- */
+.section { margin-bottom: 40px; }
+.section--spaced { margin-top: 50px; }
+
+.section__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.section__title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+  margin: 0;
+}
+
+.badge-count {
+  background: #e0f2fe;
+  color: #0284c7;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+/* --- Active Cards Grid --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.warranty-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.warranty-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(0,0,0,0.05);
+}
+
+/* Green top accent for active cards */
+.warranty-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--vrms-green);
+}
+
+.warranty-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.provider-label {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-group { margin-bottom: 20px; }
+.info-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600;}
+.info-value.highlight {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--vrms-dark);
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 12px;
+  justify-content: space-between;
+}
+
+.date-group { display: flex; flex-direction: column; }
+.date-group label { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+.date-group span { font-size: 13px; font-weight: 600; color: var(--text-main); }
+.date-arrow { color: var(--text-muted); font-size: 14px; }
+.text-danger { color: var(--vrms-red) !important; }
+
+/* --- History List (Flat Table) --- */
+.history-list {
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 0.8fr;
+  padding: 14px 20px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+
+.history-row--head {
+  background: #f9fafb;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.history-row:last-child { border-bottom: none; }
+.row-provider { font-weight: 700; color: var(--vrms-dark); }
+.row-date { font-family: monospace; color: var(--text-muted); }
+
+/* --- Pills --- */
+.pill {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.pill--active {
+  background: #ecfdf5; /* Light Green */
+  color: var(--vrms-green);
+}
+
+.pill--expired {
+  background: #f3f4f6; /* Light Gray */
+  color: var(--text-muted);
+}
+
+.text-right { text-align: right; }
+
+@media (max-width: 800px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .history-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .history-row--head { display: none; }
+}

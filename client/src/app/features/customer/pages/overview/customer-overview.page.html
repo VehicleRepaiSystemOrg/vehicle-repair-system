@@ -1,0 +1,180 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1 class="page__title">Dashboard Overview</h1>
+      <div class="page__welcome">
+        <div class="page__welcome-title">Welcome Back, {{ customerName }}</div>
+        <div class="page__welcome-sub">{{ vehicleLabel }}</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn--secondary">
+        <span class="btn__icon" aria-hidden="true">📞</span>
+        Call Now
+      </button>
+      <a class="btn btn--primary" routerLink="/dashboard/book-service">
+        <span class="btn__plus" aria-hidden="true">＋</span>
+        Book New Service
+      </a>
+    </div>
+  </div>
+
+  @if (kpis$ | async; as kpis) {
+    <div class="kpis">
+      <app-kpi-card label="Active repairs" [value]="kpis.activeRepairs" tone="danger"></app-kpi-card>
+      <app-kpi-card label="Next service (days)" [value]="kpis.nextServiceDays"></app-kpi-card>
+      <app-kpi-card label="Active Warranties" [value]="kpis.activeWarranties"></app-kpi-card>
+      <app-kpi-card label="Completed jobs" [value]="kpis.completedJobs"></app-kpi-card>
+    </div>
+  }
+
+  <div class="grid">
+    <section class="panel panel--main">
+      <div class="panel__header">
+        <div>
+          <div class="panel__title">Live Status</div>
+          <div class="panel__subtitle">Live Update</div>
+        </div>
+      </div>
+
+      <div class="live">
+        <div class="live__img" style="background-image: url('https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop');"></div>
+
+        <div class="live__content">
+          <div class="live__meta">
+            <div class="live__tag">CURRENT TASK</div>
+            <div class="live__chip">In Shop</div>
+            <div class="live__eta">Est. Completion: 2 Days</div>
+          </div>
+
+          <div class="live__headline">Transmission &amp; Brake<br />Service</div>
+          <div class="live__desc">
+            Technician Mike R. is currently installing the new brake calipers and flushing the transmission fluid.
+          </div>
+
+          <div class="live__stage">
+            <div>Stage 3: Parts Installation</div>
+            <div class="live__pct">60%</div>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-bar__fill" style="width: 60%"></div>
+          </div>
+
+          <div class="live__steps">
+            <span class="step is-done">INTAKE</span>
+            <span class="step is-done">DIAG</span>
+            <span class="step is-active">INSTALL</span>
+            <span class="step">QC</span>
+            <span class="step">READY</span>
+          </div>
+
+          <div class="live__actions">
+            <button class="btn btn--ghost" type="button">View Job Details</button>
+            <button class="btn btn--primary" type="button">Message Mechanic</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button
+          type="button"
+          class="quick-actions__card hover-effect quick-actions__card--button"
+          routerLink="/dashboard/invoice-overview"
+        >
+          <div class="quick-actions__icon-bg">📄</div>
+          <div class="quick-actions__label">Invoice History</div>
+        </button>
+        <button
+          type="button"
+          class="quick-actions__card hover-effect quick-actions__card--button"
+          routerLink="/dashboard/service-history"
+        >
+          <div class="quick-actions__icon-bg">🤝</div>
+          <div class="quick-actions__label">Service History</div>
+        </button>
+      </div>
+    </section>
+
+    <aside class="panel panel--side">
+      <div class="panel__title">Recent Updates</div>
+
+      @if (updates$ | async; as updates) {
+        <div class="updates">
+          @for (u of updates; track u.title) {
+            <div class="updates__item">
+              <div class="updates__dot" aria-hidden="true"></div>
+              <div class="updates__text">
+                <div class="updates__title">{{ u.title }}</div>
+                <div class="updates__time">{{ u.timeLabel }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="panel__title panel__title--spaced">Vehicle Health</div>
+
+      <div class="health">
+        <div class="vehicle-health-widget">
+          <div class="circular-progress-bar">
+            <svg class="progress-ring" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="progress-ring-bg" cx="50" cy="50" r="40"></circle>
+              <circle class="progress-fill" cx="50" cy="50" r="40" 
+                      style="stroke-dasharray: 251; stroke-dashoffset: 63;"></circle>
+            </svg>
+            <div class="progress-text">
+              <div class="progress-value">75%</div>
+              <div class="progress-label">OIL LIFE</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vehicle-health-widget">
+          <div class="circular-progress-bar">
+            <svg class="progress-ring" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="progress-ring-bg" cx="50" cy="50" r="40"></circle>
+              <circle class="progress-fill" cx="50" cy="50" r="40" 
+                      style="stroke-dasharray: 251; stroke-dashoffset: 0;"></circle>
+            </svg>
+            <div class="progress-text">
+              <div class="progress-value">Good</div>
+              <div class="progress-label">BATTERY</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel__title panel__title--spaced">
+        Upcoming Appointments
+      </div>
+
+      <div class="reminders">
+        <div class="reminder-card">
+          <div class="reminder-card__info">
+            <div class="reminder-card__title">Oil Change</div>
+            <div class="reminder-card__date">Due: 1/12/2025</div>
+          </div>
+          <div class="reminder-badge reminder-badge--warning">0 days</div>
+        </div>
+
+        <div class="reminder-card">
+          <div class="reminder-card__info">
+            <div class="reminder-card__title">Tire Rotation</div>
+            <div class="reminder-card__date">Due: 1/12/2025</div>
+          </div>
+          <div class="reminder-badge reminder-badge--neutral">0 days</div>
+        </div>
+
+        <div class="reminder-card">
+          <div class="reminder-card__info">
+            <div class="reminder-card__title">Brake Inspection</div>
+            <div class="reminder-card__date">Due: 1/12/2025</div>
+          </div>
+          <div class="reminder-badge reminder-badge--danger">0 days</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

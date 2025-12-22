@@ -1,0 +1,165 @@
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--vrms-dark);
+}
+
+.page__sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.panel {
+  margin-top: 14px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.book {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.book__left {
+  border-radius: 18px;
+  padding: 26px;
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.92), rgba(179, 2, 2, 0.712));
+  color: var(--vrms-white);
+}
+
+.book__headline {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.book__desc {
+  margin-top: 10px;
+  opacity: 0.9;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.book__info {
+  margin-top: 18px;
+  display: grid;
+  gap: 16px;
+}
+
+.book__info-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.book__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.book__label {
+  font-size: 11px;
+  font-weight: 900;
+  opacity: 0.85;
+}
+
+.book__value {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.book__right {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.book__title {
+  font-weight: 900;
+  color: rgba(30, 30, 30, 0.85);
+  margin-bottom: 12px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form__field {
+  display: grid;
+  gap: 8px;
+}
+
+.form__label {
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.input {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 0 12px;
+  outline: none;
+  background: #fff;
+}
+
+.textarea {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  outline: none;
+  background: #fff;
+  resize: none;
+}
+
+.btn {
+  height: 44px;
+  border-radius: 10px;
+  border: 0;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--vrms-red);
+  color: var(--vrms-white);
+}
+
+.btn--full {
+  width: 100%;
+  margin-top: 6px;
+}
+
+@media (max-width: 1100px) {
+  .book {
+    grid-template-columns: 1fr;
+  }
+  .form__grid {
+    grid-template-columns: 1fr;
+  }
+}

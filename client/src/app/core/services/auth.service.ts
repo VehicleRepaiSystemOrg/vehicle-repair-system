@@ -16,6 +16,10 @@ export class AuthService {
   }
 
   verifyCustomerOtp(phoneE164: string, otp: string): Observable<AuthTokens> {
+    // TODO (backend): POST /auth/customer/otp/verify { phoneE164, otp }
+    // Expected response: { accessToken: string, refreshToken?: string }
+    // On success: Store tokens in localStorage/sessionStorage
+    // On error: Throw error with message for display
     console.debug('[AuthService] verifyCustomerOtp called with', { phoneE164, otp });
     return of({ accessToken: 'mock_access_token' }).pipe(delay(600));
   }
@@ -30,17 +34,28 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    // TODO (backend): POST /auth/logout (optional)
+    // TODO (backend): POST /auth/logout - Invalidate refresh token on server (optional)
+    // Clear tokens from localStorage/sessionStorage
+    // Clear any user session data
     return of(void 0);
   }
 
   isAuthenticated(): boolean {
-    // TODO: read token from storage
+    // TODO (backend): Read access token from localStorage/sessionStorage
+    // Verify token is not expired (decode JWT and check exp claim)
+    // Return true if valid token exists, false otherwise
     return false;
   }
 
   getRole(): AuthRole | null {
-    // TODO: decode token or read from storage
+    // TODO (backend): Decode JWT token from storage to extract role claim
+    // Or fetch user role from GET /auth/me endpoint
+    // Return 'customer' | 'admin' | null
     return null;
   }
+
+  // TODO (backend): Add method to get current user profile
+  // getCurrentUser(): Observable<User> {
+  //   GET /auth/me - Fetch current authenticated user profile
+  // }
 }
