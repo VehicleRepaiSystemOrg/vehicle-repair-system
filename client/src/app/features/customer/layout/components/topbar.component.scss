@@ -1,0 +1,40 @@
+.topbar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 420px 44px;
+  gap: 14px;
+  align-items: center;
+}
+
+.topbar__search {
+  background: #ededee;
+  border-radius: 999px;
+  height: 42px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+}
+
+.topbar__icon {
+  display: grid;
+  place-items: center;
+  opacity: 0.55;
+}
+
+.topbar__input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding-right: 14px;
+  font-size: 13px;
+}
+
+.topbar__bell {
+  height: 42px;
+  width: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+}

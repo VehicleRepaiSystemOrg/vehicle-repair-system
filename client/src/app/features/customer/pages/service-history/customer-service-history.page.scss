@@ -1,0 +1,249 @@
+// --- Variables (Matched to your Invoice Theme) ---
+$primary: #4f46e5;       // Indigo
+$primary-light: #e0e7ff; 
+$bg-app: #f3f4f6;        // Light Gray Background
+$bg-surface: #ffffff;
+$text-main: #1f2937;
+$text-muted: #6b7280;
+$border-color: #e5e7eb;
+
+// Badge Colors
+$badge-blue-bg: #dbeafe; $badge-blue-text: #1e40af;
+$badge-orange-bg: #ffedd5; $badge-orange-text: #9a3412;
+$badge-purple-bg: #f3e8ff; $badge-purple-text: #6b21a8;
+
+// --- Page Layout ---
+.service-history-page {
+  max-width: 1250px; // Matching your invoice page width
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  background-color: $bg-app;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: $text-main;
+}
+
+// --- Header ---
+.page-header {
+  margin-bottom: 2rem;
+  
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: $text-main;
+    letter-spacing: -0.025em;
+  }
+  
+  .page-subtitle {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.95rem;
+  }
+}
+
+// --- Card Container ---
+.history-card {
+  background: $bg-surface;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+    0 10px 15px -3px rgba(0, 0, 0, 0.05); // Modern "Lifted" shadow
+  overflow: hidden; // Ensures content doesn't spill out of rounded corners
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+// --- Table Grid Layout ---
+.history-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Grid Columns Definition
+// 1. Date | 2. Type | 3. Work (Flexible) | 4. Parts (Flexible) | 5. Action (Fixed)
+$col-layout: 140px 160px 1.5fr 1.2fr 160px;
+
+// --- Header Row ---
+.table-header {
+  display: grid;
+  grid-template-columns: $col-layout;
+  padding: 1rem 1.5rem;
+  background-color: #f8fafc; // Slightly off-white header
+  border-bottom: 1px solid $border-color;
+  align-items: center;
+  gap: 1rem;
+
+  .th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // Space between icon and text
+    
+    svg { opacity: 0.7; }
+  }
+}
+
+// --- Body Rows ---
+.table-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: $col-layout;
+  padding: 1.25rem 1.5rem;
+  align-items: center; // Vertically center content
+  border-bottom: 1px solid $border-color;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  gap: 1rem;
+  cursor: default;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #f9fafb;
+    // Optional: slight scale effect? 
+    // transform: scale-[1.002]; 
+  }
+}
+
+// --- Cell Styling ---
+.td {
+  font-size: 0.925rem;
+  
+  &.col-date .date-text {
+    font-weight: 600;
+    color: $text-main;
+  }
+  
+  &.col-work .text-content {
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  
+  &.col-parts .text-content {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  
+  // Hide mobile labels by default
+  .cell-label { display: none; }
+  
+  // Action Column Alignment
+  &.col-action {
+    display: flex;
+    justify-content: flex-end; 
+  }
+}
+
+// --- Components ---
+
+// 1. Badges (Chips)
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  
+  &--blue { background-color: $badge-blue-bg; color: $badge-blue-text; }
+  &--orange { background-color: $badge-orange-bg; color: $badge-orange-text; }
+  &--purple { background-color: $badge-purple-bg; color: $badge-purple-text; }
+}
+
+// 2. Action Button
+.btn-icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $primary;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $primary-light;
+    gap: 0.5rem; // Slight animation of the arrow moving
+  }
+  
+  // The arrow icon
+  svg { transition: transform 0.2s; }
+}
+
+
+// --- Responsive Design (Mobile Cards) ---
+@media (max-width: 900px) {
+  .service-history-page { padding: 1.5rem 1rem; }
+  
+  // Hide the Table Header
+  .table-header { display: none; }
+  
+  // Turn Rows into Cards
+  .table-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid $border-color;
+    
+    // Grid Override
+    width: 100%; 
+  }
+
+  .td {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    // Show Mobile Labels
+    .cell-label {
+      display: inline-block;
+      min-width: 60px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: $text-muted;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    &.col-date { margin-bottom: 0.25rem; }
+    
+    &.col-type { 
+      order: -1; // Move badge to top
+      margin-bottom: 0.5rem; 
+    }
+    
+    &.col-action {
+      margin-top: 1rem;
+      justify-content: flex-start;
+      width: 100%;
+      
+      .btn-icon-label {
+        width: 100%;
+        justify-content: center;
+        background-color: #f3f4f6;
+        &:hover { background-color: $primary-light; }
+      }
+    }
+  }
+}
+
