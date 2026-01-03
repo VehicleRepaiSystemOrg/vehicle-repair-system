@@ -1,0 +1,20 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="settings-group card">
+  <h3>Account Details</h3>
+  <app-form-input label="Name" [(ngModel)]="settings.name"></app-form-input>
+  <app-form-input label="Email" type="email" [(ngModel)]="settings.email"></app-form-input>
+  <div class="phone-row" style="display:flex;gap:8px;align-items:center;">
+    <app-form-input label="Phone Number" [(ngModel)]="settings.phone"></app-form-input>
+    <app-primary-button>Change</app-primary-button>
+  </div>
+
+  <h3 style="margin-top:12px">Vehicle Details</h3>
+  <ng-container *ngIf="settings.vehicle">
+    <app-form-input label="Make" [(ngModel)]="settings.vehicle.make"></app-form-input>
+    <app-form-input label="Model" [(ngModel)]="settings.vehicle.model"></app-form-input>
+    <div style="display:flex;gap:8px">
+      <app-form-input label="Year" type="number" [(ngModel)]="settings.vehicle.year"></app-form-input>
+      <app-form-input label="License Plate" [(ngModel)]="settings.vehicle.licensePlate"></app-form-input>
+    </div>
+  </ng-container>
+</div>

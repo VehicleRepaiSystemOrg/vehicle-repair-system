@@ -1,0 +1,204 @@
+.status-page-container {
+  padding: 40px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  // 1. Combined Progress Bar Styles
+  .progress-section {
+    margin-bottom: 60px;
+    padding: 0 20px;
+
+    .progress-track {
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      position: relative;
+      margin-bottom: 25px;
+      
+      // The moving green line
+      .progress-fill {
+        height: 100%;
+        background: #28a745;
+        border-radius: 10px;
+        transition: width 0.5s ease-in-out;
+      }
+
+      .dots-container {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        padding: 0;
+
+        .dot {
+          width: 30px;
+          height: 30px;
+          background: #d1d1d1;
+          border-radius: 50%;
+          z-index: 2;
+          transition: background 0.3s ease;
+
+          &.active { 
+            background: #28a745; 
+            border: 4px solid #fff; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+          }
+        }
+      }
+    }
+
+    .labels-container {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 13px;
+      color: #555;
+
+      span { 
+        width: 100px; 
+        text-align: center; 
+        // Handles centering labels under the dots
+        &:first-child { text-align: left; }
+        &:last-child { text-align: right; }
+      }
+    }
+  }
+
+  // 2. Status Buttons Grid
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 50px;
+
+    .btn-status {
+      padding: 18px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+      transition: transform 0.2s, opacity 0.2s;
+
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      // Color mapping from your status logic
+      &.red { background: #EA2A33; color: white; }
+      &.blue { background: #7fb3d5; color: white; }
+      &.yellow { background: #f9e79f; color: #333; }
+      &.orange { background: #ffcc99; color: #333; }
+      &.light-yellow { background: #fef5d4; color: #333; }
+      &.green { background: #d4efdf; color: #28a745; }
+    }
+  }
+
+  // 3. Navigation
+  .navigation-section {
+    margin-bottom: 40px;
+    
+    .btn-main-red {
+      background: #EA2A33;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: darken(#EA2A33, 10%);
+      }
+    }
+  }
+
+  // 4. Schedule Card
+  .schedule-card {
+    background: white;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+    h3 { 
+      font-family: 'Playfair Display', serif; 
+      margin-top: 0;
+      margin-bottom: 10px; 
+      color: #333;
+    }
+
+    .divider { 
+      height: 1px; 
+      background: #eee; 
+      margin-bottom: 20px; 
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+      
+      label { 
+        display: block; 
+        font-size: 13px; 
+        font-weight: 700; 
+        margin-bottom: 8px; 
+        color: #666;
+      }
+
+      input { 
+        width: 100%; 
+        padding: 12px; 
+        border: 1px solid #e0e0e0; 
+        border-radius: 8px; 
+        outline: none;
+        font-size: 14px;
+
+        &:focus {
+          border-color: #EA2A33;
+        }
+      }
+    }
+
+    .btn-save {
+      background: #EA2A33;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%; // Mobile friendly
+      transition: background 0.3s;
+
+      &:hover {
+        background: darken(#EA2A33, 5%);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .status-page-container {
+    padding: 20px;
+    
+    .status-grid {
+      grid-template-columns: 1fr 1fr; // 2 columns on tablets
+    }
+    
+    .progress-section .labels-container span {
+      font-size: 11px;
+      width: 60px;
+    }
+  }
+}

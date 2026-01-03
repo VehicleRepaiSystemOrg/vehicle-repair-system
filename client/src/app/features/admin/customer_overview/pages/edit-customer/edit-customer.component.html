@@ -1,0 +1,71 @@
+@if (customer) {
+<div class="edit-customer-container">
+  <h2>Edit Customer</h2>
+
+  <!-- Name Field -->
+  <div class="form-group">
+    <label for="edit-name">Name</label>
+    <input 
+      id="edit-name"
+      type="text" 
+      name="name" 
+      [(ngModel)]="customer.name" 
+      placeholder="Enter name">
+  </div>
+
+  <!-- Vehicle Field -->
+  <div class="form-group">
+    <label for="edit-vehicle">Vehicle</label>
+    <input 
+      id="edit-vehicle"
+      type="text" 
+      name="vehicle" 
+      [(ngModel)]="customer.vehicle" 
+      placeholder="Enter vehicle">
+  </div> 
+  <!-- Number Plate Field -->
+   <div class="form-group">
+    <label for="edit-numberPlate">Number Plate</label>
+    <input 
+      id="edit-numberPlate"
+      type="text" 
+      name="numberPlate" 
+      [(ngModel)]="customer.numberPlate" 
+      placeholder="Enter number plate">
+  </div>
+
+  <!-- Phone Number Field -->
+  <div class="form-group">
+    <label for="edit-phone">Phone Number</label>
+    <input 
+      id="edit-phone"
+      type="text" 
+      name="phone" 
+      [(ngModel)]="customer.phone" 
+      placeholder="Enter phone">
+  </div>
+
+  <!-- Email Field -->
+  <div class="form-group">
+    <label for="edit-email">Email</label>
+    <input 
+      id="edit-email"
+      type="email" 
+      name="email" 
+      [(ngModel)]="customer.email" 
+      placeholder="Enter email">
+  </div>
+
+  <!-- Unified Action Buttons -->
+  <div class="button-group">
+    <!-- Primary Action -->
+    <button class="btn-change" (click)="save()">Change</button>
+    
+    <!-- Destructive Action -->
+    <button class="btn-remove" (click)="onRemove()">Remove</button>
+    
+    <!-- Navigation/Cancel Action -->
+    <button class="btn-cancel" routerLink="/customer_overview">Cancel</button>
+  </div>
+</div>
+}

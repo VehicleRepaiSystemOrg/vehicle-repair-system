@@ -1,0 +1,14 @@
+<div class="main-layout-container">
+  <!-- Sidebar fixed to the left -->
+  <app-sidebar></app-sidebar>
+
+  <div class="main-wrapper">
+    <!-- PERSISTENT TOP CARD (Header) -->
+    <app-header></app-header>
+
+    <!-- DYNAMIC PAGE CONTENT (Dashboard, Staff, etc) -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

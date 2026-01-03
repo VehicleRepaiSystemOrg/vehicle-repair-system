@@ -1,0 +1,29 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="staff-page container" style="margin-left:240px; padding:22px;">
+  <h1 class="page-title">Staff</h1>
+
+  <div class="card">
+    <table class="staff-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let s of staff">
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.role }}</td>
+            <td>{{ s.status }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:12px;">
+    <small class="muted">TODO: Connect to backend endpoint <code>/api/staff</code> and add create/edit/delete actions.</small>
+  </div>
+</div>

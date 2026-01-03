@@ -3,22 +3,26 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  
-  /* Expansion to cover corners if nested inside a padded container */
+
+  /* --- EXPANSION FIX: Connect to Sidebar & Corners --- */
+  /* These negative margins pull the bar outward to counteract the padding 
+     of the parent container. Adjust '32px' to match your exact layout padding. */
   margin-top: -32px;    
   margin-left: -32px;   
   margin-right: -32px;  
+  
+  /* We increase width to compensate for the negative margins */
   width: calc(100% + 64px); 
 }
 
 .topbar {
   width: 100%;
   display: grid;
-  /* Columns: Title | Spacer | Search | Bell */
-  grid-template-columns: auto 1fr 400px 48px; 
+  /* Title on left, spacer pushes search & bell to the right */
+  grid-template-columns: auto 1fr 320px 48px; 
   gap: 24px;
   align-items: center;
-  padding: 16px 32px;
+  padding: 16px 0;
   box-sizing: border-box;
   background-color: #ffffff;
   border-bottom: 1px solid #ebebf0; 
@@ -53,6 +57,7 @@
   padding: 0 16px; 
   transition: all 0.2s ease;
   border: 1px solid transparent;
+  min-width: 200px;
 
   /* Focus state */
   &:focus-within {
@@ -108,8 +113,21 @@
   .topbar {
     /* Collapse search size on smaller screens */
     grid-template-columns: auto 1fr 48px;
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .topbar__title-text {
+    font-size: 18px;
   }
   .topbar__search {
-    display: none; 
+    width: 48px;
+    padding: 0;
+    justify-content: center;
+    background: transparent;
+  }
+
+  .topbar__input {
+    display: none;
   }
 }

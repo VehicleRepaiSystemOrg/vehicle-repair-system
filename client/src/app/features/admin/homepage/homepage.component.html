@@ -1,0 +1,133 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<!-- 1. HERO SECTION -->
+<section class="hero">
+  <nav class="top-nav">
+    <div class="logo">AutoCare Repair<br>Center</div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#parts">Spare Parts</a>
+      <a href="#contact">Contact</a>
+      <button class="login-btn">LOG IN</button>
+    </div>
+  </nav>
+
+  <div class="hero-content">
+    <p class="eyebrow">Expert Vehicle Repair & Maintenance</p>
+    <h1>Professional automotive service with certified technicians, genuine parts, and guaranteed quality workmanship.</h1>
+    <div class="hero-actions">
+      <button class="btn-outline">Call</button>
+      <button class="btn-outline">Request</button>
+    </div>
+  </div>
+</section>
+
+<!-- 2. WHAT WE FIX SECTION -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div class="red-line"></div>
+    <h2>What we fix</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card" style="background-image: url('assets/engine.jpg')">
+      <div class="card-overlay">
+        <h3>Engine and transmission work</h3>
+        <p>Complete overhauls and repairs for reliable performance.</p>
+      </div>
+    </div>
+    <!-- Repeat for Brakes, Electrical, Tire, Annual, AC -->
+    <div class="service-card" style="background-image: url('assets/brakes.jpg')">
+        <div class="card-overlay">
+          <h3>Brake and suspension service</h3>
+          <p>Safety systems that keep you steady on every road.</p>
+        </div>
+      </div>
+  </div>
+</section>
+
+<!-- 3. REVIEWS SECTION -->
+<section class="reviews">
+    <div class="red-line-full"></div>
+    <div class="section-header">
+        <h2>Reviews</h2>
+        <p>What customers say</p>
+    </div>
+    <div class="reviews-grid">
+        <div class="review-card">
+            <div class="rating-dots">
+                <span class="dot red"></span><span class="dot orange"></span><span class="dot yellow"></span><span class="dot green"></span>
+            </div>
+            <p>"They fixed my truck right the first time and didn't charge me for guessing."</p>
+            <div class="user-info">
+                <img src="assets/user1.jpg" alt="user">
+                <div><strong>James Mitchell</strong><br>Truck owner</div>
+            </div>
+        </div>
+        <!-- Add other review cards... -->
+    </div>
+</section>
+
+<!-- 4. SPARE PARTS SECTION -->
+<!-- 4. SPARE PARTS SECTION -->
+<section class="parts" id="parts">
+    <div class="section-header">
+        <h2>Spare Parts & Components</h2>
+        <p>High-quality parts with warranty coverage</p>
+    </div>
+
+    <div class="parts-grid" *ngIf="parts$ | async as parts">
+        <!-- Using captured 'parts' from the async pipe -->
+        <ng-container *ngFor="let part of parts">
+          <div class="part-card">
+            <!-- Shows the image uploaded in Admin, falls back to placeholder if empty -->
+            <img [src]="part.imageUrl || 'assets/parts/placeholder.jpg'" [alt]="part.partName">
+            <div class="part-info">
+                <h4>{{ part.partName }}</h4>
+                <p class="cat">{{ part.category }}</p>
+                <div class="price-row">
+                    <span>Price:</span> 
+                    <strong>${{ part.price }}</strong>
+                </div>
+                <!-- Logic: Show dynamic warranty or stock warning using control-flow templates -->
+                <ng-container *ngIf="(part.stock ?? 0) < 5; else warrantyTpl">
+                  <p class="warranty" style="color: #EA2A33; font-weight: bold;">Limited Stock: Only {{ part.stock }} left!</p>
+                </ng-container>
+                <ng-template #warrantyTpl>
+                  <p class="warranty">Warranty: 12 months</p>
+                </ng-template>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Empty State: Shows if no parts are in stock -->
+        <div *ngIf="parts.length === 0" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+            <p>No parts available at the moment. Please check back later.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 5. CONTACT & FOOTER -->
+<section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p>Get in touch with our team</p>
+    <div class="contact-grid">
+        <div class="contact-item">
+            <i class="icon-email"></i>
+            <h3>Email</h3>
+            <p>Send us a message</p>
+            <a href="mailto:service@vehiclerepair.com">service@vehiclerepair.com</a>
+        </div>
+        <!-- Add Phone and Office... -->
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="footer-grid">
+        <div class="footer-logo">AutoCare Repair Center</div>
+        <div class="footer-col">
+            <h4>Services</h4>
+            <a href="#">Book appointment</a>
+            <a href="#">Our services</a>
+        </div>
+        <!-- Add other columns... -->
+    </div>
+</footer>

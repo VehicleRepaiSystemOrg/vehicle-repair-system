@@ -1,0 +1,52 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="staff-container">
+  <!-- Top Action Bar -->
+  <div class="action-bar">
+    <div class="search-staff">
+      <span class="search-icon">🔍</span>
+      <!-- Note: You would usually link this to a search function in your component -->
+      <input type="text" placeholder="Search staff">
+    </div>
+
+    <!-- The shared component button -->
+    <app-add-employee-button></app-add-employee-button>
+  </div>
+
+  <!-- Staff Table -->
+  <div class="table-card">
+    <table class="staff-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="staff$ | async as staff">
+        <ng-container *ngFor="let member of staff">
+          <tr>
+            <td>{{ member.name }}</td>
+            <td>{{ member.role }}</td>
+            <td>
+              <!-- Integrated: Status Pill converted to an interactive Toggle Button -->
+              <button 
+                class="status-pill status-toggle-btn" 
+                [class.active]="member.status === 'Active'"
+                [class.inactive]="member.status === 'Inactive'"
+                (click)="onToggleStatus(member.id)"
+                title="Click to change status">
+                {{ member.status }}
+              </button>
+            </td>
+            <td>
+              <button class="action-link" [routerLink]="['/staff/edit', member.id]">
+                Edit
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

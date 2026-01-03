@@ -1,0 +1,94 @@
+/* edit-customer.component.scss */
+.edit-customer-container {
+  padding: 40px;
+  max-width: 650px; // Balanced width for 3 buttons in a row
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+  font-family: Arial, Helvetica, sans-serif;
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #99a3ba;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: #EA2A33; // Theme Red focus
+      }
+    }
+  }
+
+  /* Flexbox logic for 3 buttons side-by-side */
+  .button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 30px;
+
+    button {
+      flex: 1; // Makes all 3 buttons equal width
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      transition: opacity 0.2s, transform 0.1s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+
+    .btn-change {
+      background-color: #EA2A33; // Theme Red
+    }
+
+    .btn-remove {
+      background-color: #d32f2f; // Darker Red for "Remove"
+    }
+
+    .btn-cancel {
+      background-color: #EA2A33; // Red to match your image(029) 
+      /* Alternative: background-color: #666666; for Gray */
+    }
+  }
+}
+
+/* Responsive: Stacks buttons vertically on mobile */
+@media (max-width: 600px) {
+  .edit-customer-container {
+    padding: 20px;
+    .button-group {
+      flex-direction: column;
+      button { width: 100%; }
+    }
+  }
+}

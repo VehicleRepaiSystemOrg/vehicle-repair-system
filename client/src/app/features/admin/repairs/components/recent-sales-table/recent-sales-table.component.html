@@ -1,0 +1,28 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="recent-sales card">
+  <div class="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Service</th>
+          <th class="amount">Amount</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container *ngFor="let t of transactions">
+          <tr>
+            <td>{{ t.date }}</td>
+            <td>{{ t.customer }}</td>
+            <td>{{ t.vehicle }}</td>
+            <td>{{ t.service }}</td>
+            <td class="amount">${{ t.amount }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.stat-card {
+  background-color: #FFFFFF;
+  padding: 25px;
+  border-radius: 16px; // Standardized to 16px
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  height: 100%; // Ensures all cards in the row are same height
+  box-sizing: border-box; 
+  
+  .label {
+    color: #666;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .value { font-size: 28px; font-weight: 700; }
+}

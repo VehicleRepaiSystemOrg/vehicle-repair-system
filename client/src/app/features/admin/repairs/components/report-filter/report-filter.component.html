@@ -1,0 +1,17 @@
+<div class="report-filter card">
+  <div class="inputs">
+    <label class="date-label">
+      <div class="label">Start Date</div>
+      <input type="date" [(ngModel)]="startDate" />
+    </label>
+
+    <label class="date-label">
+      <div class="label">End Date</div>
+      <input type="date" [(ngModel)]="endDate" />
+    </label>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" (click)="onGenerate()">Generate Report</button>
+  </div>
+</div>

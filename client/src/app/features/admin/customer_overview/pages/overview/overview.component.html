@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="header-section">
+    <!-- Changed h2 class to match SCSS -->
+    <h2 class="section-title">Customer Overview</h2>
+    
+    <!-- Changed class from btn-add-main to btn-add-customer -->
+    <button class="btn-add-customer" routerLink="add">
+      <span class="plus">+</span> Add Customer
+    </button>
+  </div>
+
+  <!-- Changed class from table-card to table-card-container -->
+  <div class="table-card-container">
+    <!-- Added class="custom-table" to the table -->
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Number Plate</th>
+          <th>Service</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of (customerService.allCustomers$ | async); track c.id) {
+        <tr>
+          <td>{{ c.name }}</td>
+          <td>{{ c.vehicle }}</td>
+          <td>{{ c.numberPlate }}</td> 
+          <td>{{ c.service }}</td>
+          <td>{{ c.date }}</td>
+          <td>{{ c.time }}</td>
+          <td>
+             <!-- Added status-label for spacing -->
+             
+             <a class="change-link" [routerLink]="['status', c.id]">Change</a>
+          </td>
+          <td>
+            <!-- Changed class from edit-link to btn-edit-action -->
+            <button class="btn-edit-action" [routerLink]="['edit', c.id]">Edit</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

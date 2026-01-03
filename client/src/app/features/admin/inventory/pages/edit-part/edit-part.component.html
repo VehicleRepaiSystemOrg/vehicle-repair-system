@@ -1,0 +1,66 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="inventory-page-container" *ngIf="part">
+  <div class="main-layout">
+    <div class="form-section">
+      <h2>Edit Parts</h2>
+      <!-- ... (keep your existing form fields) ... -->
+      <div class="form-group">
+        <label for="part-name">Part Name</label>
+        <input id="part-name" type="text" [(ngModel)]="part.partName">
+      </div>
+      <!-- Repeat fields ... -->
+      <div class="form-group">
+        <label for="part-category">Category</label>
+        <input id="part-category" type="text" [(ngModel)]="part.category">
+      </div>
+
+      <div class="form-group">
+        <label for="part-supplier">Supplier</label>
+        <input id="part-supplier" type="text" [(ngModel)]="part.supplier">
+      </div>
+
+      <div class="form-group">
+        <label for="part-number">Part Number</label>
+        <input id="part-number" type="text" [(ngModel)]="part.partNumber">
+      </div>
+
+      <div class="form-group">
+        <label for="part-stock">Stock</label>
+        <input id="part-stock" type="number" [(ngModel)]="part.stock">
+      </div>
+
+      <div class="form-group">
+        <label for="part-price">Price</label>
+        <input id="part-price" type="number" step="0.01" [(ngModel)]="part.price">
+      </div> 
+      <div class="form-group">
+  <label for="part-warranty">Warranty End Date</label>
+  <input 
+    id="part-warranty"
+    type="date" 
+    [(ngModel)]="part.warranty" 
+    class="edit-input">
+</div>
+
+      
+      <div class="button-group">
+        <button class="btn-red" (click)="onChange()">Change</button>
+        <button class="btn-red" (click)="onRemove()">Remove</button>
+        <button class="btn-red" (click)="onCancel()">Cancle</button>
+      </div>
+    </div>
+
+    <div class="image-section">
+      <button type="button" class="image-upload-card" (click)="fileInput.click()" aria-label="Upload part image">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*">
+
+        <!-- Logic: Show preview if new file selected, else show existing part image, else placeholder -->
+        <img [src]="imagePreview || part.imageUrl" *ngIf="imagePreview || part.imageUrl" class="preview-img" [alt]="part.partName || 'Part image'">
+
+        <div class="placeholder" *ngIf="!imagePreview && !part.imageUrl">
+          <h3>Edit Image</h3>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

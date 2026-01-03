@@ -8,4 +8,54 @@
 
 body {
   font-family: var(--font-family);
+/* Color Palette */
+$primary-red: #EA2A33;
+$bg-light: #F8F6F6;
+$white: #FFFFFF;
+$black: #000000;
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --primary-red: #{$primary-red};
+  --bg-page: #{$bg-light};
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-page);
+  color: $black;
+}
+
+/* Serif headers for the premium look */
+h1, h2, h3, .serif-value {
+  font-family: 'Playfair Display', serif;
+  color: $black;
+}
+
+/* Helper for the Red buttons/pills */
+.btn-red {
+  background-color: var(--primary-red);
+  color: $white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+  &:hover { opacity: 0.9; transform: translateY(-1px); }
+}
+/* Target specifically the Calendar & To-Do title */
+.calendar-title,
+h3.calendar-todo-header {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: bold;
+  letter-spacing: -0.5px; /* Optional: makes Arial look a bit more modern */
+}
+
+/* Add this if grid lines are missing after install */
+.fc {
+  --fc-border-color: #eee;
+  --fc-daygrid-event-dot-width: 8px;
+}
 }

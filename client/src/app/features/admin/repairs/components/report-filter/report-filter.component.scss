@@ -1,0 +1,13 @@
+:host { display:block; }
+
+.report-filter { display:flex; gap:18px; align-items:center; justify-content:space-between; }
+
+.inputs { display:flex; gap:12px; align-items:center; }
+
+.date-label { display:flex; flex-direction:column; gap:6px; font-size:13px; color:rgba(0,0,0,0.7); }
+
+.date-label input { padding:8px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); }
+
+.actions { display:flex; align-items:center; }
+
+.btn-primary { background: var(--primary-red); color: var(--pure-white); }
