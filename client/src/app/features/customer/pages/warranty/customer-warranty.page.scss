@@ -3,6 +3,7 @@
   --vrms-red: #EA2A33;
   --vrms-green: #10b981;
   --vrms-dark: #1a1a1a;
+  --vrms-gray: #d1d5db;
   --text-main: #2b2d42;
   --text-muted: #8e8e93;
   --border-light: #f0f0f0;
@@ -27,15 +28,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-}
-
-.page__title {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--vrms-dark);
-  letter-spacing: -0.5px;
-  line-height: 1;
 }
 
 .page__welcome {
@@ -72,8 +64,14 @@
 .section__header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between; /* Pushes button to far right */
   margin-bottom: 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .section__title {
@@ -91,6 +89,25 @@
   padding: 4px 10px;
   border-radius: 20px;
   text-transform: uppercase;
+}
+
+/* Show More Button */
+.btn-show-more {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vrms-dark);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--vrms-dark);
+    color: white;
+    border-color: var(--vrms-dark);
+  }
 }
 
 /* --- Active Cards Grid --- */
@@ -117,12 +134,26 @@
   border-color: transparent;
 }
 
+/* TOP BORDER LOGIC */
 .warranty-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
+  transition: background 0.3s ease;
+}
+
+/* Specific colors based on class */
+.card--active::before {
   background: var(--vrms-green);
+}
+
+.card--expiring::before {
+  background: var(--vrms-red); /* RED for expiring */
+}
+
+.card--expired::before {
+  background: var(--vrms-red); /* RED for expired */
 }
 
 .warranty-card__top {
@@ -168,22 +199,24 @@
 .date-group label { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 .date-group span { font-size: 13px; font-weight: 600; color: var(--text-main); }
 .date-arrow { color: var(--text-muted); font-size: 14px; }
-.text-danger { color: var(--vrms-red) !important; }
+
+/* Red Date Color */
+.text-danger { 
+  color: var(--vrms-red) !important;
+  font-weight: 700;
+}
 
 /* --- HISTORY LIST & SCROLLING --- */
 .history-list {
   background: white;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  
-  /* Scroll Logic */
-  overflow-y: auto;          /* Enables scroll */
-  max-height: 300px;         /* Height limit - if content exceeds this, it scrolls */
-  position: relative;        /* Required for sticky header */
+  overflow-y: auto;
+  max-height: 300px;
+  position: relative;
   scroll-behavior: smooth;
 }
 
-/* Custom Scrollbar */
 .history-list::-webkit-scrollbar { width: 6px; }
 .history-list::-webkit-scrollbar-track { background: transparent; }
 .history-list::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 10px; }
@@ -200,12 +233,11 @@
 
 .history-row:hover { background: #fcfcfc; }
 
-/* Sticky Header */
 .history-row--head {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #f9fafb; /* Opaque background so items scroll behind it */
+  background: #f9fafb;
   font-weight: 800;
   font-size: 11px;
   text-transform: uppercase;
@@ -231,7 +263,7 @@
 
 .pill--active { background: #ecfdf5; color: var(--vrms-green); }
 .pill--expiring { background: #fff1f2; color: var(--vrms-red); }
-.pill--expired { background: #f3f4f6; color: var(--text-muted); }
+.pill--expired { background: #fff1f2; color: var(--vrms-red); }
 
 .text-right { text-align: right; }
 
