@@ -1,0 +1,27 @@
+.dashboard-page {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: #F8F9FA;
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    width: 100%;
+  }
+
+  .full-width-section {
+    width: 100%;
+    // Ensures components are flush with the stats row
+    & > * {
+      margin: 0 !important;
+    }
+  }
+}
+
+// Ensure responsiveness
+@media (max-width: 1100px) {
+  .dashboard-page .stats-row { grid-template-columns: repeat(2, 1fr); }
+}

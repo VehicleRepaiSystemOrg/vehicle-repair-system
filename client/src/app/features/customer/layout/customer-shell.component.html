@@ -1,15 +1,27 @@
-<div class="shell">
+<!-- The 'customer-layout' wrapper ensures your CSS links correctly -->
+<div class="customer-layout shell">
+  
+  <!-- The Sidebar: This is the <nav> from your first snippet -->
   <aside class="shell__sidebar">
     <app-customer-sidebar></app-customer-sidebar>
   </aside>
 
+  <!-- The Main section: Where all the content happens -->
   <main class="shell__main">
+    
+    <!-- Topbar: Usually contains the profile/logout/notifications -->
     <header class="shell__topbar">
       <app-customer-topbar></app-customer-topbar>
     </header>
 
+    <!-- The 'content' section: This is the MOST IMPORTANT PART -->
     <section class="shell__content">
+      <!-- 
+         The <router-outlet> is where child pages like 'overview', 
+         'my-repairs', or 'profile' will appear. 
+      -->
       <router-outlet></router-outlet>
     </section>
+
   </main>
 </div>

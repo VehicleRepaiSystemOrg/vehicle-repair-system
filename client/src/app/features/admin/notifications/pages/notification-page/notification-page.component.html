@@ -1,0 +1,32 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="notifications-container">
+  <div class="table-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Customer Name</th>
+          <th>Service Requested</th>
+          <th>Preferred Date</th>
+          <th>Vehicle Information</th>
+          <th>Time</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="notifications$ | async as notifications">
+        <ng-container *ngFor="let item of notifications">
+          <tr>
+            <td>{{ item.customerName }}</td>
+            <td>{{ item.serviceRequested }}</td>
+            <td>{{ item.preferredDate }}</td>
+            <td>{{ item.vehicleInfo }}</td>
+            <td>{{ item.time }}</td>
+            <td class="actions">
+              <button class="btn-accept" (click)="onAccept(item.id)">accept</button>
+              <button class="btn-decline" (click)="onDecline(item.id)">decline</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

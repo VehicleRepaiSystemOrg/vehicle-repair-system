@@ -1,0 +1,92 @@
+.page-container {
+  padding: 10px 0; // Spacing from the header
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+
+  .section-title {
+    font-family: 'Playfair Display', serif; // Or your chosen serif font
+    font-size: 22px;
+    font-weight: 600;
+    color: #000;
+  }
+}
+
+// RED BUTTON matching (026)
+.btn-add-customer {
+  background-color: #EA2A33;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.2s;
+
+  &:hover { opacity: 0.9; }
+  .plus { font-size: 18px; }
+}
+
+// WHITE CARD CONTAINER
+.table-card-container {
+  background: #FFFFFF;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); // Subtle shadow like mockup
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 18px 15px;
+    font-size: 13px;
+    color: #718096;
+    font-weight: 500;
+    border-bottom: 1px solid #F1F4F8;
+  }
+
+  td {
+    padding: 20px 15px;
+    font-size: 14px;
+    color: #2D3748;
+    border-bottom: 1px solid #F1F4F8;
+  }
+
+  // GREEN EDIT BUTTON
+  .btn-edit-action {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover { background-color: #218838; }
+  }
+
+  .status-label {
+    color: #4A5568;
+    margin-right: 8px;
+  }
+
+  .change-link {
+    color: #3182CE; // Blue link
+    text-decoration: none;
+    font-size: 13px;
+    &:hover { text-decoration: underline; }
+  }
+}

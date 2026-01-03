@@ -1,0 +1,36 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="inventory-table card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Part Name</th>
+        <th>Category</th>
+        <th>Supplier</th>
+        <th>Part Number</th>
+        <th>Warranty</th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let i of items">
+        <tr>
+          <td>{{ i.partName }}</td>
+          <td>{{ i.category }}</td>
+          <td>{{ i.supplier }}</td>
+          <td>{{ i.partNumber }}</td>
+          <td>{{ i.warranty }}</td>
+          <td>{{ i.stock }}</td>
+          <td>${{ i.price }}</td> <!-- Price matches header -->
+          
+          <td>
+            <button type="button" class="link-btn" (click)="onEdit(i)" aria-label="Edit item" style="background: none; border: none; padding: 0; cursor: pointer; color: var(--primary-red); font-weight: 600;">
+              Edit
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

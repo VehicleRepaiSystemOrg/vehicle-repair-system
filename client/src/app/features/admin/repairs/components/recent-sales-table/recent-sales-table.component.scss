@@ -1,0 +1,11 @@
+:host { display:block; }
+
+.table { width:100%; border-collapse: collapse; }
+
+.table th, .table td { text-align:left; padding:12px 14px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+
+.table thead th { color: rgba(0,0,0,0.6); font-weight: 700; }
+
+.amount { text-align: right; }
+
+.table tbody tr:hover { background: rgba(0,0,0,0.02); }

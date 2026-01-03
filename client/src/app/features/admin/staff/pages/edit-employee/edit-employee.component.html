@@ -1,0 +1,26 @@
+@if (member) {
+<div class="edit-container">
+  <h2>Edit Employee</h2>
+
+  <div class="form-group">
+    <label for="edit-emp-name">Employee Name</label>
+    <input id="edit-emp-name" type="text" [(ngModel)]="member.name">
+  </div>
+
+  <div class="form-group">
+    <label for="edit-emp-role">Role</label>
+    <input id="edit-emp-role" type="text" [(ngModel)]="member.role">
+  </div>
+
+  <div class="form-group">
+    <label for="edit-emp-phone">Phone Number</label>
+    <input id="edit-emp-phone" type="text" [(ngModel)]="member.phone">
+  </div>
+
+  <div class="button-stack">
+    <button class="btn-change" (click)="onChange()">Change</button>
+    <button class="btn-remove" (click)="onRemove()">Remove</button>
+    <button class="btn-cancel" (click)="onCancel()">Cancle</button>
+  </div>
+</div>
+}

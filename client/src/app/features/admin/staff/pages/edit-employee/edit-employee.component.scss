@@ -1,0 +1,96 @@
+/* edit-employee.component.scss */
+.edit-container {
+  padding: 40px;
+  max-width: 650px; /* Balanced width to accommodate 3 buttons in a row */
+  font-family: Arial, Helvetica, sans-serif;
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px; /* Comfortable padding from Snippet 1 */
+      border: 1px solid #99a3ba; /* Professional border color from Snippet 1 */
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: #EA2A33; /* Theme Red focus */
+      }
+    }
+  }
+
+  /* Combined Button Group - Row layout with 3 specific actions */
+  .button-stack {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 30px;
+
+    button {
+      flex: 1; /* Allows buttons to share space equally */
+      min-width: 140px; /* Ensures buttons don't get too small */
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      transition: opacity 0.2s, transform 0.1s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+
+    .btn-change {
+      background-color: #EA2A33; /* Main Theme Red */
+    }
+
+    .btn-remove {
+      background-color: #EA2A33; /* Darker Red for destructive action */
+    }
+
+    .btn-cancel {
+      background-color: #EA2A33; /* Gray for neutral action */
+      /* Change to #EA2A33 if you want all-red buttons */
+    }
+  }
+}
+
+/* Responsive: Stacks buttons vertically on smaller screens (Mobile) */
+@media (max-width: 600px) {
+  .edit-employee-container {
+    padding: 20px;
+    
+    .button-group {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+<div class="inventory-page-container">
+  <div class="main-layout">
+    <!-- Left Section: Form -->
+    <div class="form-section">
+      <h2>Add New Part</h2>
+      <div class="form-group"><label for="partName">Part Name</label><input id="partName" type="text" [(ngModel)]="part.partName" placeholder="Enter part name"></div>
+      <div class="form-group"><label for="category">Category</label><input id="category" type="text" [(ngModel)]="part.category" placeholder="Enter category"></div>
+      <div class="form-group"><label for="supplier">Supplier</label><input id="supplier" type="text" [(ngModel)]="part.supplier" placeholder="Enter supplier"></div>
+      <div class="form-group"><label for="partNumber">Part Number</label><input id="partNumber" type="text" [(ngModel)]="part.partNumber" placeholder="Enter part number"></div>
+      <div class="form-group"><label for="stock">Stock</label><input id="stock" type="text" [(ngModel)]="part.stock" placeholder="Enter stock quantity"></div>
+      <div class="form-group"><label for="price">Price</label><input id="price" type="text" [(ngModel)]="part.price" placeholder="Enter price"></div>
+      <div class="form-group">
+  <label for="warranty">Warranty End Date</label>
+  <input 
+    id="warranty"
+    type="date" 
+    [(ngModel)]="part.warranty" 
+    class="edit-input">
+    </div>
+
+      <div class="button-group">
+        <button class="btn-red" (click)="onAdd()">Add Part</button>
+        <button class="btn-red" (click)="onCancel()">Cancle</button>
+      </div>
+    </div>
+
+    <!-- Right Section: Image Card -->
+    <div class="image-section">
+      <div class="image-upload-card" (click)="fileInput.click()" (keyup.enter)="fileInput.click()" tabindex="0" role="button">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*">
+
+        @if (!imagePreview) {
+        <div class="placeholder">
+          <h3>Add Image</h3>
+        </div>
+        }
+
+        @if (imagePreview) {
+        <img [src]="imagePreview" alt="Part preview" class="preview-img">
+        }
+      </div>
+    </div>
+  </div>
+</div>

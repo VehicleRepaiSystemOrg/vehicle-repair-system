@@ -1,0 +1,46 @@
+.top-header-card {
+  background-color: #FFFFFF; // Matches background for a seamless look
+  padding: 30px 50px 10px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .page-title {
+    font-family: var(--serif-font);
+    font-size: 28px;
+    margin: 0;
+    color: var(--black);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+    .search-container {
+      background: #EDF0F5; // Slightly darker than background for contrast
+      border-radius: 30px;
+      padding: 10px 25px;
+      display: flex;
+      align-items: center;
+      width: 320px;
+
+      input {
+        border: none;
+        background: transparent;
+        margin-left: 10px;
+        outline: none;
+        width: 100%;
+        font-size: 14px;
+      }
+    }
+
+    .notification-btn {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #718096; // Muted blue-grey like mockup
+    }
+  }
+}

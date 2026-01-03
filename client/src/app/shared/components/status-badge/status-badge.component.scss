@@ -1,0 +1,35 @@
+:host{display:inline-block}
+
+.badge{display:inline-block;padding:6px 12px;border-radius:8px;background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.8);font-weight:600}
+
+.badge.active{background:var(--primary-red);color:var(--pure-white)}
+:host {
+  display: block;
+}
+
+.stat-box {
+  background: white;
+  padding: 24px;
+  border-radius: 15px;
+  height: 140px; // Fixed height makes them all match
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // Pushes label up, value down
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  border: 1px solid #f0f0f0;
+
+  .stat-label {
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .stat-value {
+    font-size: 32px; // Large numbers like 010
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    line-height: 1;
+  }
+}

@@ -1,0 +1,209 @@
+// Import font at the top of your global styles.scss if not already there
+// @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+$brand-red: #EA2A33;
+$text-gray: #99a3ba;
+$border-light: #e1e4e8;
+
+.serif-font {
+  font-family: 'Playfair Display', serif;
+}
+
+.reports-page-wrapper {
+  padding: 10px;
+  
+  .page-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+}
+
+// Main containers
+.glass-card, .table-container-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.section-subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+// --- FILTER & DATE PICKER SECTION ---
+.filter-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 30px;
+  align-items: flex-end;
+
+  .date-inputs {
+    display: flex;
+    gap: 15px;
+    
+    .date-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="date"].custom-input {
+        border: 1px solid #e0e0e0;
+        background-color: #fbfbfb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 14px;
+        width: 200px;
+        color: #333;
+        outline: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: border-color 0.2s;
+
+        &::-webkit-calendar-picker-indicator {
+          cursor: pointer;
+          filter: invert(0.4);
+          &:hover { filter: invert(0.2); }
+        }
+
+        &:focus {
+          border-color: $brand-red;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.btn-red-primary {
+  background-color: $brand-red;
+  color: white;
+  border: none;
+  padding: 11px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+  
+  &:hover { 
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+// --- CHARTS SECTION ---
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+
+ /* Add this to report-page.component.scss */
+.chart-inner-card {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 350px; // Ensure there is room for the chart
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+  // INTEGRATED: Sales Trend Specific Card Styling
+  .sales-trend-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid $border-light; // Refined border color
+
+    .chart-container {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .chart-months {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      margin-top: 15px;
+
+      span {
+        color: $text-gray;
+        font-size: 14px;
+        font-weight: 500;
+        width: 35px; // Fixed width for perfect alignment under chart points
+        text-align: center;
+      }
+    }
+    
+    .line-chart-svg {
+        width: 100%;
+        height: auto;
+    }
+  }
+}
+
+// --- TABLE SECTION ---
+.modern-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th {
+    text-align: left;
+    padding: 15px;
+    font-size: 14px;
+    color: #666;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  td {
+    padding: 18px 15px;
+    border-bottom: 1px solid #f9f9f9;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .bold-name { font-weight: 600; color: #1a1a1a; }
+  .bold-amount { font-weight: 600; }
+}
+
+// Bar Chart Visuals (Sales by Service Type)
+.bar-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 150px;
+  padding-top: 20px;
+  
+  .bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    .bar {
+      width: 35px;
+      background: #1e293b;
+      border-radius: 4px 4px 0 0;
+      transition: height 1s ease-out;
+    }
+    span { font-size: 10px; color: #999; margin-top: 8px; text-align: center; }
+  }
+}

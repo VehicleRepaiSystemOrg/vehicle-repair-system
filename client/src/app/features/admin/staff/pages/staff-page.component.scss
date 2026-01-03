@@ -1,0 +1,10 @@
+:host { display:block; }
+
+.container { max-width:1100px; }
+
+.page-title { font-size:22px; font-weight:700; margin-bottom:10px; }
+
+.staff-table { width:100%; border-collapse:collapse; }
+.staff-table th, .staff-table td { padding:10px 12px; border-bottom:1px solid rgba(0,0,0,0.06); }
+.staff-table thead th { font-weight:700; color:rgba(0,0,0,0.7); }
+.muted { color: rgba(0,0,0,0.5); }

@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.btn-add {
+  background: #EA2A33 !important; // Forced the red
+  color: #FFFFFF !important;      // Forced the white
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  
+  // This ensures the "+" and the "Add Employee" text both turn white
+  span, & {
+    color: #FFFFFF !important;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

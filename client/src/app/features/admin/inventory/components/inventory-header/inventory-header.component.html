@@ -1,0 +1,10 @@
+<div class="inventory-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+  <div class="search">
+    <input type="text" [(ngModel)]="query" placeholder="Search for parts" />
+    <button class="btn-search" (click)="onSearch()">🔍</button>
+  </div>
+
+  <div>
+    <button class="btn-add" (click)="onAdd()">+ Add New Parts</button>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="data-table card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th *ngFor="let c of columns">{{ c.label }}</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let r of rows">
+        <tr>
+          <td *ngFor="let c of columns">{{ r[c.key] }}</td>
+          <td class="actions"><button type="button" class="link-btn" (click)="onEdit(r)" aria-label="Edit row">Edit</button></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

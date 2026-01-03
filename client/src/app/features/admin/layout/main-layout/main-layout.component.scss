@@ -1,0 +1,23 @@
+.main-layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+
+  app-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+  }
+
+  .main-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: var(--bg-page);
+  }
+
+  .page-content {
+    padding: 20px 50px 50px 50px; // Spacing below the header
+  }
+}

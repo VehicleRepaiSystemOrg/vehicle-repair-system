@@ -1,47 +1,64 @@
 import { Routes } from '@angular/router';
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { MainLayoutComponent } from './features/admin/layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-  
+  { path: '', pathMatch: 'full', loadComponent: () => import('./features/admin/homepage/homepage.component').then(m => m.HomepageComponent) },
+
   {
-    path: 'auth',
+    path: '',
     loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
 
   {
+    path: 'dashboard',
+    loadChildren: () => import('./features/customer/customer.routes').then(m => m.CUSTOMER_ROUTES)
+  },
+  {
     path: '',
-    component: MainLayoutComponent, 
+    component: MainLayoutComponent,
     children: [
-      { 
-        path: 'dashboard', 
-        loadComponent: () => import('./features/dashboard/pages/user-dashboard.stub').then(m => m.UserDashboardStubComponent) 
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'dashboard',
+            loadComponent: () => import('./features/admin/dashboard/pages/admin-dashboard.stub').then(m => m.AdminDashboardStubComponent)
+          },
+        ]
       },
-      { 
-        path: 'admin/dashboard', 
-        loadComponent: () => import('./features/dashboard/pages/admin-dashboard.stub').then(m => m.AdminDashboardStubComponent) 
+
+      {
+        path: 'reports',
+        loadChildren: () => import('./features/admin/repairs/repaires.routes').then(m => m.repairesRoutes)
       },
-      { 
-        path: 'reports', 
-        // Note: Changed from REPAIRS_ROUTES to repairesRoutes to match your previous snippet
-        loadChildren: () => import('./features/repairs/repaires.routes').then(m => m.repairesRoutes) 
+      // FIXED: Single entry for staff routes
+      {
+        path: 'staff',
+        loadChildren: () => import('./features/admin/staff/staff.routes').then(m => m.staffRoutes)
       },
-      { 
-        path: 'staff', 
-        // Ensure this file exists and the export is named staffRoutes
-        loadChildren: () => import('./features/staff/staff.routes').then(m => m.staffRoutes) 
+      // FIXED: Single entry for inventory routes
+      {
+        path: 'inventory',
+        loadChildren: () => import('./features/admin/inventory/inventory.routes').then(m => m.inventoryRoutes)
       },
-      { 
-        path: 'inventory', 
-        // Ensure this file exists and the export is named inventoryRoutes
-        loadChildren: () => import('./features/inventory/inventory.routes').then(m => m.inventoryRoutes) 
+      {
+        path: 'settings',
+        loadComponent: () => import('./features/admin/settings/admin-settings.page').then(m => m.AdminSettingsPage)
       },
       {
         path: 'customers',
         loadChildren: () => import('./features/customer/customer.routes').then(m => m.CUSTOMER_ROUTES),
+      },
+      {
+        path: 'notifications',
+        loadChildren: () => import('./features/admin/notifications/notifications.routes').then(m => m.NOTIFICATION_ROUTES)
+      },
+      // In src/app/app.routes.ts
+      {
+        path: 'customer_overview',
+        loadChildren: () => import('./features/admin/customer_overview/customer.routes').then(m => m.CUSTOMER_OVERVIEW_ROUTES)
       }
     ]
   },
-
-  { path: '**', redirectTo: 'auth/login' },
+  { path: '**', redirectTo: 'login' },
 ];

@@ -1,0 +1,58 @@
+<div class="sales-overview">
+  
+  <!-- SECTION: Sales Trend Card -->
+  <div class="card sales-trend-card">
+    <div class="card-header">
+      <div class="title">Sales Trend</div>
+      <div class="amount">
+        Rs<span class="big">{{ report?.totalSales | number }}</span>
+      </div>
+      <div class="sub">Last 12 Months <span class="positive">+15%</span></div>
+    </div>
+
+    <!-- COMBINED CHART AREA -->
+    <div class="chart-area">
+      <!-- The trend line (SVG/Graphic) -->
+      <div class="trend-line">
+        <svg viewBox="0 0 400 100" class="line-chart-svg">
+          <path d="M0,80 Q50,40 100,60 T200,20 T300,50 T400,10" fill="none" stroke="#EA2A33" stroke-width="3"/>
+          <path d="M0,80 Q50,40 100,60 T200,20 T300,50 T400,10 L400,100 L0,100 Z" fill="rgba(234, 42, 51, 0.05)"/>
+        </svg>
+      </div>
+
+      <!-- INTEGRATED MONTH LABELS -->
+      <div class="month-labels">
+        <span>Jan</span>
+        <span>Feb</span>
+        <span>Mar</span>
+        <span>Apr</span>
+        <span>May</span>
+        <span>Jun</span>
+        <span>Jul</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: Sales by Service Type Card -->
+  <div class="card sales-by-type-card">
+    <div class="card-header">
+      <div class="title">Sales by Service Type</div>
+      <div class="amount">
+        Rs<span class="big">
+          {{ report?.salesByService ? (calculateTotal(report?.salesByService) | number) : 0 }}
+        </span>
+      </div>
+      <div class="sub">This Year <span class="positive">+10%</span></div>
+    </div>
+
+    <div class="chart-area">
+      <!-- Placeholder for the Bar Chart or canvas logic from snippet 1 -->
+      <div class="bar-chart-visual">
+        <canvas id="salesByTypeChart"></canvas>
+      </div>
+      
+      <!-- Optional: You can add category labels here similar to month-labels if needed -->
+    </div>
+  </div>
+
+</div>

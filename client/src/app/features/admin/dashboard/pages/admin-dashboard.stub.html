@@ -1,0 +1,28 @@
+<div class="dashboard-page">
+  
+  <!-- ROW 1: STATS (4 Cards) -->
+  <div class="stats-row">
+    <app-stat-card label="Pending Requests" value="10"></app-stat-card>
+    <app-stat-card label="Active Repairs" value="5"></app-stat-card>
+    
+    <!-- Revenue Card -->
+    <app-stat-card label="Revenue Today" value="Rs.12,000.00"></app-stat-card>
+    
+    <!-- Employee Availability Card using the Observable -->
+    <app-stat-card 
+      label="Employee Availability" 
+      [value]="(availableStaffCount$ | async) || '0 / 0'">
+    </app-stat-card>
+  </div>
+
+  <!-- ROW 2: CALENDAR -->
+  <div class="full-width-section">
+    <app-calendar-widget></app-calendar-widget>
+  </div>
+
+  <!-- ROW 3: REPAIR TABLE -->
+  <div class="full-width-section">
+    <app-repair-table></app-repair-table>
+  </div>
+
+</div>

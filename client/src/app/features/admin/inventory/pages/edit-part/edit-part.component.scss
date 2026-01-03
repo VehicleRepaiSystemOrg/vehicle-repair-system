@@ -1,0 +1,149 @@
+// 1. MATCH THE ROOT CLASS NAME
+.inventory-page-container {
+  padding: 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  
+  // 2. ADD THE MISSING LAYOUT STYLES
+  .main-layout {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .form-section {
+    flex: 1;
+    max-width: 500px;
+
+    h2 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #000;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid #f0f0f0;
+      background-color: #fbfbfb;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.2s ease;
+
+      &:focus {
+        background-color: #ffffff;
+        border-color: #EA2A33;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+  .edit-input {
+  /* ... your existing styles ... */
+
+  // This styles the native calendar icon in Chrome/Edge/Safari
+  &[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 4px;
+    filter: invert(24%) sepia(88%) saturate(6818%) hue-rotate(352deg) brightness(94%) contrast(91%); // Turns the icon Red
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+  // 3. STYLES FOR THE IMAGE CARD
+  .image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+
+    .image-upload-card {
+      width: 450px;
+      height: 450px;
+      background: #FFFFFF;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      overflow: hidden;
+      border: 2px dashed #ddd;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: #EA2A33;
+      }
+
+      h3 {
+        font-size: 32px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  // 4. BUTTON STYLING (matching the HTML btn-red class)
+  .button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+
+    .btn-red {
+      padding: 14px 25px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      background-color: #EA2A33; // Main Theme Red
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+// Mobile Responsiveness
+@media (max-width: 900px) {
+  .inventory-page-container {
+    .main-layout {
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-section {
+      width: 100%;
+      padding-top: 20px;
+      .image-upload-card {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+      }
+    }
+  }
+}

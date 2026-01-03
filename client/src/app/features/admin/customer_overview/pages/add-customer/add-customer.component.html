@@ -1,0 +1,38 @@
+<div class="form-wrapper">
+  <h2>Add Customer</h2>
+  
+  <div class="form-group">
+    <label for="name">Name</label>
+    <!-- Added name="name" -->
+    <input id="name" type="text" name="name" [(ngModel)]="customer.name" placeholder="Enter name">
+  </div>
+
+  <div class="form-group">
+    <label for="vehicle">Vehicle</label>
+    <!-- Added name="vehicle" -->
+    <input id="vehicle" type="text" name="vehicle" [(ngModel)]="customer.vehicle" placeholder="Enter vehicle">
+  </div>
+
+    <div class="form-group">
+    <label for="numberPlate">Number Plate</label>
+    <input id="numberPlate" type="text" name="numberPlate" [(ngModel)]="customer.numberPlate" placeholder="e.g. ABC-1234">
+  </div>
+
+
+  <div class="form-group">
+    <label for="phone">Phone Number</label>
+    <!-- Added name="phone" -->
+    <input id="phone" type="text" name="phone" [(ngModel)]="customer.phone" placeholder="Enter phone">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <!-- Added name="email" -->
+    <input id="email" type="email" name="email" [(ngModel)]="customer.email" placeholder="Enter email">
+  </div>
+
+  <div class="button-group">
+    <button class="btn-red" (click)="save()">Add Customer</button>
+    <button class="btn-red" routerLink="/customer_overview">Cancel</button>
+  </div>
+</div>

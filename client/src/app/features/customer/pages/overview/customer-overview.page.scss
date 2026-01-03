@@ -17,8 +17,9 @@
 /* --- Page Layout --- */
 .page {
   background-color: var(--bg-page);
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
   padding-bottom: 40px;
+  padding-top: 0;
 }
 
 .page__header {

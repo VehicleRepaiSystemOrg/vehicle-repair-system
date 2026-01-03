@@ -1,0 +1,104 @@
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: #FFFFFF;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  
+  // 1. ADD FLEXBOX LOGIC
+  display: flex;
+  flex-direction: column;
+
+  .top-content {
+    flex: 0 0 auto;
+  }
+
+  // 2. PUSH THIS TO THE BOTTOM
+  .bottom-content {
+    margin-top: auto; 
+    padding-bottom: 20px; // Add some breathing room at the very bottom
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    padding: 25px 20px 40px 20px;
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      margin-right: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .name {
+        font-weight: 600;
+        font-size: 14px;
+        color: #000000;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        font-size: 11px;
+        color: #EA2A33;
+        margin-top: 2px;
+        font-weight: 400;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // ... (previous sidebar styles)
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+
+    a {
+      display: block;
+      padding: 12px 20px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      border-radius: 12px;
+      color: #333333; 
+      transition: all 0.2s ease;
+
+      // 1. HOVER FOR NORMAL LINKS
+      // Apply light grey ONLY if the link is NOT active and NOT logout
+      &:not(.active):not(.logout-link):hover {
+        background-color: #F8F6F6;
+      }
+
+      // 2. HOVER FOR LOGOUT LINK
+      // Apply red hover ONLY if the logout link is NOT active
+      &.logout-link:not(.active):hover {
+        background-color: #EA2A33;
+        color: #FFFFFF;
+      }
+
+      // 3. ACTIVE STATE (SELECTED)
+      &.active {
+        background-color: #EA2A33;
+        color: #FFFFFF !important; 
+        box-shadow: 0 4px 12px rgba(234, 42, 51, 0.25);
+        
+        // This ensures that even if you hover while active, it stays exactly as is
+        cursor: default; 
+      }
+    }
+  }
+// ...
+}

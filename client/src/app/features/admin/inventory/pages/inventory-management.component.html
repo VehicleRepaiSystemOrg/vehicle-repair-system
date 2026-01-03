@@ -1,0 +1,80 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div class="inventory-container">
+  <!-- Top Search & Add Bar -->
+  <div class="inventory-actions">
+    <div class="local-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search for parts">
+    </div>
+    <button class="btn-red-action" routerLink="/inventory/add">
+      <span class="plus">+</span> Add New Parts
+    </button>
+  </div>
+
+  <!-- Inventory Stats Grid -->
+  <div class="inventory-stats">
+    <div class="stat-card-wrapper">
+      <span class="label">Total Parts In Stock</span>
+      <div class="value serif-font">1,224</div>
+    </div>
+    
+    <div class="stat-card-wrapper">
+      <span class="label">Total Parts Needs to be Stocked</span>
+      <div class="value-row">
+        <span class="value alert-red serif-font">12</span>
+        <span class="alert-text">Needs Action</span>
+      </div>
+    </div>
+
+    <div class="stat-card-wrapper">
+      <span class="label">Total Inventory Value</span>
+      <div class="value serif-font">Rs.10,250.00</div>
+    </div>
+  </div>
+
+  <!-- Inventory Table -->
+  <div class="table-card-container">
+    <table class="inventory-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Part Name</th>
+          <th>Category</th>
+          <th>Supplier</th>
+          <th>Part Number</th>
+          <th>Warranty</th>
+          <th>Stock</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="parts$ | async as parts">
+        <ng-container *ngFor="let item of parts">
+          <tr>
+            <td>
+              <ng-container *ngIf="item.imageUrl; else noImage">
+                <img [src]="item.imageUrl" class="part-image" alt="Part Image">
+              </ng-container>
+              <ng-template #noImage>
+                <div class="part-image" style="background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
+                  No Image
+                </div>
+              </ng-template>
+            </td>
+
+            <td>{{ item.partName }}</td>
+            <td>{{ item.category }}</td>
+            <td class="supplier-cell">{{ item.supplier }}</td>
+            <td>{{ item.partNumber }}</td>
+            <td>{{ item.warranty }}</td>
+            <td>{{ item.stock }}</td>
+            <td>{{ item.price }}</td>
+            <td>
+              <button class="action-toggle" [routerLink]="['/inventory/edit', item.id]">Edit</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
