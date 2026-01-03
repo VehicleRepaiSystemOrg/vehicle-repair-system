@@ -1,6 +1,6 @@
 /* --- Variables & Theming --- */
 :host {
-  --vrms-red: #ff3b30;
+  --vrms-red: #EA2A33;
   --vrms-red-gradient: linear-gradient(135deg, #ff4f44 0%, #d81e14 100%);
   --vrms-dark: #1a1a1a;
   --muted: #8e8e93;
@@ -53,6 +53,19 @@
   font-weight: 500;
 }
 
+/* --- Action Buttons --- */
+.header-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 600px; /* UPDATED: Increased width to fit 3 buttons */
+}
+
+.header-actions .btn {
+  flex: 1; /* Makes all buttons equal width */
+  justify-content: center;
+}
+
 /* --- Buttons --- */
 .btn {
   height: 48px;
@@ -67,6 +80,7 @@
   gap: 10px;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  white-space: nowrap;
 }
 
 .btn:active {
@@ -130,16 +144,30 @@
   display: grid;
   grid-template-columns: 1.7fr 0.9fr;
   gap: 24px;
-  align-items: start;
 }
 
-/* --- Panel Styling (The Card Look) --- */
+/* --- Panel Styling --- */
 .panel {
   background: var(--bg-card);
-  border: 0; /* Removed border */
+  border: 0;
   border-radius: var(--radius-lg);
   padding: 24px;
-  box-shadow: var(--shadow-md); /* Added soft shadow */
+  box-shadow: var(--shadow-md);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.panel--side {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-content {
+  display: flex;
+  flex-direction: column;
+  /* UPDATED: Removed 'justify-content: space-between' and used gap instead */
+  gap: 40px; 
+  height: 100%;
 }
 
 .panel__title {
@@ -160,7 +188,9 @@
 }
 
 .panel__title--spaced {
-  margin-top: 32px;
+  /* Removed top margin since 'gap' on parent handles it now, 
+     but keeping a small margin-bottom for the list */
+  margin-top: 0; 
   margin-bottom: 16px;
 }
 
@@ -176,9 +206,9 @@
   border-radius: var(--radius-md);
   background-size: cover;
   background-position: center;
-  height: 300px; /* Slightly taller */
+  height: 300px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* Shadow on image */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   transition: transform 0.3s ease;
   
   &:hover {
@@ -223,7 +253,7 @@
 
 .live__headline {
   margin-top: 16px;
-  font-size: 32px; /* Larger headline */
+  font-size: 32px;
   font-weight: 800;
   color: var(--vrms-dark);
   line-height: 1.1;
@@ -265,7 +295,7 @@
   background: var(--vrms-red-gradient);
   height: 100%;
   border-radius: var(--radius-pill);
-  box-shadow: 0 0 10px rgba(255, 59, 48, 0.4); /* Glow effect */
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.4);
 }
 
 .live__steps {
@@ -339,7 +369,7 @@
 }
 
 .quick-actions__card--button:focus-visible {
-  outline: 2px solid #ff3b30;
+  outline: 2px solid #EA2A33;
   outline-offset: 2px;
 }
 
@@ -393,75 +423,6 @@
   font-size: 12px;
 }
 
-/* --- Vehicle Health (Circular) --- */
-.health {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.vehicle-health-widget {
-  background: #fff;
-  border-radius: var(--radius-md);
-  padding: 20px 10px;
-  display: grid;
-  place-items: center;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid #f2f2f2;
-}
-
-.circular-progress-bar {
-  position: relative;
-  width: 110px;
-  height: 110px;
-}
-
-.progress-ring {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
-
-.progress-ring-bg {
-  fill: none;
-  stroke: #f0f0f0;
-  stroke-width: 8; 
-}
-
-.progress-fill {
-  fill: none;
-  stroke: var(--vrms-red);
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 2px 4px rgba(255, 59, 48, 0.3));
-}
-
-.progress-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 100%;
-}
-
-.progress-value {
-  font-weight: 800;
-  color: var(--vrms-dark);
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.progress-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: var(--muted);
-  margin-top: 4px;
-  text-transform: uppercase;
-}
-
 /* --- Reminders --- */
 .reminders {
   display: flex;
@@ -470,8 +431,8 @@
 }
 
 .reminder-card {
-  border: 1px solid #f2f2f2; /* Subtle border */
-  border-radius: 99px; /* Pill shape */
+  border: 1px solid #f2f2f2;
+  border-radius: 99px;
   padding: 12px 20px;
   background: #fff;
   display: flex;
@@ -543,5 +504,8 @@
   }
   .live {
     grid-template-columns: 1fr;
+  }
+  .header-actions {
+    max-width: 100%;
   }
 }

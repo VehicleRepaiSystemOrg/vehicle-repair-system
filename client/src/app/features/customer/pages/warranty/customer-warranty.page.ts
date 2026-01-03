@@ -1,33 +1,123 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { CustomerDashboardFacade } from '../../data-access/customer-dashboard.facade';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+interface Warranty {
+  id: number;
+  provider: string;
+  item: string;
+  details: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'expiring' | 'expired';
+}
+
+interface WarrantyHistory {
+  id: number;
+  provider: string;
+  item: string;
+  startDate: string;
+  endDate: string;
+}
 
 @Component({
   standalone: true,
   selector: 'app-customer-warranty-page',
-  imports: [AsyncPipe],
+  imports: [CommonModule],
   templateUrl: './customer-warranty.page.html',
   styleUrl: './customer-warranty.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerWarrantyPageComponent {
-  private readonly facade = inject(CustomerDashboardFacade);
+  
+  warranties: Warranty[] = [
+    {
+      id: 1,
+      provider: 'Michelin Tires',
+      item: 'Pilot Sport 4S (Front)',
+      details: 'Road hazard protection & treadwear',
+      startDate: '01/15/2024',
+      endDate: '01/15/2026',
+      status: 'active'
+    },
+    {
+      id: 2,
+      provider: 'Bosch Parts',
+      item: 'Alternator Unit',
+      details: 'Manufacturer defect warranty',
+      startDate: '11/20/2023',
+      endDate: '01/15/2025', 
+      status: 'expiring'
+    },
+    {
+      id: 3,
+      provider: 'AutoZone',
+      item: 'Gold Battery',
+      details: '3-Year free replacement',
+      startDate: '02/10/2022',
+      endDate: '02/10/2025',
+      status: 'active'
+    },
+    {
+      id: 4,
+      provider: '3M Auto',
+      item: 'Ceramic Coating',
+      details: 'Gloss & hydrophobicity',
+      startDate: '05/20/2021',
+      endDate: '05/20/2024',
+      status: 'expired'
+    }
+  ];
 
-  // TODO (backend): Fetch customer profile from API
-  // GET /customer/me - Fetch current customer profile
-  readonly customerName = 'Customer Name';
-  readonly vehicleLabel = 'Vehicle name #1234';
-
-  // TODO (backend): These facade methods should call API endpoints
-  // GET /customer/warranties?status=active - Fetch active warranties
-  // GET /customer/warranties?status=expired - Fetch expired warranties
-  readonly active$ = this.facade.getActiveWarranties();
-  readonly expired$ = this.facade.getExpiredWarranties();
-
-  // TODO (backend): Implement warranty detail view
-  // Should navigate to warranty details or show modal with full warranty information
-  viewWarrantyDetails(warrantyId: string): void {
-    // TODO (backend): Navigate to warranty details or open modal
-    console.debug('[Warranty] View warranty details clicked for:', warrantyId);
-  }
+  // Expanded list to demonstrate scrolling
+  warrantyHistory: WarrantyHistory[] = [
+    {
+      id: 101,
+      provider: 'Brembo',
+      item: 'Ceramic Brake Pads',
+      startDate: '01/01/2021',
+      endDate: '01/01/2023',
+    },
+    {
+      id: 102,
+      provider: 'Dealership',
+      item: 'Powertrain Coverage',
+      startDate: '06/15/2018',
+      endDate: '06/15/2023',
+    },
+    {
+      id: 103,
+      provider: 'Valvoline',
+      item: 'Synthetic Oil Change',
+      startDate: '01/10/2022',
+      endDate: '01/10/2022',
+    },
+    {
+      id: 104,
+      provider: 'Bridgestone',
+      item: 'All-Weather Tires',
+      startDate: '03/05/2020',
+      endDate: '03/05/2022',
+    },
+    {
+      id: 105,
+      provider: 'NAPA Auto',
+      item: 'Wiper Blades',
+      startDate: '08/12/2021',
+      endDate: '08/12/2022',
+    },
+    {
+      id: 106,
+      provider: 'Service Center',
+      item: 'AC Compressor',
+      startDate: '02/20/2019',
+      endDate: '02/20/2021',
+    },
+    {
+      id: 107,
+      provider: 'AutoZone',
+      item: 'Spark Plugs',
+      startDate: '11/15/2019',
+      endDate: '11/15/2020',
+    }
+  ];
 }

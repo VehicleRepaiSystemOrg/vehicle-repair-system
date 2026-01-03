@@ -1,7 +1,6 @@
 <div class="page">
   <div class="page__header">
     <div>
-      <h1 class="page__title">Dashboard Overview</h1>
       <div class="page__sub">Welcome Back, Customer Name</div>
     </div>
   </div>
@@ -10,10 +9,7 @@
     <div class="book">
       <div class="book__left">
         <div class="book__left-inner">
-          <div class="book__headline">Ready to Book?</div>
-          <div class="book__desc">
-            Schedule your appointment online and skip the wait. We'll confirm your slot shortly.
-          </div>
+          <div class="book__headline">Call to Us?</div>
 
           <div class="book__info">
             <div class="book__info-row">
@@ -36,9 +32,10 @@
       </div>
 
       <div class="book__right">
-        <div class="book__title">Online Request</div>
+        <div class="book__title">Massage Request</div>
 
         <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+          
           <div class="form__grid">
             <div class="form__field">
               <label class="form__label" for="fullName">Full Name</label>
@@ -49,26 +46,11 @@
               <label class="form__label" for="phoneNumber">Phone Number</label>
               <input id="phoneNumber" class="input" type="tel" formControlName="phoneNumber" placeholder="(555) 000-0000" />
             </div>
-
-            <div class="form__field">
-              <label class="form__label" for="vehicle">Vehicle Make &amp; Model</label>
-              <input id="vehicle" class="input" type="text" formControlName="vehicle" placeholder="e.g. 2018 Toyota Camry" />
-            </div>
-
-            <div class="form__field">
-              <label class="form__label" for="preferredDate">Preferred Date</label>
-              <input id="preferredDate" class="input" type="date" formControlName="preferredDate" />
-            </div>
           </div>
 
           <div class="form__field">
-            <label class="form__label" for="serviceNeeded">Service Needed</label>
-            <select id="serviceNeeded" class="input" formControlName="serviceNeeded">
-              <option>Oil Change</option>
-              <option>Brake Inspection</option>
-              <option>Tire Rotation</option>
-              <option>Diagnostics</option>
-            </select>
+            <label class="form__label" for="vehicle">Vehicle Make &amp; Model</label>
+            <input id="vehicle" class="input" type="text" formControlName="vehicle" placeholder="e.g. 2018 Toyota Camry" />
           </div>
 
           <div class="form__field">
@@ -77,7 +59,7 @@
           </div>
 
           <button class="btn btn--primary btn--full" type="submit">
-            Submit Request →
+            Send Massage →
           </button>
         </form>
       </div>

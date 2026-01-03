@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  background: var(--bg-card, #ffffff);
+  border-radius: var(--radius-lg, 24px);
+  padding: 24px;
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.06));
+}
+
+.calendar-wrapper {
+  --fc-border-color: #f0f0f0;
+  --fc-button-text-color: #1a1a1a;
+  --fc-button-bg-color: #fff;
+  --fc-button-border-color: #e0e0e0;
+  --fc-button-hover-bg-color: #f9f9f9;
+  --fc-button-active-bg-color: #f0f0f0;
+  --fc-event-bg-color: rgba(255, 59, 48, 0.1);
+  --fc-event-border-color: transparent;
+  --fc-event-text-color: #d81e14;
+  --fc-today-bg-color: rgba(255, 59, 48, 0.03);
+  
+  font-family: inherit;
+
+  ::ng-deep .fc-toolbar-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--vrms-dark, #1a1a1a);
+    letter-spacing: -0.3px;
+  }
+
+  ::ng-deep .fc-button {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 12px;
+    text-transform: capitalize;
+
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.2);
+    }
+  }
+
+  ::ng-deep .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--vrms-dark, #1a1a1a);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  ::ng-deep .fc-col-header-cell-cushion {
+    padding: 12px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted, #8e8e93);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  ::ng-deep .fc-daygrid-day-number {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--vrms-dark, #1a1a1a);
+    text-decoration: none;
+    padding: 8px;
+  }
+
+  ::ng-deep .fc-event {
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 2px;
+  }
+
+  ::ng-deep .event-mechanic {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: #d81e14;
+    border-left: 3px solid #d81e14;
+  }
+
+  ::ng-deep .event-manager {
+    background-color: rgba(0, 122, 255, 0.1);
+    color: #007aff;
+    border-left: 3px solid #007aff;
+  }
+}

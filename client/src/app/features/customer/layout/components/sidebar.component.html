@@ -1,27 +1,53 @@
 <div class="sidebar">
+  <div class="sidebar__brand">
+    <div class="brand-logo">
+      <div class="brand-icon"></div>
+    </div>
+    <div class="brand-text">VRMS</div>
+  </div>
+
   <div class="sidebar__profile">
-    <div class="sidebar__avatar" aria-hidden="true"></div>
-    <div>
+    <img 
+      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" 
+      alt="Profile" 
+      class="sidebar__avatar"
+    />
+    <div class="profile-info">
       <div class="sidebar__name">Customer Name</div>
       <div class="sidebar__role">Customer portal</div>
     </div>
   </div>
 
   <nav class="sidebar__nav" aria-label="Customer navigation">
-    <a routerLink="/dashboard/overview" routerLinkActive="is-active" class="sidebar__link">Dashboard</a>
-    <a routerLink="/dashboard/my-repairs" routerLinkActive="is-active" class="sidebar__link">My Repairs</a>
-    <a routerLink="/dashboard/warranty" routerLinkActive="is-active" class="sidebar__link">Warranty Tracking</a>
-    <a routerLink="/dashboard/service-reminder" routerLinkActive="is-active" class="sidebar__link">Service Reminder</a>
-    <a routerLink="/dashboard/settings" routerLinkActive="is-active" class="sidebar__link">Settings</a>
+    <a routerLink="/dashboard/overview" routerLinkActive="is-active" class="sidebar__link">
+      Dashboard
+    </a>
+    <a routerLink="/dashboard/my-repairs" routerLinkActive="is-active" class="sidebar__link">
+      My Repairs
+    </a>
+    <a routerLink="/dashboard/warranty" routerLinkActive="is-active" class="sidebar__link">
+      Warranty Tracking
+    </a>
+    
+    <a routerLink="/dashboard/invoice-overview" routerLinkActive="is-active" class="sidebar__link">
+      Payments
+    </a>
 
-     <!-- TODO (backend): Wire logout button to call AuthService.logout() before navigation -->
-     <!-- Should clear authentication tokens and user session, then navigate to login -->
-     <button
-       type="button"
-       class="sidebar__logout"
-       routerLink="/login"
-     >
-       Logout
-     </button>
+    <a routerLink="/dashboard/service-reminder" routerLinkActive="is-active" class="sidebar__link">
+      Service History
+    </a>
+    <a routerLink="/dashboard/settings" routerLinkActive="is-active" class="sidebar__link">
+      Settings
+    </a>
   </nav>
+
+  <div class="sidebar__footer">
+      <button
+        type="button"
+        class="sidebar__logout"
+        (click)="onLogout()"
+      >
+        Logout
+      </button>
+  </div>
 </div>
