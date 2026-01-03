@@ -14,21 +14,24 @@ $danger: #EA2A33;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 24px; 
+  // UPDATED: Reduced top padding from 24px to 12px to pull everything up
+  padding: 12px 24px 24px 24px; 
   background-color: $bg-app;
   min-height: 100vh;
   color: $text-main;
   box-sizing: border-box;
 }
 
-// --- Page Header (NEW) ---
+// --- Page Header ---
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid $border-color;
+  // UPDATED: Reduced margins significantly to remove the large gap
+  margin-bottom: 12px; 
+  padding-bottom: 0;
+  // Note: If you don't use the header title, you can set "display: none;" here to save even more space.
+  border-bottom: 1px solid transparent; // Hidden border since it's empty
 
   .page-title {
     font-size: 1.8rem;
@@ -68,13 +71,13 @@ $danger: #EA2A33;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   
   position: sticky;
-  top: 24px; 
-  max-height: calc(100vh - 48px);
+  top: 12px; // UPDATED: Closer to the top of viewport when scrolling
+  max-height: calc(100vh - 24px);
   overflow-y: auto;
 
-  // Alignment Fix: Push panel down on desktop to align with Invoice Card
+  // UPDATED: Removed the margin-top so it aligns perfectly with the buttons
   @media (min-width: 1025px) {
-    margin-top: 58px; 
+    margin-top: 0; 
   }
 }
 

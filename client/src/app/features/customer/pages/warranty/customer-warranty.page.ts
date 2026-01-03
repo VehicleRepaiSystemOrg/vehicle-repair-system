@@ -68,7 +68,6 @@ export class CustomerWarrantyPageComponent {
     }
   ];
 
-  // Expanded list to demonstrate scrolling
   warrantyHistory: WarrantyHistory[] = [
     {
       id: 101,
