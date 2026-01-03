@@ -1,8 +1,18 @@
 <div class="invoice-container">
   
   <header class="page-header">
-    <div>
-      <p class="page-subtitle">Welcome Back, <span class="highlight">{{ customerName }}</span> 👋</p>
+    <div class="header-title">
+    </div>
+
+    <div class="content-actions">
+      <button type="button" class="btn btn--secondary" (click)="downloadPdf()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </button>
+      <button type="button" class="btn btn--primary" (click)="printInvoice()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print Invoice
+      </button>
     </div>
   </header>
   
@@ -38,17 +48,6 @@
 
     <main class="invoice-content">
       
-      <div class="content-actions">
-        <button type="button" class="btn btn--secondary" (click)="downloadPdf()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download PDF
-        </button>
-        <button type="button" class="btn btn--primary" (click)="printInvoice()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print Invoice
-        </button>
-      </div>
-
       <div class="invoice-sheet">
         <header class="sheet-header">
           <div class="header-content">
@@ -66,9 +65,8 @@
         </header>
 
         <hr class="divider">
-
         <section class="meta-grid">
-          <div class="meta-group">
+           <div class="meta-group">
             <span class="meta-label">Customer</span>
             <div class="value link">{{ customerName }}</div>
           </div>
@@ -87,7 +85,7 @@
         </section>
 
         <section class="table-container">
-          <div class="responsive-table">
+           <div class="responsive-table">
             <div class="table-header">
               <div class="col col-item">Description</div>
               <div class="col col-qty">Qty</div>
@@ -109,7 +107,7 @@
         </section>
 
         <section class="invoice-footer">
-          <div class="payment-info">
+           <div class="payment-info">
             <h3 class="footer-title">Payment Details</h3>
             <div class="payment-details">
               <div class="payment-row">
