@@ -18,8 +18,6 @@ export class CustomerBookServicePageComponent {
     fullName: ['', [Validators.required]],
     phoneNumber: ['', [Validators.required]],
     vehicle: ['', [Validators.required]],
-    preferredDate: ['', [Validators.required]],
-    serviceNeeded: ['Oil Change', [Validators.required]],
     description: [''],
   });
 
@@ -32,18 +30,8 @@ export class CustomerBookServicePageComponent {
     const payload = this.form.getRawValue();
 
     // TODO (backend): POST /customer/service-requests
-    // Request body: { fullName, phoneNumber, vehicle, preferredDate, serviceNeeded, description }
-    // Expected response: { bookingId: string, confirmationNumber: string, status: 'pending' | 'confirmed' }
-    // On success: Navigate to booking confirmation with booking ID
-    // On error: Display error message to user
+    // Request body: { fullName, phoneNumber, vehicle, description }
     console.debug('[BookService] Submit', payload);
-
-    // TODO (backend): Replace navigation with actual API call and handle response
-    // Example:
-    // this.serviceRequestService.create(payload).subscribe({
-    //   next: (response) => this.router.navigate(['/dashboard/booking-confirmation'], { queryParams: { bookingId: response.bookingId } }),
-    //   error: (err) => this.showError(err.message)
-    // });
 
     // Navigate to booking confirmation screen
     this.router.navigate(['/dashboard/booking-confirmation']);

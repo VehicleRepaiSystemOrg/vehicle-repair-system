@@ -35,7 +35,7 @@
 .book__left {
   border-radius: 18px;
   padding: 26px;
-  background: linear-gradient(135deg, rgba(255, 0, 0, 0.92), rgba(179, 2, 2, 0.712));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.92), rgba(90, 71, 71, 0.712));
   color: var(--vrms-white);
 }
 
@@ -102,6 +102,7 @@
   gap: 12px;
 }
 
+/* This grid is now only used for the first row (Name/Phone) */
 .form__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -18,9 +18,6 @@ interface NotificationItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerNotificationsPageComponent {
-  // TODO (backend): Replace mock data with API call
-  // GET /customer/notifications - Fetch all notifications for the logged-in customer
-  // Expected response: Array of { id, title, message, timeAgo, type, isRead }
   readonly notifications: NotificationItem[] = [
     {
       id: 1,
@@ -52,18 +49,7 @@ export class CustomerNotificationsPageComponent {
     },
   ];
 
-
-  // TODO (backend): Implement mark as read functionality
-  // PUT /customer/notifications/:notificationId/read - Mark a single notification as read
   markAsRead(notificationId: number): void {
-    // TODO (backend): Call API to mark notification as read, then update local state
     console.debug('[Notifications] Mark as read clicked for:', notificationId);
-  }
-
-  // TODO (backend): Implement mark all as read functionality
-  // PUT /customer/notifications/read-all - Mark all notifications as read
-  markAllAsRead(): void {
-    // TODO (backend): Call API to mark all notifications as read, then refresh the list
-    console.debug('[Notifications] Mark all as read clicked');
   }
 }

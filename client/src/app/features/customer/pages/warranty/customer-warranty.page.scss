@@ -1,54 +1,68 @@
-/* Variables matching previous design */
+/* --- Variables --- */
 :host {
-  --vrms-red: #e63946;
+  --vrms-red: #EA2A33;
   --vrms-green: #10b981;
-  --vrms-dark: #1d3557;
+  --vrms-dark: #1a1a1a;
   --text-main: #2b2d42;
-  --text-muted: #8d99ae;
-  --border-light: #edf2f4;
+  --text-muted: #8e8e93;
+  --border-light: #f0f0f0;
+  --bg-page: #f5f7fa;
   --bg-surface: #ffffff;
+  --bg-panel: #ffffff;
   --shadow-card: 0 4px 12px rgba(0,0,0,0.04);
   --shadow-hover: 0 8px 20px rgba(0,0,0,0.08);
-  --radius: 16px;
+  --shadow-panel: 0 8px 24px rgba(0,0,0,0.06);
+  --radius-lg: 24px;
+  --radius-md: 16px;
 }
 
-.page {
-  padding: 0 10px;
-  max-width: 1200px;
-  margin: 0 auto;
+.page-container {
+  width: 100%;
+  padding-bottom: 40px;
 }
 
 /* --- Header --- */
 .page__header {
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .page__title {
   margin: 0;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--vrms-dark);
   letter-spacing: -0.5px;
+  line-height: 1;
 }
 
 .page__welcome {
-  margin-top: 6px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 4px;
 }
 
-.welcome-text { color: var(--text-muted); font-size: 14px; }
+.welcome-text { color: var(--text-muted); font-size: 15px; font-weight: 500; }
+
 .vehicle-badge {
-  background: var(--text-muted);
+  background: var(--vrms-dark);
   color: white;
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 99px;
   font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* --- Main Panel --- */
+.panel {
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  padding: 32px;
 }
 
 /* --- Section Headers --- */
@@ -59,7 +73,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .section__title {
@@ -70,8 +84,8 @@
 }
 
 .badge-count {
-  background: #e0f2fe;
-  color: #0284c7;
+  background: #ecfdf5;
+  color: var(--vrms-green);
   font-size: 11px;
   font-weight: 800;
   padding: 4px 10px;
@@ -83,13 +97,13 @@
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
 .warranty-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   padding: 24px;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -100,10 +114,9 @@
 .warranty-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
-  border-color: rgba(0,0,0,0.05);
+  border-color: transparent;
 }
 
-/* Green top accent for active cards */
 .warranty-card::before {
   content: '';
   position: absolute;
@@ -129,10 +142,17 @@
 
 .info-group { margin-bottom: 20px; }
 .info-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600;}
+
 .info-value.highlight {
   font-size: 18px;
   font-weight: 800;
   color: var(--vrms-dark);
+}
+
+.detail-text {
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.4;
 }
 
 .date-row {
@@ -150,35 +170,54 @@
 .date-arrow { color: var(--text-muted); font-size: 14px; }
 .text-danger { color: var(--vrms-red) !important; }
 
-/* --- History List (Flat Table) --- */
+/* --- HISTORY LIST & SCROLLING --- */
 .history-list {
   background: white;
-  border-radius: var(--radius);
   border: 1px solid var(--border-light);
-  overflow: hidden;
+  border-radius: var(--radius-md);
+  
+  /* Scroll Logic */
+  overflow-y: auto;          /* Enables scroll */
+  max-height: 300px;         /* Height limit - if content exceeds this, it scrolls */
+  position: relative;        /* Required for sticky header */
+  scroll-behavior: smooth;
 }
+
+/* Custom Scrollbar */
+.history-list::-webkit-scrollbar { width: 6px; }
+.history-list::-webkit-scrollbar-track { background: transparent; }
+.history-list::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 10px; }
 
 .history-row {
   display: grid;
-  grid-template-columns: 1.5fr 1.5fr 1fr 0.8fr;
-  padding: 14px 20px;
+  grid-template-columns: 1.5fr 1.5fr 1fr; 
+  padding: 16px 20px;
   align-items: center;
   border-bottom: 1px solid var(--border-light);
   font-size: 13px;
+  transition: background 0.1s;
 }
 
+.history-row:hover { background: #fcfcfc; }
+
+/* Sticky Header */
 .history-row--head {
-  background: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f9fafb; /* Opaque background so items scroll behind it */
   font-weight: 800;
   font-size: 11px;
   text-transform: uppercase;
   color: var(--text-muted);
   letter-spacing: 0.5px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .history-row:last-child { border-bottom: none; }
 .row-provider { font-weight: 700; color: var(--vrms-dark); }
-.row-date { font-family: monospace; color: var(--text-muted); }
+.row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.row-date { font-family: monospace; color: var(--text-muted); font-size: 13px; }
 
 /* --- Pills --- */
 .pill {
@@ -190,15 +229,9 @@
   text-transform: uppercase;
 }
 
-.pill--active {
-  background: #ecfdf5; /* Light Green */
-  color: var(--vrms-green);
-}
-
-.pill--expired {
-  background: #f3f4f6; /* Light Gray */
-  color: var(--text-muted);
-}
+.pill--active { background: #ecfdf5; color: var(--vrms-green); }
+.pill--expiring { background: #fff1f2; color: var(--vrms-red); }
+.pill--expired { background: #f3f4f6; color: var(--text-muted); }
 
 .text-right { text-align: right; }
 
@@ -206,4 +239,5 @@
   .card-grid { grid-template-columns: 1fr; }
   .history-row { grid-template-columns: 1fr 1fr; gap: 10px; }
   .history-row--head { display: none; }
+  .panel { padding: 20px; }
 }

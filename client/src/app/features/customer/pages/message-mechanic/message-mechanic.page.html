@@ -1,0 +1,93 @@
+<div class="page chat-layout">
+  <aside class="sidebar">
+    <div class="sidebar__header">
+      <h2 class="sidebar__title">Messages</h2>
+      <button class="btn-icon" title="New Message">＋</button>
+    </div>
+
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search chats..." />
+    </div>
+
+    <div class="contact-list">
+      @for (contact of contacts; track contact.id) {
+        <div 
+          class="contact-item" 
+          [class.is-active]="activeContactId === contact.id"
+          (click)="selectContact(contact.id)"
+        >
+          <div class="avatar-container">
+            <img [src]="contact.avatar" [alt]="contact.name" class="avatar" />
+            @if (contact.isOnline) { <div class="status-dot"></div> }
+          </div>
+          
+          <div class="contact-info">
+            <div class="contact-top">
+              <span class="contact-name">{{ contact.name }}</span>
+              <span class="contact-time">{{ contact.lastMessageTime }}</span>
+            </div>
+            <div class="contact-preview">
+              @if (contact.unreadCount > 0) {
+                <span class="unread-badge">{{ contact.unreadCount }}</span>
+              }
+              <p class="truncate">{{ contact.lastMessage }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </aside>
+
+  <main class="chat-window">
+    <header class="chat-header">
+      <div class="header-user">
+        <img [src]="activeContact?.avatar" class="avatar avatar--sm" />
+        <div>
+          <div class="chat-name">{{ activeContact?.name }}</div>
+          <div class="chat-role">{{ activeContact?.role }} • {{ activeContact?.isOnline ? 'Online' : 'Offline' }}</div>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button class="btn-icon">📞</button>
+        <button class="btn-icon">⋯</button>
+      </div>
+    </header>
+
+    <div class="messages" #scrollContainer>
+      <div class="date-divider">Today</div>
+
+      @for (msg of activeMessages; track msg.id) {
+        <div class="message-row" [class.is-me]="msg.sender === 'me'">
+          <div class="message-bubble">
+            @if (msg.imageUrl) {
+              <div class="message-image" [style.background-image]="'url(' + msg.imageUrl + ')'"></div>
+            }
+            <div class="message-text">{{ msg.text }}</div>
+            <div class="message-meta">
+              {{ msg.time }}
+              @if (msg.sender === 'me') {
+                <span class="read-receipt">✓✓</span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="chat-input-area">
+      <button class="btn-icon btn-attach">📎</button>
+      <input 
+        type="text" 
+        class="chat-input" 
+        placeholder="Type a message..." 
+        [(ngModel)]="newMessage"
+        (keyup.enter)="sendMessage()"
+      />
+      <button class="btn-send" (click)="sendMessage()" [disabled]="!newMessage.trim()">
+        Send ➤
+      </button>
+    </div>
+  </main>
+</div>
