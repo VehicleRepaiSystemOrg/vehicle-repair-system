@@ -1,78 +1,46 @@
-<div class="page">
+<div class="page-container">
   <header class="page__header">
     <div>
-      <h1 class="page__title">Service Reminders</h1>
       <div class="page__welcome">
-        <span class="welcome-text">Maintenance schedule for</span>
+        <span class="welcome-text">your past Vehicle history</span>
         <span class="vehicle-badge">{{ vehicleLabel }}</span>
       </div>
     </div>
   </header>
 
-  <section class="section">
-    <div class="section__header">
-      <h2 class="section__title">Upcoming Appointments</h2>
-      <span class="badge-count badge-count--scheduled">Scheduled</span>
-    </div>
-
-    @if (upcoming$ | async; as rows) {
-      <div class="card-grid">
-        @for (row of rows; track row.vehicle + row.serviceType) {
-          <div class="service-card service-card--booked">
-            
-            <div class="service-card__date-box">
-              <span class="label">Date</span>
-              <span class="date">{{ row.recommendedDate }}</span>
-            </div>
-
-            <div class="service-card__body">
-              <div class="service-card__header-row">
-                 <div class="service-card__meta">{{ row.vehicle }}</div>
-                 <span class="status-pill">Confirmed</span>
-              </div>
-              
-              <h3 class="service-card__title">{{ row.serviceType }}</h3>
-              
-              <div class="service-card__mileage">
-                <span class="icon-check">✔</span> Booked for {{ row.recommendedMileage }}
-              </div>
-            </div>
-            
-            </div>
-        }
+  <main class="panel">
+    
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Past Services</h2>
       </div>
-    }
-  </section>
 
-  <section class="section section--spaced">
-    <div class="section__header">
-      <h2 class="section__title">Completed Services</h2>
-    </div>
-
-    @if (completed$ | async; as history) {
       <div class="history-panel">
         <div class="history-table">
           <div class="history-row history-row--head">
-            <div>Date Completed</div>
-            <div>Vehicle</div>
-            <div>Service Performed</div>
-            <div>Mileage</div>
-            <div class="text-right">Status</div>
+            <span>Date</span>
+            <span>Vehicle</span>
+            <span>Service Performed</span>
+            <span>Status</span>
+            <span class="text-right">Invoice</span>
           </div>
 
-          @for (row of history; track row.date) {
+          @for (history of serviceHistory; track history.id) {
             <div class="history-row">
-              <div class="row-date">{{ row.date }}</div>
-              <div class="row-vehicle">{{ row.vehicle }}</div>
-              <div class="row-service">{{ row.serviceType }}</div>
-              <div class="row-mileage">{{ row.mileage }}</div>
-              <div class="text-right">
+              <span class="row-date">{{ history.date }}</span>
+              <span class="row-vehicle">{{ history.vehicle }}</span>
+              <span>{{ history.service }}</span>
+              <div>
                 <span class="pill pill--done">Completed</span>
+              </div>
+              <div class="text-right">
+                <a routerLink="/dashboard/invoice-overview" class="link-action">View</a>
               </div>
             </div>
           }
         </div>
       </div>
-    }
-  </section>
+    </section>
+
+  </main>
 </div>

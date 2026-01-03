@@ -1,76 +1,95 @@
-<div class="page">
+<div class="page-container">
   <header class="page__header">
     <div>
-      <h1 class="page__title">Warranty Tracking</h1>
       <div class="page__welcome">
-        <span class="welcome-text">Tracking for</span>
-        <span class="vehicle-badge">{{ vehicleLabel }}</span>
+        <span class="welcome-text">Tracking coverage for</span>
+        <span class="vehicle-badge">VEHICLE #1234</span>
       </div>
     </div>
   </header>
 
-  <section class="section">
-    <div class="section__header">
-      <h2 class="section__title">Active Coverage</h2>
-      <span class="badge-count">Running</span>
-    </div>
+  <main class="panel">
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Active Coverage</h2>
+        <span class="badge-count">{{ warranties.length }} Items</span>
+      </div>
 
-    @if (active$ | async; as rows) {
       <div class="card-grid">
-        @for (row of rows; track row.purchaseDate + row.coveredItems) {
-          <div class="warranty-card">
-            <div class="warranty-card__top">
-              <span class="provider-label">{{ row.provider }}</span>
-              <span class="pill pill--active">Active</span>
-            </div>
+        @for (warranty of warranties; track warranty.id) {
+          <div class="warranty-card" [ngClass]="'card--' + warranty.status">
             
-            <div class="warranty-card__body">
-              <div class="info-group">
-                <span class="info-label">Covered Components</span>
-                <div class="info-value highlight">{{ row.coveredItems }}</div>
-              </div>
+            <div class="warranty-card__top">
+              <span class="provider-label">{{ warranty.provider }}</span>
               
-              <div class="date-row">
-                <div class="date-group">
-                  <span class="date-label">Purchased</span>
-                  <span>{{ row.purchaseDate }}</span>
-                </div>
-                <div class="date-arrow">&rarr;</div>
-                <div class="date-group">
-                  <span class="date-label">Expires</span>
-                  <span class="text-danger">{{ row.expirationDate }}</span>
-                </div>
+              <div class="pill" [ngClass]="'pill--' + warranty.status">
+                @if (warranty.status === 'expiring') {
+                  Expiring Soon
+                } @else if (warranty.status === 'expired') {
+                  Expired
+                } @else {
+                  Active
+                }
+              </div>
+            </div>
+
+            <div class="info-group">
+              <label for="item{{warranty.id}}">Covered Item</label>
+              <div id="item{{warranty.id}}" class="info-value highlight">{{ warranty.item }}</div>
+            </div>
+
+            <div class="info-group">
+              <label for="details{{warranty.id}}">Coverage Details</label>
+              <div id="details{{warranty.id}}" class="info-value detail-text">
+                {{ warranty.details }}
+              </div>
+            </div>
+
+            <div class="date-row">
+              <div class="date-group">
+                <label for="start{{warranty.id}}">Valid From</label>
+                <span id="start{{warranty.id}}">{{ warranty.startDate }}</span>
+              </div>
+              <div class="date-arrow">→</div>
+              <div class="date-group text-right">
+                <label for="end{{warranty.id}}">Expires</label>
+                <span id="end{{warranty.id}}" [class.text-danger]="warranty.status === 'expiring'">
+                  {{ warranty.endDate }}
+                </span>
               </div>
             </div>
           </div>
         }
       </div>
-    }
-  </section>
+    </section>
 
-  <section class="section section--spaced">
-    <div class="section__header">
-      <h2 class="section__title">Expired History</h2>
-    </div>
+    <section class="section section--spaced">
+      <div class="section__header">
+        <h2 class="section__title">Warranty History</h2>
+      </div>
 
-    @if (expired$ | async; as rows) {
       <div class="history-list">
         <div class="history-row history-row--head">
-          <div>Provider</div>
-          <div>Covered Items</div>
-          <div>Expiration Date</div>
-          <div class="text-right">Status</div>
+          <span>Provider / Item</span>
+          <span>Coverage Period</span>
+          <span>Status</span>
         </div>
 
-        @for (row of rows; track row.purchaseDate + row.coveredItems) {
+        @for (history of warrantyHistory; track history.id) {
           <div class="history-row">
-            <div class="row-provider">{{ row.provider }}</div>
-            <div class="row-item">{{ row.coveredItems }}</div>
-            <div class="row-date">{{ row.expirationDate }}</div>
-            <div class="text-right"><span class="pill pill--expired">Expired</span></div>
+            <div>
+              <div class="row-provider">{{ history.provider }}</div>
+              <div class="row-sub">{{ history.item }}</div>
+            </div>
+            <div class="row-date">
+              {{ history.startDate }} - {{ history.endDate }}
+            </div>
+            <div>
+              <span class="pill pill--expired">Expired</span>
+            </div>
           </div>
         }
       </div>
-    }
-  </section>
+    </section>
+  </main>
 </div>

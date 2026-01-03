@@ -1,26 +1,59 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+
+const PAGE_TITLES: Record<string, string> = {
+  'overview': 'Dashboard Overview',
+  'my-repairs': 'My Repairs',
+  'warranty': 'Warranty Tracking',
+  'service-reminder': 'Service History',
+  'settings': 'Account Settings',
+  'book-service': 'Customer Support',
+  'booking-confirmation': 'Booking Confirmation',
+  'service-history': 'Service History',
+  'invoice-overview': 'Invoices',
+  'notifications': 'Notifications',
+  'job-details': 'Job Details',
+  'message-mechanic': 'Message Mechanic',
+};
 
 @Component({
   standalone: true,
   selector: 'app-customer-topbar',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, AsyncPipe],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopbarComponent {
-  // TODO (backend): Implement search functionality
-  // GET /customer/search?q={searchTerm} - Search across repairs, invoices, services, etc.
-  // Expected response: { repairs: [], invoices: [], services: [] }
-  // Should debounce search input and call API on user input
+  private readonly router = inject(Router);
+
+  readonly pageTitle$ = this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    map(() => {
+      const url = this.router.url;
+      const path = url.split('/').pop() || 'overview';
+      return PAGE_TITLES[path] || 'Dashboard';
+    }),
+    startWith(this.getCurrentTitle())
+  );
+
   search = '';
 
-  // TODO (backend): Implement search method
+  private getCurrentTitle(): string {
+    const url = this.router.url;
+    const path = url.split('/').pop() || 'overview';
+    return PAGE_TITLES[path] || 'Dashboard';
+  }
+
   onSearch(searchTerm: string): void {
-    // TODO (backend): Call search API endpoint with debounced search term
-    // Display search results in dropdown or navigate to search results page
-    console.debug('[Topbar] Search:', searchTerm);
+    if (!searchTerm.trim()) return;
+    console.debug('[Topbar] Searching for:', searchTerm);
+  }
+
+  navigateToNotifications(): void {
+    this.router.navigate(['/dashboard/notifications']);
   }
 }

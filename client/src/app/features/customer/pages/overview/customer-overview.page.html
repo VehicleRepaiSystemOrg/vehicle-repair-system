@@ -1,7 +1,6 @@
 <div class="page">
   <div class="page__header">
     <div>
-      <h1 class="page__title">Dashboard Overview</h1>
       <div class="page__welcome">
         <div class="page__welcome-title">Welcome Back, {{ customerName }}</div>
         <div class="page__welcome-sub">{{ vehicleLabel }}</div>
@@ -13,9 +12,14 @@
         <span class="btn__icon" aria-hidden="true">📞</span>
         Call Now
       </button>
+
+      <button class="btn btn--secondary" routerLink="/dashboard/spare-parts">
+        <span class="btn__icon" aria-hidden="true">⚙️</span>
+        Spare Parts
+      </button>
+
       <a class="btn btn--primary" routerLink="/dashboard/book-service">
-        <span class="btn__plus" aria-hidden="true">＋</span>
-        Book New Service
+        customer support
       </a>
     </div>
   </div>
@@ -28,6 +32,16 @@
       <app-kpi-card label="Completed jobs" [value]="kpis.completedJobs"></app-kpi-card>
     </div>
   }
+
+  <section class="panel" style="margin-top: 24px;">
+    <div class="panel__header">
+      <div>
+        <div class="panel__title">Availability Schedule</div>
+        <div class="panel__subtitle">Check team availability</div>
+      </div>
+    </div>
+    <app-calendar-widget></app-calendar-widget>
+  </section>
 
   <div class="grid">
     <section class="panel panel--main">
@@ -54,7 +68,7 @@
           </div>
 
           <div class="live__stage">
-            <div>Stage 3: Parts Installation</div>
+            <div>Stage 3: Repairing</div>
             <div class="live__pct">60%</div>
           </div>
 
@@ -63,16 +77,17 @@
           </div>
 
           <div class="live__steps">
-            <span class="step is-done">INTAKE</span>
-            <span class="step is-done">DIAG</span>
-            <span class="step is-active">INSTALL</span>
-            <span class="step">QC</span>
-            <span class="step">READY</span>
+            <span class="step is-done">New/Pending</span>
+            <span class="step is-done">Inspection</span>
+            <span class="step is-active">Estimate Approved</span>
+            <span class="step">In Progress</span>
+            <span class="step">Quality Check </span>
+            <span class="step">Ready for Pickup</span>
           </div>
 
           <div class="live__actions">
-            <button class="btn btn--ghost" type="button">View Job Details</button>
-            <button class="btn btn--primary" type="button">Message Mechanic</button>
+            <button class="btn btn--ghost" routerLink="/dashboard/job-details" type="button">View Job Details</button>
+            <button class="btn btn--primary" routerLink="/dashboard/message-mechanic" type="button">Message Mechanic</button>
           </div>
         </div>
       </div>
@@ -98,81 +113,54 @@
     </section>
 
     <aside class="panel panel--side">
-      <div class="panel__title">Recent Updates</div>
-
-      @if (updates$ | async; as updates) {
-        <div class="updates">
-          @for (u of updates; track u.title) {
-            <div class="updates__item">
-              <div class="updates__dot" aria-hidden="true"></div>
-              <div class="updates__text">
-                <div class="updates__title">{{ u.title }}</div>
-                <div class="updates__time">{{ u.timeLabel }}</div>
-              </div>
+      <div class="side-content">
+        <div>
+          <div class="panel__title">Recent Updates</div>
+          @if (updates$ | async; as updates) {
+            <div class="updates">
+              @for (u of updates; track u.title) {
+                <div class="updates__item">
+                  <div class="updates__dot" aria-hidden="true"></div>
+                  <div class="updates__text">
+                    <div class="updates__title">{{ u.title }}</div>
+                    <div class="updates__time">{{ u.timeLabel }}</div>
+                  </div>
+                </div>
+              }
             </div>
           }
         </div>
-      }
 
-      <div class="panel__title panel__title--spaced">Vehicle Health</div>
+        <div>
+          <div class="panel__title panel__title--spaced">
+            Upcoming Appointments
+          </div>
 
-      <div class="health">
-        <div class="vehicle-health-widget">
-          <div class="circular-progress-bar">
-            <svg class="progress-ring" width="100" height="100" viewBox="0 0 100 100">
-              <circle class="progress-ring-bg" cx="50" cy="50" r="40"></circle>
-              <circle class="progress-fill" cx="50" cy="50" r="40" 
-                      style="stroke-dasharray: 251; stroke-dashoffset: 63;"></circle>
-            </svg>
-            <div class="progress-text">
-              <div class="progress-value">75%</div>
-              <div class="progress-label">OIL LIFE</div>
+          <div class="reminders">
+            <div class="reminder-card">
+              <div class="reminder-card__info">
+                <div class="reminder-card__title">Oil Change</div>
+                <div class="reminder-card__date">Due: 1/12/2025</div>
+              </div>
+              <div class="reminder-badge reminder-badge--warning">0 days</div>
+            </div>
+
+            <div class="reminder-card">
+              <div class="reminder-card__info">
+                <div class="reminder-card__title">Tire Rotation</div>
+                <div class="reminder-card__date">Due: 1/12/2025</div>
+              </div>
+              <div class="reminder-badge reminder-badge--neutral">0 days</div>
+            </div>
+
+            <div class="reminder-card">
+              <div class="reminder-card__info">
+                <div class="reminder-card__title">Brake Inspection</div>
+                <div class="reminder-card__date">Due: 1/12/2025</div>
+              </div>
+              <div class="reminder-badge reminder-badge--danger">0 days</div>
             </div>
           </div>
-        </div>
-
-        <div class="vehicle-health-widget">
-          <div class="circular-progress-bar">
-            <svg class="progress-ring" width="100" height="100" viewBox="0 0 100 100">
-              <circle class="progress-ring-bg" cx="50" cy="50" r="40"></circle>
-              <circle class="progress-fill" cx="50" cy="50" r="40" 
-                      style="stroke-dasharray: 251; stroke-dashoffset: 0;"></circle>
-            </svg>
-            <div class="progress-text">
-              <div class="progress-value">Good</div>
-              <div class="progress-label">BATTERY</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel__title panel__title--spaced">
-        Upcoming Appointments
-      </div>
-
-      <div class="reminders">
-        <div class="reminder-card">
-          <div class="reminder-card__info">
-            <div class="reminder-card__title">Oil Change</div>
-            <div class="reminder-card__date">Due: 1/12/2025</div>
-          </div>
-          <div class="reminder-badge reminder-badge--warning">0 days</div>
-        </div>
-
-        <div class="reminder-card">
-          <div class="reminder-card__info">
-            <div class="reminder-card__title">Tire Rotation</div>
-            <div class="reminder-card__date">Due: 1/12/2025</div>
-          </div>
-          <div class="reminder-badge reminder-badge--neutral">0 days</div>
-        </div>
-
-        <div class="reminder-card">
-          <div class="reminder-card__info">
-            <div class="reminder-card__title">Brake Inspection</div>
-            <div class="reminder-card__date">Due: 1/12/2025</div>
-          </div>
-          <div class="reminder-badge reminder-badge--danger">0 days</div>
         </div>
       </div>
     </aside>

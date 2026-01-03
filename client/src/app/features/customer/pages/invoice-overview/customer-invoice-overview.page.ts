@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-// Interface for the history list
 interface InvoiceHistoryItem {
   id: string;
   date: Date;
@@ -10,7 +9,6 @@ interface InvoiceHistoryItem {
   status: 'paid' | 'pending' | 'overdue';
 }
 
-// Existing interface
 interface InvoiceItem {
   item: string;
   quantity: number;
@@ -22,7 +20,7 @@ interface InvoiceItem {
 @Component({
   standalone: true,
   selector: 'app-customer-invoice-overview-page',
-  imports: [RouterLink, CommonModule], // CommonModule includes NgFor, NgIf, Pipes
+  imports: [RouterLink, CommonModule],
   templateUrl: './customer-invoice-overview.page.html',
   styleUrl: './customer-invoice-overview.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +30,7 @@ export class CustomerInvoiceOverviewPageComponent {
   // TODO (backend): Fetch invoice ID from route params (e.g., ActivatedRoute) or query params
   // TODO (backend): GET /customer/invoices/:invoiceId - Fetch invoice details by ID
   // TODO (backend): GET /customer/invoices - Fetch invoice history list
-  // --- NEW: History Data ---
+  
   readonly currentInvoiceId = '0042';
   
   readonly invoiceHistory: InvoiceHistoryItem[] = [
@@ -41,10 +39,8 @@ export class CustomerInvoiceOverviewPageComponent {
     { id: '0035', date: new Date('2024-02-10'), amount: 850.00, status: 'overdue' },
     { id: '0031', date: new Date('2024-01-05'), amount: 45.00, status: 'paid' },
   ];
-  // -------------------------
 
   // TODO (backend): Replace all hardcoded data with API response from GET /customer/invoices/:invoiceId
-  // Existing Data
   readonly invoiceNumber = 'INV-2024-0912';
   readonly invoiceDate = new Date('2024-06-15');
   readonly dueDate = new Date('2024-07-15');

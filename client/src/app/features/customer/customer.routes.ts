@@ -66,6 +66,20 @@ export const CUSTOMER_ROUTES: Routes = [
             m => m.CustomerNotificationsPageComponent,
           ),
       },
+      {
+        path: 'job-details',
+        loadComponent: () =>
+          import('./pages/job-details/job-details.page').then(
+            m => m.JobDetailsPageComponent,
+          ),
+      },
+      {
+        path: 'message-mechanic',
+        loadComponent: () =>
+          import('./pages/message-mechanic/message-mechanic.page').then(
+            m => m.MessageMechanicPageComponent,
+          ),
+      },
     ],
   },
 ];

@@ -1,81 +1,138 @@
-<div class="page">
+<div class="page-container">
   <header class="page__header">
-    <h1 class="page__title">Account Settings</h1>
-    <p class="page__subtitle">Manage your personal info and vehicle details</p>
+    <div>
+      <p class="page__subtitle">Manage your personal details and vehicle information.</p>
+    </div>
   </header>
 
-  <div class="settings-layout">
-    
-    <aside class="profile-card">
-      <div class="profile-avatar">
-        <span class="avatar-initials">CN</span> <button class="btn-icon-edit" type="button" title="Upload Photo">
-          📷
-        </button>
-      </div>
-      <div class="profile-info">
-        <h2 class="profile-name">Customer Name</h2>
-        <span class="profile-role">Vehicle Owner</span>
-      </div>
-    </aside>
+  <main class="panel">
+    <div class="settings-layout">
+      
+      <aside class="settings-sidebar">
+        <div class="profile-summary">
+          <div class="profile-avatar">
+            {{ getInitials() }}
+            <button class="btn-icon-edit" aria-label="Upload Photo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </button>
+          </div>
+          <h2 class="profile-name">{{ user.fullName }}</h2>
+          <div class="profile-role">Customer Portal</div>
+        </div>
+      </aside>
 
-    <section class="form-panel">
-      <form class="form" [formGroup]="form" (ngSubmit)="save()">
+      <section class="settings-content">
         
-        <div class="form-section">
-          <h3 class="section-title">Personal Information</h3>
-          
-          <div class="grid-2">
-            <div class="form__group">
-              <label class="form__label" for="name">Full Name</label>
-              <input id="name" class="input" type="text" formControlName="name" placeholder="Ex: John Doe" />
-            </div>
+        <h3 class="section-title">Personal Details</h3>
+        
+        <div class="form__group">
+          <label class="form__label" for="fullName">Full Name</label>
+          <input id="fullName" type="text" class="input" [(ngModel)]="user.fullName">
+        </div>
 
-            <div class="form__group">
-              <label class="form__label" for="phone">Phone Number</label>
-              <div class="input-action-group">
-                <input id="phone" class="input" type="tel" formControlName="phone" readonly />
-                <button class="btn-text" type="button" (click)="changePhone()">Change</button>
-              </div>
-            </div>
+        <div class="form__group" style="margin-top: 24px;">
+          <label class="form__label" for="email">Email Address</label>
+          <input id="email" type="email" class="input" [(ngModel)]="user.email">
+        </div>
+
+        <div class="form__group" style="margin-top: 24px;">
+          <label class="form__label" for="phone">Phone Number</label>
+          <div class="input-action-group">
+            <input id="phone" type="tel" class="input" [(ngModel)]="user.phone">
+            <button
+              class="btn-text"
+              [class.text-success]="isPhoneUpdated"
+              (click)="onUpdatePhone()">
+              {{ isPhoneUpdated ? 'Saved ✓' : 'Update' }}
+            </button>
           </div>
         </div>
 
         <hr class="divider">
 
-        <div class="form-section">
-          <h3 class="section-title">Vehicle Details</h3>
+        <h3 class="section-title">Vehicle Information</h3>
+        
+        <div class="grid-2">
+          <div class="form__group">
+            <label class="form__label" for="make">Make</label>
+            <input id="make" type="text" class="input" [(ngModel)]="user.vehicle.make">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="model">Model</label>
+            <input id="model" type="text" class="input" [(ngModel)]="user.vehicle.model">
+          </div>
+        </div>
 
-          <div class="grid-2">
-            <div class="form__group">
-              <label class="form__label" for="vehicleMake">Make</label>
-              <input id="vehicleMake" class="input" type="text" formControlName="vehicleMake" placeholder="Ex: Toyota" />
-            </div>
-
-            <div class="form__group">
-              <label class="form__label" for="vehicleModel">Model</label>
-              <input id="vehicleModel" class="input" type="text" formControlName="vehicleModel" placeholder="Ex: Camry" />
-            </div>
-
-            <div class="form__group">
-              <label class="form__label" for="vehicleYear">Year</label>
-              <input id="vehicleYear" class="input" type="text" formControlName="vehicleYear" placeholder="Ex: 2022" />
-            </div>
-
-            <div class="form__group">
-              <label class="form__label" for="licensePlate">License Plate</label>
-              <div class="plate-input-wrapper">
-                <input id="licensePlate" class="input input--plate" type="text" formControlName="licensePlate" />
-              </div>
-            </div>
+        <div class="grid-2" style="margin-top: 24px;">
+          <div class="form__group">
+            <label class="form__label" for="year">Year</label>
+            <input id="year" type="number" class="input" [(ngModel)]="user.vehicle.year">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="plate">License Plate</label>
+            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate">
           </div>
         </div>
 
         <div class="form-actions">
-          <button class="btn btn--secondary" type="button">Cancel</button>
-          <button class="btn btn--primary" type="submit">Save Changes</button>
+          <button type="button" class="btn btn--secondary" (click)="onCancel()">Cancel</button>
+          <button type="button" class="btn btn--primary" (click)="onSave()">Save</button>
         </div>
 
-      </form>
-    </section>
-  </div>
+        <hr class="divider">
+
+        <h3 class="section-title">Registered Vehicles</h3>
+
+        <div class="table-container">
+          <table class="service-table">
+            <thead>
+              <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>License Plate</th>
+                <th style="width: 60px; text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of vehicleList; track item.plate) {
+                <tr>
+                  <td class="font-bold">{{ item.make }}</td>
+                  <td>{{ item.model }}</td>
+                  <td>{{ item.year }}</td>
+                  <td>
+                    <span class="plate-badge">{{ item.plate }}</span>
+                  </td>
+                  <td style="text-align: center;">
+                    <button class="btn-icon-delete" (click)="removeVehicle(item)" title="Remove Vehicle">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  @if (showToast) {
+    <div class="toast-notification" [ngClass]="{'toast-success': toastType === 'success', 'toast-error': toastType === 'error'}">
+      <div class="toast-icon">
+        @if (toastType === 'success') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        }
+        @if (toastType === 'error') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        }
+      </div>
+      <div class="toast-message">{{ toastMessage }}</div>
+      <button class="toast-close" (click)="showToast = false">×</button>
+    </div>
+  }
 </div>

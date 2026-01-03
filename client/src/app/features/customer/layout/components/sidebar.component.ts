@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -10,10 +10,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
-  // TODO (backend): Inject AuthService and implement logout functionality
-  // logout(): void {
-  //   this.authService.logout().subscribe(() => {
-  //     this.router.navigate(['/login']);
-  //   });
-  // }
+  private readonly router = inject(Router);
+
+  // TODO (backend): Inject AuthService
+  // private readonly authService = inject(AuthService);
+
+  onLogout(): void {
+    // TODO (backend): Call logout service
+    // this.authService.logout().subscribe(...)
+    
+    console.debug('Logging out...');
+    this.router.navigate(['/login']);
+  }
 }
