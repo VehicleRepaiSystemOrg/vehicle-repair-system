@@ -12,10 +12,12 @@
 
     <div class="contact-list">
       @for (contact of contacts; track contact.id) {
-        <div 
-          class="contact-item" 
+        <div
+          class="contact-item"
           [class.is-active]="activeContactId === contact.id"
           (click)="selectContact(contact.id)"
+          (keyup.enter)="selectContact(contact.id)"
+          tabindex="0"
         >
           <div class="avatar-container">
             <img [src]="contact.avatar" [alt]="contact.name" class="avatar" />
@@ -42,7 +44,7 @@
   <main class="chat-window">
     <header class="chat-header">
       <div class="header-user">
-        <img [src]="activeContact?.avatar" class="avatar avatar--sm" />
+        <img [src]="activeContact?.avatar" alt="Avatar" class="avatar avatar--sm" />
         <div>
           <div class="chat-name">{{ activeContact?.name }}</div>
           <div class="chat-role">{{ activeContact?.role }} • {{ activeContact?.isOnline ? 'Online' : 'Offline' }}</div>

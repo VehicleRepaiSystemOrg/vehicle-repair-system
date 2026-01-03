@@ -34,26 +34,26 @@
             </div>
 
             <div class="info-group">
-              <label>Covered Item</label>
-              <div class="info-value highlight">{{ warranty.item }}</div>
+              <label for="item{{warranty.id}}">Covered Item</label>
+              <div id="item{{warranty.id}}" class="info-value highlight">{{ warranty.item }}</div>
             </div>
 
             <div class="info-group">
-              <label>Coverage Details</label>
-              <div class="info-value detail-text">
+              <label for="details{{warranty.id}}">Coverage Details</label>
+              <div id="details{{warranty.id}}" class="info-value detail-text">
                 {{ warranty.details }}
               </div>
             </div>
 
             <div class="date-row">
               <div class="date-group">
-                <label>Valid From</label>
-                <span>{{ warranty.startDate }}</span>
+                <label for="start{{warranty.id}}">Valid From</label>
+                <span id="start{{warranty.id}}">{{ warranty.startDate }}</span>
               </div>
               <div class="date-arrow">→</div>
               <div class="date-group text-right">
-                <label>Expires</label>
-                <span [class.text-danger]="warranty.status === 'expiring'">
+                <label for="end{{warranty.id}}">Expires</label>
+                <span id="end{{warranty.id}}" [class.text-danger]="warranty.status === 'expiring'">
                   {{ warranty.endDate }}
                 </span>
               </div>

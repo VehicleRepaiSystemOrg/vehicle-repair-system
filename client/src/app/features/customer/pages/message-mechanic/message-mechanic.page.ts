@@ -105,6 +105,8 @@ export class MessageMechanicPageComponent implements AfterViewChecked {
   private scrollToBottom(): void {
     try {
       this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }                 
+    } catch {
+      // Ignore errors if element is not available
+    }
   }
 }

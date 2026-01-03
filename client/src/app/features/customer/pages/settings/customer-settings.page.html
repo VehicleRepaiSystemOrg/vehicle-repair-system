@@ -29,22 +29,22 @@
         <h3 class="section-title">Personal Details</h3>
         
         <div class="form__group">
-          <label class="form__label">Full Name</label>
-          <input type="text" class="input" [(ngModel)]="user.fullName">
+          <label class="form__label" for="fullName">Full Name</label>
+          <input id="fullName" type="text" class="input" [(ngModel)]="user.fullName">
         </div>
 
         <div class="form__group" style="margin-top: 24px;">
-          <label class="form__label">Email Address</label>
-          <input type="email" class="input" [(ngModel)]="user.email">
+          <label class="form__label" for="email">Email Address</label>
+          <input id="email" type="email" class="input" [(ngModel)]="user.email">
         </div>
 
         <div class="form__group" style="margin-top: 24px;">
-          <label class="form__label">Phone Number</label>
+          <label class="form__label" for="phone">Phone Number</label>
           <div class="input-action-group">
-            <input type="tel" class="input" [(ngModel)]="user.phone">
-            <button 
-              class="btn-text" 
-              [class.text-success]="isPhoneUpdated" 
+            <input id="phone" type="tel" class="input" [(ngModel)]="user.phone">
+            <button
+              class="btn-text"
+              [class.text-success]="isPhoneUpdated"
               (click)="onUpdatePhone()">
               {{ isPhoneUpdated ? 'Saved ✓' : 'Update' }}
             </button>
@@ -57,23 +57,23 @@
         
         <div class="grid-2">
           <div class="form__group">
-            <label class="form__label">Make</label>
-            <input type="text" class="input" [(ngModel)]="user.vehicle.make">
+            <label class="form__label" for="make">Make</label>
+            <input id="make" type="text" class="input" [(ngModel)]="user.vehicle.make">
           </div>
           <div class="form__group">
-            <label class="form__label">Model</label>
-            <input type="text" class="input" [(ngModel)]="user.vehicle.model">
+            <label class="form__label" for="model">Model</label>
+            <input id="model" type="text" class="input" [(ngModel)]="user.vehicle.model">
           </div>
         </div>
 
         <div class="grid-2" style="margin-top: 24px;">
           <div class="form__group">
-            <label class="form__label">Year</label>
-            <input type="number" class="input" [(ngModel)]="user.vehicle.year">
+            <label class="form__label" for="year">Year</label>
+            <input id="year" type="number" class="input" [(ngModel)]="user.vehicle.year">
           </div>
           <div class="form__group">
-            <label class="form__label">License Plate</label>
-            <input type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate">
+            <label class="form__label" for="plate">License Plate</label>
+            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate">
           </div>
         </div>
 
@@ -124,8 +124,12 @@
   @if (showToast) {
     <div class="toast-notification" [ngClass]="{'toast-success': toastType === 'success', 'toast-error': toastType === 'error'}">
       <div class="toast-icon">
-        <svg *ngIf="toastType === 'success'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <svg *ngIf="toastType === 'error'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        @if (toastType === 'success') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        }
+        @if (toastType === 'error') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        }
       </div>
       <div class="toast-message">{{ toastMessage }}</div>
       <button class="toast-close" (click)="showToast = false">×</button>

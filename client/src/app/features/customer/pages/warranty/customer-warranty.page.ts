@@ -8,7 +8,15 @@ interface Warranty {
   details: string;
   startDate: string;
   endDate: string;
-  status: 'active' | 'expiring' | 'expired'; 
+  status: 'active' | 'expiring' | 'expired';
+}
+
+interface WarrantyHistory {
+  id: number;
+  provider: string;
+  item: string;
+  startDate: string;
+  endDate: string;
 }
 
 @Component({
@@ -61,7 +69,7 @@ export class CustomerWarrantyPageComponent {
   ];
 
   // Expanded list to demonstrate scrolling
-  warrantyHistory: any[] = [
+  warrantyHistory: WarrantyHistory[] = [
     {
       id: 101,
       provider: 'Brembo',
