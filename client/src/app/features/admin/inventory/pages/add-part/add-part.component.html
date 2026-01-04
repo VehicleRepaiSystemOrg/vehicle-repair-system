@@ -10,13 +10,27 @@
       <div class="form-group"><label for="stock">Stock</label><input id="stock" type="text" [(ngModel)]="part.stock" placeholder="Enter stock quantity"></div>
       <div class="form-group"><label for="price">Price</label><input id="price" type="text" [(ngModel)]="part.price" placeholder="Enter price"></div>
       <div class="form-group">
-  <label for="warranty">Warranty End Date</label>
-  <input 
-    id="warranty"
-    type="date" 
-    [(ngModel)]="part.warranty" 
-    class="edit-input">
-    </div>
+        <label for="warranty">Warranty Period</label>
+        <div class="warranty-inputs">
+          <select id="warranty-years" [(ngModel)]="part.warranty!.years" name="warrantyYears">
+            <option value="0">0 years</option>
+            <option value="1">1 year</option>
+            <option value="2">2 years</option>
+            <option value="3">3 years</option>
+            <option value="4">4 years</option>
+            <option value="5">5 years</option>
+          </select>
+          <select id="warranty-months" [(ngModel)]="part.warranty!.months" name="warrantyMonths">
+            <option value="0">0 months</option>
+            <option value="1">1 month</option>
+            <option value="2">2 months</option>
+            <option value="3">3 months</option>
+            <option value="6">6 months</option>
+            <option value="9">9 months</option>
+            <option value="12">12 months</option>
+          </select>
+        </div>
+      </div>
 
       <div class="button-group">
         <button class="btn-red" (click)="onAdd()">Add Part</button>

@@ -51,6 +51,30 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
     }
+
+    select {
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid #f0f0f0;
+      background-color: #fbfbfb;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.2s ease;
+
+      &:focus {
+        background-color: #ffffff;
+        border-color: #EA2A33;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    .warranty-inputs {
+      display: flex;
+      gap: 15px;
+      select {
+        flex: 1;
+      }
+    }
   }
   .edit-input {
   /* ... your existing styles ... */

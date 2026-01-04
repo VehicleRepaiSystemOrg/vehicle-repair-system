@@ -104,6 +104,19 @@
         padding: 0;
         &:hover { text-decoration: underline; }
       }
+
+      .visibility-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        &:hover { 
+          background-color: #f5f5f5; 
+        }
+      }
     }
   }
 }

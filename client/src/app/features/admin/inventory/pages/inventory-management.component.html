@@ -46,6 +46,7 @@
           <th>Stock</th>
           <th>Price</th>
           <th>Actions</th>
+          <th>Visibility</th>
         </tr>
       </thead>
       <tbody *ngIf="parts$ | async as parts">
@@ -66,11 +67,19 @@
             <td>{{ item.category }}</td>
             <td class="supplier-cell">{{ item.supplier }}</td>
             <td>{{ item.partNumber }}</td>
-            <td>{{ item.warranty }}</td>
+            <td>{{ formatWarranty(item.warranty) }}</td>
             <td>{{ item.stock }}</td>
             <td>{{ item.price }}</td>
             <td>
               <button class="action-toggle" [routerLink]="['/inventory/edit', item.id]">Edit</button>
+            </td>
+            <td>
+              <button 
+                class="visibility-toggle" 
+                (click)="toggleVisibility(item.id)"
+                [title]="item.visible ? 'Hide part' : 'Show part'">
+                {{ item.visible ? '👁️' : '🙈' }}
+              </button>
             </td>
           </tr>
         </ng-container>
