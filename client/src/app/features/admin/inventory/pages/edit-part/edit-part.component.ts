@@ -18,7 +18,7 @@ export class EditPartComponent implements OnInit {
   private inventoryService = inject(InventoryService);
 
   // This part object will now include the warranty property 
-  // from the InventoryItem interface
+  // from the InventoryItem interface with months and years
   part?: InventoryItem; 
   imagePreview: string | null = null;
 

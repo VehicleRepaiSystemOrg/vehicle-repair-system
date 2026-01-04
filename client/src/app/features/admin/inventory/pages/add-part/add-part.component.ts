@@ -12,7 +12,16 @@ import { InventoryService, InventoryItem } from '../../services/inventory.servic
   styleUrls: ['./add-part.component.scss']
 })
 export class AddPartComponent {
-  part: Partial<InventoryItem> = { partName: '', category: '', supplier: '', partNumber: '', stock: 0, price: 0, imageUrl: '', warranty: '' };
+  part: Partial<InventoryItem> = { 
+    partName: '', 
+    category: '', 
+    supplier: '', 
+    partNumber: '', 
+    stock: 0, 
+    price: 0, 
+    warranty: { months: 0, years: 0 }, 
+    imageUrl: '' 
+  };
   imagePreview: string | null = null;
   private readonly inventoryService = inject(InventoryService);
   private readonly router = inject(Router);

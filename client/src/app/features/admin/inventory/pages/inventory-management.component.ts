@@ -20,7 +20,27 @@ export class InventoryManagementComponent implements OnInit {
     this.parts$ = this.inventoryService.parts$;
   }
 
+  formatWarranty(warranty: { months: number; years: number }): string {
+    if (warranty.years === 0 && warranty.months === 0) {
+      return 'No Warranty';
+    }
+    
+    const parts: string[] = [];
+    if (warranty.years > 0) {
+      parts.push(`${warranty.years} year${warranty.years > 1 ? 's' : ''}`);
+    }
+    if (warranty.months > 0) {
+      parts.push(`${warranty.months} month${warranty.months > 1 ? 's' : ''}`);
+    }
+    
+    return parts.join(' ');
+  }
+
   removeItem(id: number) {
     this.inventoryService.removePart(id);
+  }
+
+  toggleVisibility(id: number) {
+    this.inventoryService.toggleVisibility(id);
   }
 }

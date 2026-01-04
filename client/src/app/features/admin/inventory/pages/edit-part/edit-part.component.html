@@ -34,13 +34,27 @@
         <input id="part-price" type="number" step="0.01" [(ngModel)]="part.price">
       </div> 
       <div class="form-group">
-  <label for="part-warranty">Warranty End Date</label>
-  <input 
-    id="part-warranty"
-    type="date" 
-    [(ngModel)]="part.warranty" 
-    class="edit-input">
-</div>
+        <label for="part-warranty">Warranty Period</label>
+        <div class="warranty-inputs">
+          <select id="part-warranty-years" [(ngModel)]="part!.warranty.years" name="warrantyYears">
+            <option value="0">0 years</option>
+            <option value="1">1 year</option>
+            <option value="2">2 years</option>
+            <option value="3">3 years</option>
+            <option value="4">4 years</option>
+            <option value="5">5 years</option>
+          </select>
+          <select id="part-warranty-months" [(ngModel)]="part!.warranty.months" name="warrantyMonths">
+            <option value="0">0 months</option>
+            <option value="1">1 month</option>
+            <option value="2">2 months</option>
+            <option value="3">3 months</option>
+            <option value="6">6 months</option>
+            <option value="9">9 months</option>
+            <option value="12">12 months</option>
+          </select>
+        </div>
+      </div>
 
       
       <div class="button-group">

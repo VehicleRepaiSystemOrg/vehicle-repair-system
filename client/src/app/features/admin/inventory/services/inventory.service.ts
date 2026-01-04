@@ -9,14 +9,18 @@ export interface InventoryItem {
   partNumber: string;
   stock: number;
   price: number;
-  warranty: string;
+  warranty: {
+    months: number;
+    years: number;
+  };
   imageUrl?: string;
+  visible?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
   private initialParts: InventoryItem[] = [
-    { id: 1, partName: 'Brake Pad', category: 'Brakes', supplier: 'Bosch', partNumber: 'BP-001', stock: 50, price: 45.0, warranty: '2025-12-31' },
+    { id: 1, partName: 'Brake Pad', category: 'Brakes', supplier: 'Bosch', partNumber: 'BP-001', stock: 50, price: 45.0, warranty: { months: 6, years: 1 }, visible: true },
   ];
 
   private partsSubject = new BehaviorSubject<InventoryItem[]>(this.initialParts);
@@ -36,8 +40,9 @@ export class InventoryService {
       partNumber: item.partNumber ?? '',
       stock: Number(item.stock ?? 0),
       price: Number(item.price ?? 0),
-      warranty: item.warranty ?? '',
-      imageUrl: item.imageUrl
+      warranty: item.warranty ?? { months: 0, years: 0 },
+      imageUrl: item.imageUrl,
+      visible: item.visible ?? true
     };
     this.partsSubject.next([newItem, ...current]);
   }
@@ -51,6 +56,13 @@ export class InventoryService {
 
   removePart(id: number) {
     const current = this.partsSubject.value.filter(p => p.id !== id);
+    this.partsSubject.next(current);
+  }
+
+  toggleVisibility(id: number) {
+    const current = this.partsSubject.value.map(p => 
+      p.id === id ? { ...p, visible: !p.visible } : p
+    );
     this.partsSubject.next(current);
   }
 }
