@@ -1,0 +1,251 @@
+<div class="page-container">
+  <div class="form-header">
+    <h2 class="section-title">Add Service</h2>
+    <button class="btn-cancel" (click)="cancel()">Cancel</button>
+  </div>
+
+  <div class="form-card">
+    <!-- Customer Type Toggle -->
+    <div class="form-section">
+      <h3 class="form-section-title">Customer Type</h3>
+      <div class="toggle-container">
+        <label class="toggle-option">
+          <input
+            type="radio"
+            name="customerType"
+            [checked]="isRegisteredCustomer()"
+            (change)="toggleCustomerType(true)"
+          />
+          <span class="toggle-label">Registered Customer</span>
+        </label>
+        <label class="toggle-option">
+          <input
+            type="radio"
+            name="customerType"
+            [checked]="!isRegisteredCustomer()"
+            (change)="toggleCustomerType(false)"
+          />
+          <span class="toggle-label">Unregistered Customer</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Customer Selection Section -->
+    <div class="form-section">
+      <h3 class="form-section-title">Select Customer</h3>
+      
+      @if (isRegisteredCustomer()) {
+        @if (!selectedCustomer()) {
+          <div class="customer-search-container">
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Search by name, number plate, vehicle, or email..."
+              [value]="customerSearchQuery()"
+              (input)="onCustomerSearch($any($event.target).value)"
+              autocomplete="off"
+            />
+            
+            @if (customerSearchQuery() && filteredCustomers().length > 0) {
+              <div class="customer-dropdown">
+                @for (customer of filteredCustomers(); track customer.id) {
+                  <div class="customer-option" (click)="selectCustomer(customer)">
+                    <div class="customer-info">
+                      <span class="customer-name">{{ customer.name }}</span>
+                      <span class="customer-details">{{ customer.vehicle }} • {{ customer.numberPlate }}</span>
+                    </div>
+                    <span class="customer-email">{{ customer.email }}</span>
+                  </div>
+                }
+              </div>
+            } @else if (customerSearchQuery() && filteredCustomers().length === 0) {
+              <div class="customer-dropdown">
+                <div class="no-results">No customers found</div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="selected-customer">
+            <div class="customer-card">
+              <div class="customer-info">
+                <span class="customer-name">{{ selectedCustomer()!.name }}</span>
+                <span class="customer-details">{{ selectedCustomer()!.vehicle }} • {{ selectedCustomer()!.numberPlate }}</span>
+                <span class="customer-contact">{{ selectedCustomer()!.phone }} • {{ selectedCustomer()!.email }}</span>
+              </div>
+              <button class="btn-remove-customer" (click)="clearCustomer()">Change</button>
+            </div>
+          </div>
+        }
+      } @else {
+        <!-- Unregistered Customer Form -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Customer Name *</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Enter customer name"
+              [value]="unregisteredCustomerName()"
+              (input)="unregisteredCustomerName.set($any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Vehicle *</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="e.g., 2018 Sedan"
+              [value]="unregisteredVehicle()"
+              (input)="unregisteredVehicle.set($any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Number Plate *</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="e.g., WP-CAS-1234"
+              [value]="unregisteredNumberPlate()"
+              (input)="unregisteredNumberPlate.set($any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input
+              type="tel"
+              class="form-input"
+              placeholder="e.g., 0771234567"
+              [value]="unregisteredPhone()"
+              (input)="unregisteredPhone.set($any($event.target).value)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="e.g., customer@example.com"
+              [value]="unregisteredEmail()"
+              (input)="unregisteredEmail.set($any($event.target).value)"
+            />
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Service Details Section -->
+    @if ((isRegisteredCustomer() && selectedCustomer()) || !isRegisteredCustomer()) {
+      <div class="form-section">
+        <h3 class="form-section-title">Service Details</h3>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Service Type *</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="e.g., Oil Change, Brake Repair, Tire Rotation"
+              [value]="serviceForm().serviceType"
+              (input)="updateFormField('serviceType', $any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Date *</label>
+            <input
+              type="date"
+              class="form-input"
+              [value]="serviceForm().date"
+              (input)="updateFormField('date', $any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Time *</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="e.g., 10:00 AM"
+              [value]="serviceForm().time"
+              (input)="updateFormField('time', $any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Initial Status *</label>
+            <select
+              class="form-input"
+              [value]="serviceForm().status"
+              (change)="updateFormField('status', $any($event.target).value)"
+            >
+              @for (status of statuses; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-textarea"
+            placeholder="Optional service description or notes..."
+            rows="3"
+            [value]="serviceForm().description"
+            (input)="updateFormField('description', $any($event.target).value)"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Tags Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">Main Things Done (Tags)</h3>
+        <p class="form-help-text">Add tags for services performed. These will be used for invoicing.</p>
+        
+        <div class="tags-input-container">
+          <input
+            type="text"
+            class="form-input tag-input"
+            placeholder="Enter a tag and press Enter (e.g., Oil Filter Replacement)"
+            [value]="tagInput()"
+            (input)="tagInput.set($any($event.target).value)"
+            (keydown)="onTagInputKeydown($event)"
+          />
+          <button type="button" class="btn-add-tag" (click)="addTag()">Add Tag</button>
+        </div>
+
+        @if (tags().length > 0) {
+          <div class="tags-display">
+            @for (tag of tags(); track tag) {
+              <span class="tag-item">
+                {{ tag }}
+                <button type="button" class="tag-remove" (click)="removeTag(tag)" aria-label="Remove tag">
+                  ×
+                </button>
+              </span>
+            }
+          </div>
+        } @else {
+          <p class="no-tags-message">No tags added yet. Add tags to track services performed.</p>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+        <button type="button" class="btn-save" (click)="saveService()">Save Service</button>
+      </div>
+    }
+  </div>
+</div>
+

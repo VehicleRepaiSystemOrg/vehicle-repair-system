@@ -57,6 +57,10 @@ export const routes: Routes = [
       {
         path: 'customer_overview',
         loadChildren: () => import('./features/admin/customer_overview/customer.routes').then(m => m.CUSTOMER_OVERVIEW_ROUTES)
+      },
+      {
+        path: 'service_management',
+        loadChildren: () => import('./features/admin/service_management/service.routes').then(m => m.SERVICE_ROUTES)
       }
     ]
   },
