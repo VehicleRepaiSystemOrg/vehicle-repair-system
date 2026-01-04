@@ -1,0 +1,101 @@
+<div class="page-container">
+  <div class="header-section">
+    <h2 class="section-title">Service Management</h2>
+    
+    <div class="header-actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search by customer, vehicle, or service type..."
+          [value]="searchQuery()"
+          (input)="onSearchChange($any($event.target).value)"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+      
+      <button class="btn-add-service" routerLink="add">
+        <span class="plus">+</span> Add Service
+      </button>
+    </div>
+  </div>
+
+  <!-- Services Table -->
+  <div class="table-card-container">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Number Plate</th>
+          <th>Service Type</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Tags</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (filteredServices().length === 0) {
+          <tr>
+            <td colspan="9" class="empty-state">
+              <div class="empty-message">
+                @if (searchQuery()) {
+                  <p>No services found matching your search.</p>
+                } @else {
+                  <p>No services found. Click "Add Service" to create one.</p>
+                }
+              </div>
+            </td>
+          </tr>
+        } @else {
+          @for (service of filteredServices(); track service.id) {
+            <tr>
+              <td>{{ service.customerName }}</td>
+              <td>{{ service.vehicle }}</td>
+              <td>{{ service.numberPlate }}</td>
+              <td>{{ service.serviceType }}</td>
+              <td>{{ service.date }}</td>
+              <td>{{ service.time }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(service.status)">
+                  {{ service.status }}
+                </span>
+              </td>
+              <td>
+                <div class="tags-container">
+                  @if (service.tags.length > 0) {
+                    @for (tag of service.tags.slice(0, 2); track tag) {
+                      <span class="tag">{{ tag }}</span>
+                    }
+                    @if (service.tags.length > 2) {
+                      <span class="tag-more">+{{ service.tags.length - 2 }} more</span>
+                    }
+                  } @else {
+                    <span class="no-tags">No tags</span>
+                  }
+                </div>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-edit-action" [routerLink]="['edit', service.id]">
+                    Manage
+                  </button>
+                  <button 
+                    class="btn-delete-action" 
+                    (click)="onDeleteService(service.id)"
+                    title="Delete service"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+

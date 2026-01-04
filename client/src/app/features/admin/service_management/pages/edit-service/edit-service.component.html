@@ -1,0 +1,199 @@
+@if (service()) {
+  <div class="edit-service-container">
+    <div class="page-header">
+      <h2 class="section-title">Manage Service</h2>
+      <button class="btn-cancel" (click)="cancel()">Back to Services</button>
+    </div>
+
+    <!-- Service Info Card -->
+    <div class="info-card">
+      <h3 class="card-title">Service Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Customer:</span>
+          <span class="info-value">{{ service()!.customerName }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Vehicle:</span>
+          <span class="info-value">{{ service()!.vehicle }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Number Plate:</span>
+          <span class="info-value">{{ service()!.numberPlate }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Service Type:</span>
+          <input
+            type="text"
+            class="info-input"
+            [value]="serviceForm().serviceType"
+            (input)="updateFormField('serviceType', $any($event.target).value)"
+          />
+        </div>
+        <div class="info-item">
+          <span class="info-label">Date:</span>
+          <input
+            type="date"
+            class="info-input"
+            [value]="serviceForm().date"
+            (input)="updateFormField('date', $any($event.target).value)"
+          />
+        </div>
+        <div class="info-item">
+          <span class="info-label">Time:</span>
+          <input
+            type="text"
+            class="info-input"
+            [value]="serviceForm().time"
+            (input)="updateFormField('time', $any($event.target).value)"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-section">
+      <h3 class="section-subtitle">Repair Status Progress</h3>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="getProgress()"></div>
+        <div class="dots-container">
+          <div class="dot" [class.active]="isReached('Pending')"></div>
+          <div class="dot" [class.active]="isReached('Inspection')"></div>
+          <div class="dot" [class.active]="isReached('Estimate Approved')"></div>
+          <div class="dot" [class.active]="isReached('In Progress')"></div>
+          <div class="dot" [class.active]="isReached('Quality Check')"></div>
+          <div class="dot" [class.active]="isReached('Pickup')"></div>
+        </div>
+      </div>
+      <div class="labels-container">
+        <span>Pending</span>
+        <span>Inspection</span>
+        <span>Estimate Approved</span>
+        <span>In Progress</span>
+        <span>Quality Check</span>
+        <span>Pickup</span>
+      </div>
+    </div>
+
+    <!-- Status Buttons -->
+    <div class="status-section">
+      <h3 class="section-subtitle">Change Status</h3>
+      <div class="status-grid">
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('Pending')"
+          (click)="setStatus('Pending')"
+        >
+          Pending
+        </button>
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('Inspection')"
+          (click)="setStatus('Inspection')"
+        >
+          Inspection
+        </button>
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('Estimate Approved')"
+          (click)="setStatus('Estimate Approved')"
+        >
+          Estimate Approved
+        </button>
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('In Progress')"
+          (click)="setStatus('In Progress')"
+        >
+          In Progress
+        </button>
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('Quality Check')"
+          (click)="setStatus('Quality Check')"
+        >
+          Quality Check
+        </button>
+        <button 
+          class="btn-status" 
+          [ngClass]="getStatusButtonClass('Pickup')"
+          (click)="setStatus('Pickup')"
+        >
+          Ready for Pickup
+        </button>
+      </div>
+    </div>
+
+    <!-- Tags Section -->
+    <div class="tags-section">
+      <h3 class="section-subtitle">Main Things Done (Tags)</h3>
+      <p class="section-help">Manage tags for services performed. These will be used for invoicing.</p>
+      
+      <div class="tags-input-container">
+        <input
+          type="text"
+          class="form-input tag-input"
+          placeholder="Enter a tag and press Enter (e.g., Oil Filter Replacement)"
+          [value]="tagInput()"
+          (input)="tagInput.set($any($event.target).value)"
+          (keydown)="onTagInputKeydown($event)"
+        />
+        <button type="button" class="btn-add-tag" (click)="addTag()">Add Tag</button>
+      </div>
+
+      @if (tags().length > 0) {
+        <div class="tags-display">
+          @for (tag of tags(); track tag) {
+            <span class="tag-item">
+              {{ tag }}
+              <button type="button" class="tag-remove" (click)="removeTag(tag)" aria-label="Remove tag">
+                ×
+              </button>
+            </span>
+          }
+        </div>
+      } @else {
+        <p class="no-tags-message">No tags added yet. Add tags to track services performed.</p>
+      }
+    </div>
+
+    <!-- Description Section -->
+    <div class="description-section">
+      <h3 class="section-subtitle">Service Description</h3>
+      <textarea
+        class="form-textarea"
+        placeholder="Optional service description or notes..."
+        rows="4"
+        [value]="serviceForm().description"
+        (input)="updateFormField('description', $any($event.target).value)"
+      ></textarea>
+    </div>
+
+    <!-- Schedule Next Session -->
+    <div class="schedule-card">
+      <h3 class="card-title">Schedule Next Session</h3>
+      <div class="divider"></div>
+      <div class="input-group">
+        <label for="nextSessionDate">Select Date for Next Appointment</label>
+        <input 
+          type="date" 
+          id="nextSessionDate"
+          [value]="nextSessionDate"
+          (input)="nextSessionDate = $any($event.target).value"
+        />
+      </div>
+      <button class="btn-save-schedule" (click)="saveSchedule()">Save Schedule</button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn-save" (click)="saveChanges()">Save Changes</button>
+    </div>
+  </div>
+} @else {
+  <div class="loading-container">
+    <p>Loading service details...</p>
+  </div>
+}
+
