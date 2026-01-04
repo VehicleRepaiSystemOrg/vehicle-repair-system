@@ -3,10 +3,23 @@
     <!-- Changed h2 class to match SCSS -->
     <h2 class="section-title">Customer Overview</h2>
     
-    <!-- Changed class from btn-add-main to btn-add-customer -->
-    <button class="btn-add-customer" routerLink="add">
-      <span class="plus">+</span> Add Customer
-    </button>
+    <div class="header-actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search customers..."
+          [value]="searchQuery()"
+          (input)="onSearchChange($any($event.target).value)"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+      
+      <!-- Changed class from btn-add-main to btn-add-customer -->
+      <button class="btn-add-customer" routerLink="add">
+        <span class="plus">+</span> Add Customer
+      </button>
+    </div>
   </div>
 
   <!-- Changed class from table-card to table-card-container -->
@@ -16,32 +29,35 @@
       <thead>
         <tr>
           <th>Customer</th>
-          <th>Vehicle</th>
-          <th>Number Plate</th>
-          <th>Service</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Status</th>
+          <th>Vehicles</th>
+          <th>Registered Date</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        @for (c of (customerService.allCustomers$ | async); track c.id) {
+        @for (c of filteredCustomers(); track c.id) {
         <tr>
-          <td>{{ c.name }}</td>
-          <td>{{ c.vehicle }}</td>
-          <td>{{ c.numberPlate }}</td> 
-          <td>{{ c.service }}</td>
-          <td>{{ c.date }}</td>
-          <td>{{ c.time }}</td>
           <td>
-             <!-- Added status-label for spacing -->
-             
-             <a class="change-link" [routerLink]="['status', c.id]">Change</a>
+            <div class="customer-info">
+              <span class="customer-name">{{ c.name }}</span>
+              <span class="customer-contact">{{ c.phone }} • {{ c.email }}</span>
+            </div>
           </td>
           <td>
-            <!-- Changed class from edit-link to btn-edit-action -->
-            <button class="btn-edit-action" [routerLink]="['edit', c.id]">Edit</button>
+            <div class="vehicles-list">
+              @for (vehicle of c.vehicles; track vehicle.numberPlate) {
+                <div class="vehicle-item">
+                  {{ vehicle.name }} • {{ vehicle.numberPlate }}
+                </div>
+              }
+            </div>
+          </td>
+          <td>{{ c.registeredDate }}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-view" [routerLink]="['view', c.id]">View</button>
+              <button class="btn-edit-action" [routerLink]="['edit', c.id]">Edit</button>
+            </div>
           </td>
         </tr>
         }

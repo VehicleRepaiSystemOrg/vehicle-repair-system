@@ -172,6 +172,18 @@
         font-size: 13px;
         color: #718096;
       }
+
+      .customer-vehicles {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .vehicle-item {
+          font-size: 14px;
+          color: #4A5568;
+          padding: 2px 0;
+        }
+      }
     }
 
     .btn-remove-customer {

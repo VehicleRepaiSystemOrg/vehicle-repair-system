@@ -35,9 +35,12 @@ export class AddServiceComponent implements OnInit {
     }
     return this.customers().filter(customer =>
       customer.name.toLowerCase().includes(query) ||
-      customer.numberPlate.toLowerCase().includes(query) ||
-      customer.vehicle.toLowerCase().includes(query) ||
-      customer.email.toLowerCase().includes(query)
+      customer.email.toLowerCase().includes(query) ||
+      customer.phone.toLowerCase().includes(query) ||
+      customer.vehicles.some(vehicle =>
+        vehicle.name.toLowerCase().includes(query) ||
+        vehicle.numberPlate.toLowerCase().includes(query)
+      )
     );
   });
   selectedCustomer = signal<Customer | null>(null);
@@ -170,10 +173,15 @@ export class AddServiceComponent implements OnInit {
         alert('Please select a customer first');
         return;
       }
+      if (customer.vehicles.length === 0) {
+        alert('Selected customer has no vehicles');
+        return;
+      }
       customerId = customer.id;
       customerName = customer.name;
-      vehicle = customer.vehicle;
-      numberPlate = customer.numberPlate;
+      // Use the first vehicle for now - could be enhanced to allow selection
+      vehicle = customer.vehicles[0].name;
+      numberPlate = customer.vehicles[0].numberPlate;
     } else {
       customerName = this.unregisteredCustomerName().trim();
       vehicle = this.unregisteredVehicle().trim();

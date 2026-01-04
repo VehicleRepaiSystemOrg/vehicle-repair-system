@@ -30,7 +30,25 @@ export class EditCustomerComponent implements OnInit {
     }
   }
 
+  addVehicle(): void {
+    this.customer.vehicles.push({ name: '', numberPlate: '' });
+  }
+
+  removeVehicle(index: number): void {
+    if (this.customer.vehicles.length > 1) {
+      this.customer.vehicles.splice(index, 1);
+    }
+  }
+
   save() {
+    // Filter out empty vehicles
+    const validVehicles = this.customer.vehicles.filter(v => v.name.trim() && v.numberPlate.trim());
+    if (validVehicles.length === 0) {
+      alert('Please ensure at least one vehicle has both name and number plate');
+      return;
+    }
+
+    this.customer.vehicles = validVehicles;
     this.customerService.updateCustomer(this.customer);
     this.router.navigate(['/customer_overview']);
   }
@@ -38,5 +56,9 @@ export class EditCustomerComponent implements OnInit {
   onRemove() {
     this.customerService.removeCustomer(this.customer.id);
     this.router.navigate(['/customer_overview']);
+  }
+
+  trackByIndex(index: number): number {
+    return index;
   }
 }

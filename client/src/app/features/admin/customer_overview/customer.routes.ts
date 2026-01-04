@@ -14,6 +14,10 @@ export const CUSTOMER_OVERVIEW_ROUTES: Routes = [
     loadComponent: () => import('./pages/edit-customer/edit-customer.component').then(c => c.EditCustomerComponent) 
   },
   { 
+    path: 'view/:id', 
+    loadComponent: () => import('./pages/view-customer/view-customer.component').then(c => c.ViewCustomerComponent) 
+  },
+  { 
     path: 'status/:id', 
     loadComponent: () => import('./pages/update-status/update-status.component').then(c => c.UpdateStatusComponent) 
   },
