@@ -9,18 +9,20 @@
     <div class="form-section">
       <h3 class="form-section-title">Customer Type</h3>
       <div class="toggle-container">
-        <label class="toggle-option">
+        <label class="toggle-option" for="registered-customer">
           <input
             type="radio"
+            id="registered-customer"
             name="customerType"
             [checked]="isRegisteredCustomer()"
             (change)="toggleCustomerType(true)"
           />
           <span class="toggle-label">Registered Customer</span>
         </label>
-        <label class="toggle-option">
+        <label class="toggle-option" for="unregistered-customer">
           <input
             type="radio"
+            id="unregistered-customer"
             name="customerType"
             [checked]="!isRegisteredCustomer()"
             (change)="toggleCustomerType(false)"
@@ -49,13 +51,13 @@
             @if (customerSearchQuery() && filteredCustomers().length > 0) {
               <div class="customer-dropdown">
                 @for (customer of filteredCustomers(); track customer.id) {
-                  <div class="customer-option" (click)="selectCustomer(customer)">
+                  <button class="customer-option" (click)="selectCustomer(customer)" type="button">
                     <div class="customer-info">
                       <span class="customer-name">{{ customer.name }}</span>
                       <span class="customer-details">{{ customer.vehicle }} • {{ customer.numberPlate }}</span>
                     </div>
                     <span class="customer-email">{{ customer.email }}</span>
-                  </div>
+                  </button>
                 }
               </div>
             } @else if (customerSearchQuery() && filteredCustomers().length === 0) {
@@ -80,9 +82,10 @@
         <!-- Unregistered Customer Form -->
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">Customer Name *</label>
+            <label class="form-label" for="unregistered-name">Customer Name *</label>
             <input
               type="text"
+              id="unregistered-name"
               class="form-input"
               placeholder="Enter customer name"
               [value]="unregisteredCustomerName()"
@@ -92,9 +95,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Vehicle *</label>
+            <label class="form-label" for="unregistered-vehicle">Vehicle *</label>
             <input
               type="text"
+              id="unregistered-vehicle"
               class="form-input"
               placeholder="e.g., 2018 Sedan"
               [value]="unregisteredVehicle()"
@@ -104,9 +108,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Number Plate *</label>
+            <label class="form-label" for="unregistered-plate">Number Plate *</label>
             <input
               type="text"
+              id="unregistered-plate"
               class="form-input"
               placeholder="e.g., WP-CAS-1234"
               [value]="unregisteredNumberPlate()"
@@ -116,9 +121,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Phone</label>
+            <label class="form-label" for="unregistered-phone">Phone</label>
             <input
               type="tel"
+              id="unregistered-phone"
               class="form-input"
               placeholder="e.g., 0771234567"
               [value]="unregisteredPhone()"
@@ -127,9 +133,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email</label>
+            <label class="form-label" for="unregistered-email">Email</label>
             <input
               type="email"
+              id="unregistered-email"
               class="form-input"
               placeholder="e.g., customer@example.com"
               [value]="unregisteredEmail()"
@@ -147,9 +154,10 @@
         
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">Service Type *</label>
+            <label class="form-label" for="service-type">Service Type *</label>
             <input
               type="text"
+              id="service-type"
               class="form-input"
               placeholder="e.g., Oil Change, Brake Repair, Tire Rotation"
               [value]="serviceForm().serviceType"
@@ -159,9 +167,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Date *</label>
+            <label class="form-label" for="service-date">Date *</label>
             <input
               type="date"
+              id="service-date"
               class="form-input"
               [value]="serviceForm().date"
               (input)="updateFormField('date', $any($event.target).value)"
@@ -170,9 +179,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Time *</label>
+            <label class="form-label" for="service-time">Time *</label>
             <input
               type="text"
+              id="service-time"
               class="form-input"
               placeholder="e.g., 10:00 AM"
               [value]="serviceForm().time"
@@ -182,8 +192,9 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Initial Status *</label>
+            <label class="form-label" for="service-status">Initial Status *</label>
             <select
+              id="service-status"
               class="form-input"
               [value]="serviceForm().status"
               (change)="updateFormField('status', $any($event.target).value)"
@@ -196,8 +207,9 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Description</label>
+          <label class="form-label" for="service-description">Description</label>
           <textarea
+            id="service-description"
             class="form-textarea"
             placeholder="Optional service description or notes..."
             rows="3"
