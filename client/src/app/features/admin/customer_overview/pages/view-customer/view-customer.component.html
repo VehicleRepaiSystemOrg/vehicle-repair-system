@@ -1,0 +1,115 @@
+<div class="view-container">
+  <div class="header-section">
+    <h2 class="section-title">Customer Details</h2>
+    <button class="btn-back" (click)="goBack()">Back</button>
+  </div>
+
+  @if (customer) {
+    <div class="customer-card">
+      <div class="customer-header">
+        <h3>{{ customer.name }}</h3>
+        <div class="customer-contact">
+          <span>{{ customer.phone }}</span>
+          <span>{{ customer.email }}</span>
+        </div>
+      </div>
+
+      <div class="vehicles-section">
+        <h4>Vehicles</h4>
+
+        <!-- Vehicle Selection Tabs -->
+        <div class="vehicle-tabs">
+          @for (vehicle of customer.vehicles; track vehicle.numberPlate) {
+            <button
+              class="vehicle-tab"
+              [class.active]="selectedVehicle() === vehicle.numberPlate"
+              (click)="selectVehicle(vehicle.numberPlate)">
+              {{ vehicle.name }} - {{ vehicle.numberPlate }}
+            </button>
+          }
+        </div>
+
+        <!-- Date Filtering -->
+        <div class="date-filters">
+          <h5>Filter Services by Date</h5>
+          <div class="filter-controls">
+            <div class="date-input-group">
+              <label for="startDate">From:</label>
+              <input
+                id="startDate"
+                type="date"
+                [value]="startDate()"
+                (input)="startDate.set($any($event.target).value)"
+                placeholder="Start date">
+            </div>
+            <div class="date-input-group">
+              <label for="endDate">To:</label>
+              <input
+                id="endDate"
+                type="date"
+                [value]="endDate()"
+                (input)="endDate.set($any($event.target).value)"
+                placeholder="End date">
+            </div>
+            <button class="btn-clear" (click)="clearDateFilters()">Clear Filters</button>
+          </div>
+        </div>
+
+        <!-- Service History for Selected Vehicle -->
+        <div class="vehicle-service-history">
+          <h5>Service History - {{ selectedVehicleName }}</h5>
+
+          @if (getFilteredServices().length > 0) {
+            <div class="services-list">
+              @for (service of getFilteredServices(); track service.id) {
+                <div class="service-item">
+                  <div class="service-info">
+                    <span class="service-type">{{ service.serviceType }}</span>
+                    <span class="service-date">{{ service.date }} at {{ service.time }}</span>
+                    <span class="service-status status-completed">Completed</span>
+                  </div>
+                  @if (service.tags.length > 0) {
+                    <div class="service-tags">
+                      @for (tag of service.tags; track tag) {
+                        <span class="tag">{{ tag }}</span>
+                      }
+                    </div>
+                  }
+                  @if (service.description) {
+                    <div class="service-description">{{ service.description }}</div>
+                  }
+
+                  <!-- Payment History -->
+                  <div class="payment-history">
+                    <h6>Payment History</h6>
+                    @if (getPaymentsForService(service.id).length > 0) {
+                      <div class="payments-list">
+                        @for (payment of getPaymentsForService(service.id); track payment.id) {
+                          <div class="payment-item">
+                            <span class="payment-amount">${{ payment.amount }}</span>
+                            <span class="payment-method">{{ payment.paymentMethod }}</span>
+                            <span class="payment-date">{{ payment.paymentDate }}</span>
+                            <span class="payment-status status-{{ payment.status.toLowerCase() }}">{{ payment.status }}</span>
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <p class="no-payments">No payment records found.</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-services">No services found for this vehicle in the selected date range.</p>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="error-message">
+      <p>Customer not found.</p>
+      <button class="btn-back" (click)="goBack()">Back to Overview</button>
+    </div>
+  }
+</div>

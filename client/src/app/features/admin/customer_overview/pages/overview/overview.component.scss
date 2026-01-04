@@ -14,6 +14,41 @@
     font-weight: 600;
     color: #000;
   }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .search-input {
+        padding: 10px 40px 10px 15px;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        font-size: 14px;
+        width: 250px;
+        background: #FFFFFF;
+
+        &:focus {
+          outline: none;
+          border-color: #3B82F6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 12px;
+        color: #64748B;
+        font-size: 16px;
+        pointer-events: none;
+      }
+    }
+  }
 }
 
 // RED BUTTON matching (026)
@@ -64,18 +99,63 @@
     border-bottom: 1px solid #F1F4F8;
   }
 
-  // GREEN EDIT BUTTON
-  .btn-edit-action {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
+  .customer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 
-    &:hover { background-color: #218838; }
+    .customer-name {
+      font-weight: 500;
+      color: #2D3748;
+    }
+
+    .customer-contact {
+      font-size: 12px;
+      color: #718096;
+    }
+  }
+
+  .vehicles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .vehicle-item {
+      font-size: 13px;
+      color: #4A5568;
+      padding: 2px 0;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+
+    .btn-view {
+      background-color: #3B82F6;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover { background-color: #2563EB; }
+    }
+
+    .btn-edit-action {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover { background-color: #218838; }
+    }
   }
 
   .status-label {
