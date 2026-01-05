@@ -13,4 +13,10 @@ export class ChatWidgetComponent {
   public chatService = inject(ChatService);
 
   isOpen = computed(() => this.chatService.isOpen());
+
+  toggleChat() {
+    this.chatService.toggle();   // or whatever method your ChatService uses to toggle
+    // If your service has separate open()/close(), you can do:
+    // this.chatService.isOpen() ? this.chatService.close() : this.chatService.open();
+  }
 }
