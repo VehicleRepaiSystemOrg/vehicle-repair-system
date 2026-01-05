@@ -1,0 +1,17 @@
+.messages-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: calc(100vh - 140px);
+  background: #fff;
+}
+.customers {
+  width: 320px;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

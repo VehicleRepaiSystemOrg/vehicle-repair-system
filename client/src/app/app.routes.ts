@@ -61,7 +61,11 @@ export const routes: Routes = [
       {
         path: 'service_management',
         loadChildren: () => import('./features/admin/service_management/service.routes').then(m => m.SERVICE_ROUTES)
-      }
+      },
+      {
+        path: 'messages',
+        loadChildren: () => import('./features/admin/messages/messages.routes').then(m => m.MESSAGE_ROUTES)
+      },
     ]
   },
   { path: '**', redirectTo: 'login' },

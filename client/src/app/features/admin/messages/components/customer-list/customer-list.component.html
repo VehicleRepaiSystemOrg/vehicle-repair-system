@@ -1,0 +1,23 @@
+<div class="customer-list">
+  <div class="list-header">Messages</div>
+
+  @for (c of chat.customers; track c.id) {
+    <div
+      class="customer-item"
+      [class.active]="chat.selectedCustomer()?.id === c.id"
+      (click)="chat.selectCustomer(c)"
+      (keydown.enter)="chat.selectCustomer(c)"
+      (keydown.space)="chat.selectCustomer(c)"
+      tabindex="0"
+      role="button"
+    >
+      <div class="avatar">{{ c.name[0] }}</div>
+      <div class="meta">
+        <div class="name">{{ c.name }}</div>
+        <div class="last">{{ c.lastMessage }}</div>
+      </div>
+    </div>
+  } @empty {
+    <div class="customer-item empty">No messages yet</div>
+  }
+</div>

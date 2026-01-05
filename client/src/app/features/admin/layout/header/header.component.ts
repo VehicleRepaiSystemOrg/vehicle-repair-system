@@ -38,6 +38,8 @@ export class HeaderComponent implements OnInit {
       this.pageTitle = 'Staff Overview';
     } else if (url.includes('inventory')) {
       this.pageTitle = 'Inventory Overview';
+    }else if (url.includes('messages')) {
+      this.pageTitle = 'Message Overview';
     } else if (url.includes('settings')) {
       this.pageTitle = 'Settings';
     } else if (url.includes('customer_overview')) { // ADD THIS BLOCK
