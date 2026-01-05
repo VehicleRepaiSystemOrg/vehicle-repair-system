@@ -8,13 +8,11 @@ $text-muted: #6b7280;
 $border-color: #e5e7eb;
 $success: #10b981;
 $danger: #EA2A33;
+$warning: #f59e0b;
 
 // --- Global Layout ---
 .invoice-container {
   width: 100%;
-  max-width: none;
-  margin: 0;
-  // UPDATED: Reduced top padding from 24px to 12px to pull everything up
   padding: 12px 24px 24px 24px; 
   background-color: $bg-app;
   min-height: 100vh;
@@ -27,32 +25,9 @@ $danger: #EA2A33;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  // UPDATED: Reduced margins significantly to remove the large gap
   margin-bottom: 12px; 
   padding-bottom: 0;
-  // Note: If you don't use the header title, you can set "display: none;" here to save even more space.
-  border-bottom: 1px solid transparent; // Hidden border since it's empty
-
-  .page-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: $text-main;
-    margin: 0 0 8px 0;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .page-subtitle {
-    font-size: 1rem;
-    color: $text-muted;
-    margin: 0;
-    font-weight: 500;
-
-    .highlight {
-      color: $text-main;
-      font-weight: 700;
-    }
-  }
+  border-bottom: 1px solid transparent;
 }
 
 // --- Layout Grid ---
@@ -69,13 +44,11 @@ $danger: #EA2A33;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  
   position: sticky;
-  top: 12px; // UPDATED: Closer to the top of viewport when scrolling
+  top: 12px;
   max-height: calc(100vh - 24px);
   overflow-y: auto;
-
-  // UPDATED: Removed the margin-top so it aligns perfectly with the buttons
+  
   @media (min-width: 1025px) {
     margin-top: 0; 
   }
@@ -83,13 +56,7 @@ $danger: #EA2A33;
 
 .history-header {
   margin-bottom: 12px;
-  h3 { 
-    font-size: 1.1rem; 
-    font-weight: 800; 
-    margin: 0; 
-    color: $text-main; 
-    letter-spacing: -0.02em;
-  }
+  h3 { font-size: 1.1rem; font-weight: 800; margin: 0; color: $text-main; letter-spacing: -0.02em; }
 }
 
 .history-list {
@@ -214,6 +181,7 @@ $danger: #EA2A33;
   }
 }
 
+// --- STATUS BADGES & DOTS ---
 .status-badge {
   padding: 6px 14px;
   border-radius: 99px;
@@ -227,9 +195,20 @@ $danger: #EA2A33;
     color: darken($success, 10%);
     border: 1px solid lighten($success, 35%);
   }
+  
+  &--overdue {
+    background-color: lighten($danger, 42%);
+    color: darken($danger, 10%);
+    border: 1px solid lighten($danger, 30%);
+  }
+
+  &--pending {
+    background-color: lighten($warning, 42%);
+    color: darken($warning, 10%);
+    border: 1px solid lighten($warning, 30%);
+  }
 }
 
-// Status Dots
 .status-dot {
   font-size: 0.75rem;
   font-weight: 600;
@@ -238,6 +217,7 @@ $danger: #EA2A33;
   align-items: center;
   gap: 6px;
   &::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  
   &.paid { color: darken($success, 10%); &::before { background: $success; } }
   &.pending { color: #d97706; &::before { background: #f59e0b; } }
   &.overdue { color: $danger; &::before { background: $danger; } }
@@ -259,15 +239,8 @@ $danger: #EA2A33;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    
-    label {
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
-      color: $text-muted; font-weight: 700;
-    }
-    .value {
-      font-size: 1rem; font-weight: 500; color: $text-main;
-      &.highlight { color: $primary; font-weight: 700; }
-    }
+    label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: $text-muted; font-weight: 700; }
+    .value { font-size: 1rem; font-weight: 500; color: $text-main; &.highlight { color: $primary; font-weight: 700; } }
   }
 }
 
@@ -283,61 +256,39 @@ $danger: #EA2A33;
 }
 
 .table-header {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: $text-muted;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid $border-color;
-  margin-bottom: 8px;
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: $text-muted; letter-spacing: 0.05em;
+  border-bottom: 2px solid $border-color; margin-bottom: 8px;
 }
 
 .table-row {
-  border-bottom: 1px solid #f3f4f6;
-  font-size: 0.95rem;
-  transition: background-color 0.15s;
-  border-radius: 8px;
+  border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; transition: background-color 0.15s; border-radius: 8px;
   &:hover { background-color: #f9fafb; }
   &:last-child { border-bottom: none; }
 }
 
 .col {
-  &.col-qty, &.col-price, &.col-tax, &.col-total {
-    text-align: right; font-variant-numeric: tabular-nums;
-  }
+  &.col-qty, &.col-price, &.col-tax, &.col-total { text-align: right; font-variant-numeric: tabular-nums; }
 }
 
 .item-name { font-weight: 600; color: $text-main; }
 .text-muted { color: lighten($text-muted, 10%); }
 .fw-bold { font-weight: 700; }
+.text-success { color: $success; }
+.text-danger { color: $danger; }
 
 // Footer & Totals
 .invoice-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 40px;
+  display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px;
 }
-
 .payment-info { flex: 1; min-width: 250px; }
 .footer-title { font-size: 0.9rem; font-weight: 700; color: $text-muted; margin-bottom: 12px; text-transform: uppercase; }
 
 .payment-details {
-  background: #f9fafb;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px dashed $border-color;
-  .payment-row {
-    display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem;
-    &:last-child { margin-bottom: 0; }
-  }
+  background: #f9fafb; padding: 20px; border-radius: 12px; border: 1px dashed $border-color;
+  .payment-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; &:last-child { margin-bottom: 0; } }
 }
 
-.totals-box {
-  flex: 0 0 300px;
-  display: flex; flex-direction: column; gap: 12px;
-}
+.totals-box { flex: 0 0 300px; display: flex; flex-direction: column; gap: 12px; }
 
 .totals-row {
   display: flex; justify-content: space-between; font-size: 0.95rem; color: $text-muted;
@@ -356,14 +307,11 @@ $danger: #EA2A33;
   display: flex; justify-content: space-between; margin-top: 16px; padding-top: 16px;
   border-top: 1px dashed $border-color; font-size: 1rem; color: $success; font-weight: 700;
 }
-.text-success { color: $success; font-weight: 700; }
 
 // Mobile Responsive
 @media (max-width: 1024px) {
   .layout-grid { grid-template-columns: 1fr; }
-  
   .history-panel { position: static; margin-bottom: 2rem; max-height: none; margin-top: 0; }
-  
   .history-list { flex-direction: row; overflow-x: auto; padding-bottom: 0.5rem; }
   .history-card { min-width: 200px; }
   .content-actions { justify-content: flex-start; margin-bottom: 2rem; }
@@ -371,24 +319,13 @@ $danger: #EA2A33;
 }
 
 @media (max-width: 768px) {
-  // Mobile Header Fix
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 24px;
-    .page-title { font-size: 1.5rem; }
-  }
-
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 24px; }
   .invoice-sheet { padding: 20px; }
   .sheet-header .header-content { flex-direction: column; gap: 16px; }
   .table-header { display: none; }
   
   .table-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 16px 8px;
-    border-bottom: 1px solid $border-color;
+    grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 8px; border-bottom: 1px solid $border-color;
     .col-item { grid-column: 1 / -1; font-weight: 700; }
     .col-qty::before { content: "Qty: "; color: $text-muted; }
     .col-price::before { content: "Price: "; color: $text-muted; }
