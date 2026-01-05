@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CustomerDashboardFacade } from '../../data-access/customer-dashboard.facade';
 import { KpiCardComponent } from '../../layout/components/kpi-card.component';
 import { CalendarWidgetComponent } from '../../../../ui/calendar-widget/calendar-widget.component';
+import { ChatService } from '../../../../core/services/chat.service';
 
 @Component({
   standalone: true,
@@ -20,6 +21,7 @@ import { CalendarWidgetComponent } from '../../../../ui/calendar-widget/calendar
 })
 export class CustomerOverviewPageComponent {
   private readonly facade = inject(CustomerDashboardFacade);
+  private readonly chatService = inject(ChatService);
 
   readonly kpis$ = this.facade.getKpis();
   readonly updates$ = this.facade.getRecentUpdates();
@@ -28,5 +30,7 @@ export class CustomerOverviewPageComponent {
   readonly customerName = 'Customer Name';
   readonly vehicleLabel = 'Vehicle name #1234';
 
-  // Note: logic for 'View Job Details' or 'Message Mechanic' can be expanded here
+  openChat(): void {
+    this.chatService.open();
+  }
 }

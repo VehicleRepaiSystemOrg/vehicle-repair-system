@@ -1,0 +1,31 @@
+<!-- Floating Button -->
+<button class="chat-fab" (click)="chatService.toggle()">
+  💭
+</button>
+
+<!-- Overlay -->
+<div class="chat-overlay" *ngIf="isOpen()" (click)="chatService.close()"></div>
+
+<!-- Chat Drawer -->
+<aside class="chat-drawer" [class.open]="isOpen()">
+  <header class="chat-header">
+    <span>VRMS Chat</span>
+    <button (click)="chatService.close()">✕</button>
+  </header>
+
+  <section class="chat-body">
+    <div class="message admin">
+      Hello 👋 How can we help you today?
+    </div>
+
+    <div class="message customer">
+      I want to check my repair status.
+    </div>
+  </section>
+
+  <footer class="chat-footer">
+    <input type="text" placeholder="Type your message..." />
+    <button>Send</button>
+  </footer>
+</aside>
+

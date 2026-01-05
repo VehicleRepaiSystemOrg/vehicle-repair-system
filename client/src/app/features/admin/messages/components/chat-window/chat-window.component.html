@@ -1,0 +1,29 @@
+@if (!chat.selectedCustomer()) {
+  <div class="empty-chat">
+    Select a customer to start chatting
+  </div>
+} @else {
+  <div class="chat-window">
+    <header class="chat-header">
+      {{ chat.selectedCustomer()?.name }}
+    </header>
+
+    <!-- Messages (SCROLL AREA) -->
+    <section class="chat-body">
+      <div class="message admin">
+        Hello 👋 How can I help you?
+      </div>
+
+      <div class="message customer">
+        I want to check my vehicle repair status.
+      </div>
+
+      <!-- Repeat messages -->
+    </section>
+
+    <footer class="chat-input">
+      <input placeholder="Type a message..." />
+      <button class="btn-red small">Send</button>
+    </footer>
+  </div>
+}

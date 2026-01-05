@@ -1,0 +1,40 @@
+.customer-list {
+  border-right: 1px solid #E2E8F0;
+  padding: 10px;
+  background: #fafafa;
+  overflow-y: auto;
+
+  .list-header {
+    font-weight: 700;
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .customer-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover { background: #f1f1f1; }
+    &.active { background: #ffe3e3; }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #EA2A33;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .meta {
+      .name { font-weight: 600; font-size: 14px; }
+      .last { font-size: 12px; color: #666; }
+    }
+  }
+}

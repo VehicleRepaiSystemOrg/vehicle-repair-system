@@ -1,0 +1,16 @@
+<div class="customer-list">
+  <div class="list-header">Messages</div>
+
+  <div
+    class="customer-item"
+    *ngFor="let c of chat.customers"
+    (click)="chat.selectCustomer(c)"
+    [class.active]="chat.selectedCustomer()?.id === c.id"
+  >
+    <div class="avatar">{{ c.name[0] }}</div>
+    <div class="meta">
+      <div class="name">{{ c.name }}</div>
+      <div class="last">{{ c.lastMessage }}</div>
+    </div>
+  </div>
+</div>
