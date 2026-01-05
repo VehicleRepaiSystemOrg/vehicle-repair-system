@@ -52,8 +52,9 @@ export const CUSTOMER_ROUTES: Routes = [
             m => m.CustomerServiceHistoryPageComponent,
           ),
       },
+      { path: 'invoice-overview', redirectTo: 'invoice-overview/0042' },
       {
-        path: 'invoice-overview',
+        path: 'invoice-overview/:id',
         loadComponent: () =>
           import('./pages/invoice-overview/customer-invoice-overview.page').then(
             m => m.CustomerInvoiceOverviewPageComponent,
