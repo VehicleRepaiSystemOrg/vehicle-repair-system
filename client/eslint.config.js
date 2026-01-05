@@ -1,5 +1,6 @@
 // eslint.config.js
 // @ts-check
+
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
@@ -9,7 +10,7 @@ module.exports = tseslint.config(
     files: ['**/*.ts'],
     languageOptions: {
       parserOptions: {
-        project: true,
+        project: ['tsconfig.app.json', 'tsconfig.spec.json'],
         tsconfigRootDir: __dirname,
       },
     },
@@ -17,7 +18,7 @@ module.exports = tseslint.config(
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
-      angular.configs.tsRecommended, // ← object, NO spread
+      ...angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -34,8 +35,8 @@ module.exports = tseslint.config(
   {
     files: ['**/*.html'],
     extends: [
-      angular.configs.templateRecommended,     // ← object, NO spread
-      angular.configs.templateAccessibility,   // ← object, NO spread
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
     ],
     rules: {},
   }
