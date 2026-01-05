@@ -57,23 +57,12 @@
         
         <div class="grid-2">
           <div class="form__group">
-            <label class="form__label" for="make">Make</label>
-            <input id="make" type="text" class="input" [(ngModel)]="user.vehicle.make">
+            <label class="form__label" for="name">Vehicle Name</label>
+            <input id="name" type="text" class="input" [(ngModel)]="user.vehicle.name" placeholder="e.g., Tesla Roadster 2024">
           </div>
           <div class="form__group">
-            <label class="form__label" for="model">Model</label>
-            <input id="model" type="text" class="input" [(ngModel)]="user.vehicle.model">
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-top: 24px;">
-          <div class="form__group">
-            <label class="form__label" for="year">Year</label>
-            <input id="year" type="number" class="input" [(ngModel)]="user.vehicle.year">
-          </div>
-          <div class="form__group">
-            <label class="form__label" for="plate">License Plate</label>
-            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate">
+            <label class="form__label" for="plate">Number Plate</label>
+            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate" placeholder="e.g., ABC-1234">
           </div>
         </div>
 
@@ -87,12 +76,14 @@
         <h3 class="section-title">Registered Vehicles</h3>
 
         <div class="table-container">
+          <div class="table-header">
+            <h4 style="margin: 0;">Your Vehicles</h4>
+            <button type="button" class="btn btn--primary" (click)="openAddVehicleModal()">+ Add Vehicle</button>
+          </div>
           <table class="service-table">
             <thead>
               <tr>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Year</th>
+                <th>Vehicle Name</th>
                 <th>License Plate</th>
                 <th style="width: 60px; text-align: center;">Action</th>
               </tr>
@@ -100,9 +91,7 @@
             <tbody>
               @for (item of vehicleList; track item.plate) {
                 <tr>
-                  <td class="font-bold">{{ item.make }}</td>
-                  <td>{{ item.model }}</td>
-                  <td>{{ item.year }}</td>
+                  <td class="font-bold">{{ item.name }}</td>
                   <td>
                     <span class="plate-badge">{{ item.plate }}</span>
                   </td>
@@ -120,6 +109,42 @@
       </section>
     </div>
   </main>
+
+  <!-- Add Vehicle Modal -->
+  @if (showAddVehicleModal) {
+    <div class="modal-overlay" (click)="closeAddVehicleModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3 class="modal-title">Add New Vehicle</h3>
+          <button class="modal-close" (click)="closeAddVehicleModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="form__group">
+            <label class="form__label" for="modal-vehicle-name">Vehicle Name</label>
+            <input 
+              id="modal-vehicle-name" 
+              type="text" 
+              class="input" 
+              [(ngModel)]="newVehicleForm.name" 
+              placeholder="e.g., Toyota Camry 2020">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="modal-number-plate">Number Plate</label>
+            <input 
+              id="modal-number-plate" 
+              type="text" 
+              class="input input--plate" 
+              [(ngModel)]="newVehicleForm.plate" 
+              placeholder="e.g., ABC-1234">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--secondary" (click)="closeAddVehicleModal()">Cancel</button>
+          <button type="button" class="btn btn--primary" (click)="submitAddVehicle()">Add Vehicle</button>
+        </div>
+      </div>
+    </div>
+  }
 
   @if (showToast) {
     <div class="toast-notification" [ngClass]="{'toast-success': toastType === 'success', 'toast-error': toastType === 'error'}">

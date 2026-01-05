@@ -1,9 +1,7 @@
 // Account settings model
 
 export interface VehicleDetails {
-  make?: string;
-  model?: string;
-  year?: number;
+  name?: string;
   licensePlate?: string;
 }
 

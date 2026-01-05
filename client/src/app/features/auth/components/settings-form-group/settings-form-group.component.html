@@ -10,11 +10,7 @@
 
   <h3 style="margin-top:12px">Vehicle Details</h3>
   <ng-container *ngIf="settings.vehicle">
-    <app-form-input label="Make" [(ngModel)]="settings.vehicle.make"></app-form-input>
-    <app-form-input label="Model" [(ngModel)]="settings.vehicle.model"></app-form-input>
-    <div style="display:flex;gap:8px">
-      <app-form-input label="Year" type="number" [(ngModel)]="settings.vehicle.year"></app-form-input>
-      <app-form-input label="License Plate" [(ngModel)]="settings.vehicle.licensePlate"></app-form-input>
-    </div>
+    <app-form-input label="Vehicle Name" [(ngModel)]="settings.vehicle.name" placeholder="e.g., Tesla Roadster 2024"></app-form-input>
+    <app-form-input label="License Plate" [(ngModel)]="settings.vehicle.licensePlate" placeholder="e.g., ABC-1234"></app-form-input>
   </ng-container>
 </div>
