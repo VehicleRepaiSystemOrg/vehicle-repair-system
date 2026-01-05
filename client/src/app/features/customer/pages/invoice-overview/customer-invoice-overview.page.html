@@ -1,9 +1,7 @@
 <div class="invoice-container">
   
   <header class="page-header">
-    <div class="header-title">
-    </div>
-
+    <div class="header-title"></div>
     <div class="content-actions">
       <button type="button" class="btn btn--secondary" (click)="downloadPdf()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -47,7 +45,6 @@
     </aside>
 
     <main class="invoice-content">
-      
       <div class="invoice-sheet">
         <header class="sheet-header">
           <div class="header-content">
@@ -60,7 +57,10 @@
                 <span class="invoice-subtitle">Service Repair Order</span>
               </div>
             </div>
-            <div class="status-badge status-badge--paid">Paid</div>
+            
+            <div class="status-badge" [ngClass]="'status-badge--' + status">
+              {{ status }}
+            </div>
           </div>
         </header>
 
@@ -114,7 +114,12 @@
                 <span>Method:</span><strong>{{ paymentMethod }}</strong>
               </div>
               <div class="payment-row">
-                <span>Status:</span><span class="text-success">Completed</span>
+                <span>Status:</span>
+                <span [class.text-success]="status === 'paid'" 
+                      [class.text-danger]="status === 'overdue'"
+                      class="fw-bold">
+                      {{ status | titlecase }}
+                </span>
               </div>
             </div>
           </div>
@@ -130,6 +135,5 @@
         
       </div>
     </main>
-
   </div>
 </div>
