@@ -112,8 +112,8 @@
 
   <!-- Add Vehicle Modal -->
   @if (showAddVehicleModal) {
-    <div class="modal-overlay" (click)="closeAddVehicleModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-overlay" (click)="closeAddVehicleModal()" (keydown.escape)="closeAddVehicleModal()" tabindex="0" role="dialog" aria-modal="true">
+      <div class="modal-content" (click)="$event.stopPropagation()" role="document">
         <div class="modal-header">
           <h3 class="modal-title">Add New Vehicle</h3>
           <button class="modal-close" (click)="closeAddVehicleModal()">×</button>
