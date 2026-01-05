@@ -4,19 +4,25 @@ const tseslint = require('typescript-eslint');
 const angular = require('@angular-eslint/eslint-plugin');
 
 module.exports = tseslint.config(
+  // Global ignores (optional but recommended)
+  {
+    ignores: ['**/*.spec.ts', 'projects/**/*', 'node_modules/**/*'],
+  },
+
+  // TypeScript files
   {
     files: ['**/*.ts'],
     languageOptions: {
       parserOptions: {
-        project: true, // This enables type-aware rules and decorator support
-        tsconfigRootDir: __dirname, // Important: sets the root dir for relative tsconfig paths
+        project: true,                  // Enables full TS parsing + decorators
+        tsconfigRootDir: __dirname,     // Critical for resolving tsconfig.json
       },
     },
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
+      angular.configs.tsRecommended, // ← This one is an OBJECT, do NOT spread
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -30,11 +36,13 @@ module.exports = tseslint.config(
       ],
     },
   },
+
+  // HTML template files
   {
     files: ['**/*.html'],
     extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
+      angular.configs.templateRecommended,
+      angular.configs.templateAccessibility,
     ],
     rules: {},
   }
