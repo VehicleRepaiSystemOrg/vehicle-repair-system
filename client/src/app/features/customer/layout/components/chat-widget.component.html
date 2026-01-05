@@ -4,8 +4,15 @@
 </button>
 
 <!-- Overlay -->
-<div class="chat-overlay" *ngIf="isOpen()" (click)="chatService.close()"></div>
+<div (click)="toggleChat()"
+     (keydown.enter)="toggleChat()"
+     (keydown.space)="toggleChat()"
+     tabindex="0"
+     role="button">
+  Open Chat
+</div>
 
+@if (isOpen) {
 <!-- Chat Drawer -->
 <aside class="chat-drawer" [class.open]="isOpen()">
   <header class="chat-header">
@@ -28,4 +35,4 @@
     <button>Send</button>
   </footer>
 </aside>
-
+}

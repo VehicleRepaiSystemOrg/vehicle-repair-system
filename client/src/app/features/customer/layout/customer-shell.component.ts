@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar.component';
 import { TopbarComponent } from './components/topbar.component';
-import { ChatService } from '../../../core/services/chat.service';
 import { ChatWidgetComponent } from './components/chat-widget.component';
+import { ChatService } from 'src/app/core/services/chat.service';
 
 @Component({
   standalone: true,
@@ -14,7 +14,7 @@ import { ChatWidgetComponent } from './components/chat-widget.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerShellComponent {
-  constructor(public chatService: ChatService) {}
+  public chatService = inject(ChatService);
 
   openChat() {
     this.chatService.open();

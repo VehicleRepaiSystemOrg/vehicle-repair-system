@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../../core/services/chat.service';
 
@@ -10,9 +10,10 @@ import { ChatService } from '../../../../core/services/chat.service';
   styleUrls: ['./chat-widget.component.scss']
 })
 export class ChatWidgetComponent {
+  private chatService = inject(ChatService);
   isOpen = computed(() => this.chatService.isOpen());
-  constructor(public chatService: ChatService) {}
-  /*toggleChat() {
-    this.isOpen = !this.isOpen;
-  }*/
+
+  public toggleChat() {  // assuming this is the handler; uncomment and use if needed
+    // this.chatService.toggle(); or similar
+  }
 }

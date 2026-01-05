@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminChatService } from '../../services/admin-chat.service';
 
@@ -10,5 +10,5 @@ import { AdminChatService } from '../../services/admin-chat.service';
   styleUrls: ['./customer-list.component.scss']
 })
 export class CustomerListComponent {
-  constructor(public chat: AdminChatService) {}
+  public chat = inject(AdminChatService);
 }
