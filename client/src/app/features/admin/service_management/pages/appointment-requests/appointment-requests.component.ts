@@ -22,7 +22,6 @@ export class AppointmentRequestsComponent implements OnInit {
   private readonly appointmentService = inject(AppointmentService);
   private readonly serviceService = inject(ServiceService);
   private readonly staffService = inject(StaffService);
-  private readonly customerService = inject(CustomerService);
 
   // Signals
   readonly pendingAppointments = toSignal(
