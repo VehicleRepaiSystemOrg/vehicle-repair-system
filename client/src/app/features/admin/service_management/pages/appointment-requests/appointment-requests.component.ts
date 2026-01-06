@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AppointmentService, AppointmentRequest } from '../../../../customer/services/appointment.service';
-import { ServiceService, Service, AssignedStaff } from '../../services/service.service';
-import { StaffService, StaffMember } from '../../../staff/services/staff.service';
-import { CustomerService, Customer } from '../../../customer_overview/services/customer.service';
+import { ServiceService, Service } from '../../services/service.service';
+import { StaffService } from '../../../staff/services/staff.service';
 
 /**
  * Appointment Requests Component
@@ -49,8 +48,8 @@ export class AppointmentRequestsComponent implements OnInit {
   readonly declinedCount = computed(() => this.declinedRequests().length);
 
   // UI State
-  readonly showDeclineForm = signal<{ [key: string]: boolean }>({});
-  readonly declineReasons = signal<{ [key: string]: string }>({});
+  readonly showDeclineForm = signal<Record<string, boolean>>({});
+  readonly declineReasons = signal<Record<string, string>>({});
   readonly selectedTab = signal<'pending' | 'approved' | 'declined'>('pending');
 
   ngOnInit(): void {
@@ -61,7 +60,7 @@ export class AppointmentRequestsComponent implements OnInit {
   /**
    * Get customer name for appointment (using email or fallback)
    */
-  getCustomerName(appointment: AppointmentRequest): string {
+  getCustomerName(): string {
     // For now, we don't have customer mapping, so use a generic name
     // In a real app, you'd have customer info in the appointment
     return 'Customer';
@@ -73,7 +72,7 @@ export class AppointmentRequestsComponent implements OnInit {
   acceptAppointment(appointment: AppointmentRequest): void {
     // Create a new service from the appointment
     const newService: Omit<Service, 'id' | 'createdAt' | 'updatedAt'> = {
-      customerName: this.getCustomerName(appointment),
+      customerName: this.getCustomerName(),
       vehicle: appointment.vehicleType,
       numberPlate: '', // Could be in appointment if captured
       serviceType: appointment.serviceTitle,
@@ -161,11 +160,8 @@ export class AppointmentRequestsComponent implements OnInit {
   /**
    * View images for an appointment
    */
-  viewImages(appointment: AppointmentRequest): void {
-    if (appointment.images && appointment.images.length > 0) {
-      // Could open a modal with images
-      console.log('Images for appointment:', appointment.images);
-    }
+  viewImages(): void {
+    // Images can be viewed - implementation depends on modal/lightbox
   }
 
   /**

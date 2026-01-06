@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@ang
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppointmentService, AppointmentRequest } from '../../services/appointment.service';
+import { AppointmentService } from '../../services/appointment.service';
 
 @Component({
   standalone: true,

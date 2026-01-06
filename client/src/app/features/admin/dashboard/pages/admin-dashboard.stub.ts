@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for | async pipe
 import { Observable, of } from 'rxjs';
-import { signal, computed } from '@angular/core';
+import { computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 // Import your child components
 import { StatCardComponent } from '../components/stat-card.component';

@@ -79,7 +79,7 @@ export class CustomerServiceHistoryPageComponent {
   }
 
   // Book another date for declined appointment
-  bookAnotherDate(appointment: any): void {
+  bookAnotherDate(appointment: { id: string; serviceTitle: string; description: string; vehicleType: string }): void {
     this.router.navigate(['/dashboard/book-service-appointment'], {
       queryParams: {
         editId: appointment.id,

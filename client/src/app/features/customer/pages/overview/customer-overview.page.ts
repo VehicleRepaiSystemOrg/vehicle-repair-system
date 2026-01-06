@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { CustomerDashboardFacade } from '../../data-access/customer-dashboard.facade';
@@ -66,6 +66,6 @@ export class CustomerOverviewPageComponent implements OnInit {
   }
 
   getPendingCount(): number {
-    return this.myRequests().filter((r: any) => r.status === 'pending').length;
+    return this.myRequests().filter((r: { status: string }) => r.status === 'pending').length;
   }
 }

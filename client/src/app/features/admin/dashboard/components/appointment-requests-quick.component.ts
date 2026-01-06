@@ -61,7 +61,7 @@ export class AppointmentRequestsQuickComponent {
   /**
    * Get service title (truncated)
    */
-  getTruncatedTitle(title: string, maxLength: number = 20): string {
+  getTruncatedTitle(title: string, maxLength = 20): string {
     if (title.length > maxLength) {
       return title.substring(0, maxLength) + '...';
     }
