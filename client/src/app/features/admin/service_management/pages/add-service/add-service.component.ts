@@ -2,13 +2,14 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ServiceService, Service, ServiceStatus } from '../../services/service.service';
+import { ServiceService, Service, ServiceStatus, AssignedStaff } from '../../services/service.service';
 import { CustomerService, Customer } from '../../../customer_overview/services/customer.service';
+import { StaffService, StaffMember } from '../../../staff/services/staff.service';
 
 /**
  * Add Service Component
  * Allows admin to search for a customer and add a new service
- * Includes tag management for "main things done"
+ * Includes tag management for "main things done" and staff assignment
  */
 @Component({
   selector: 'app-add-service',
@@ -20,6 +21,7 @@ import { CustomerService, Customer } from '../../../customer_overview/services/c
 export class AddServiceComponent implements OnInit {
   private readonly serviceService = inject(ServiceService);
   private readonly customerService = inject(CustomerService);
+  private readonly staffService = inject(StaffService);
   private readonly router = inject(Router);
 
   // Customer type toggle
@@ -65,6 +67,11 @@ export class AddServiceComponent implements OnInit {
   tags = signal<string[]>([]);
   tagInput = signal<string>('');
 
+  // Staff management
+  availableStaff = signal<StaffMember[]>([]);
+  assignedStaff = signal<AssignedStaff[]>([]);
+  showStaffDropdown = signal<boolean>(false);
+
   // Service status options
   statuses: ServiceStatus[] = [
     'Pending',
@@ -80,6 +87,11 @@ export class AddServiceComponent implements OnInit {
     // TODO (backend): Load customers from API
     this.customerService.allCustomers$.subscribe(customers => {
       this.customers.set(customers);
+    });
+
+    // Load all staff members
+    this.staffService.staff$.subscribe(staff => {
+      this.availableStaff.set(staff.filter(s => s.status === 'Active'));
     });
   }
 
@@ -146,6 +158,38 @@ export class AddServiceComponent implements OnInit {
       event.preventDefault();
       this.addTag();
     }
+  }
+
+  /**
+   * Assign a staff member to the service
+   */
+  assignStaff(staff: StaffMember): void {
+    const assigned = this.assignedStaff();
+    if (!assigned.find(s => s.id === staff.id)) {
+      this.assignedStaff.update(s => [...s, { id: staff.id, name: staff.name, role: staff.role }]);
+    }
+    this.showStaffDropdown.set(false);
+  }
+
+  /**
+   * Remove assigned staff member
+   */
+  removeAssignedStaff(staffId: number): void {
+    this.assignedStaff.update(s => s.filter(item => item.id !== staffId));
+  }
+
+  /**
+   * Toggle staff dropdown visibility
+   */
+  toggleStaffDropdown(): void {
+    this.showStaffDropdown.update(show => !show);
+  }
+
+  /**
+   * Check if a staff member is already assigned
+   */
+  isStaffAlreadyAssigned(staffId: number): boolean {
+    return this.assignedStaff().some((s: AssignedStaff) => s.id === staffId);
   }
 
   /**
@@ -216,6 +260,7 @@ export class AddServiceComponent implements OnInit {
       time: form.time,
       status: form.status,
       tags: this.tags(),
+      assignedStaff: this.assignedStaff(),
       description: form.description || undefined
     };
 

@@ -32,6 +32,7 @@
           <th>Date</th>
           <th>Time</th>
           <th>Status</th>
+          <th>Assigned Staff</th>
           <th>Tags</th>
           <th>Actions</th>
         </tr>
@@ -39,7 +40,7 @@
       <tbody>
         @if (filteredServices().length === 0) {
           <tr>
-            <td colspan="9" class="empty-state">
+            <td colspan="10" class="empty-state">
               <div class="empty-message">
                 @if (searchQuery()) {
                   <p>No services found matching your search.</p>
@@ -62,6 +63,20 @@
                 <span class="status-badge" [ngClass]="getStatusClass(service.status)">
                   {{ service.status }}
                 </span>
+              </td>
+              <td>
+                <div class="staff-container">
+                  @if (service.assignedStaff && service.assignedStaff.length > 0) {
+                    @for (staff of service.assignedStaff.slice(0, 2); track staff.id) {
+                      <div class="staff-badge">{{ staff.name }}</div>
+                    }
+                    @if (service.assignedStaff.length > 2) {
+                      <div class="staff-more">+{{ service.assignedStaff.length - 2 }} more</div>
+                    }
+                  } @else {
+                    <span class="no-staff">No staff assigned</span>
+                  }
+                </div>
               </td>
               <td>
                 <div class="tags-container">

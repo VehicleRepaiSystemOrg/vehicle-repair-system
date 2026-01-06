@@ -1,0 +1,221 @@
+<div class="book-appointment-container">
+  <div class="appointment-wrapper">
+    <div class="appointment-header">
+      <h1 class="appointment-title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        {{ isEditMode() ? 'Edit Appointment Request' : 'Book Service Appointment' }}
+      </h1>
+      <p class="appointment-subtitle">
+        {{ isEditMode() ? 'Update your service appointment request' : 'Request a service appointment for your vehicle' }}
+      </p>
+    </div>
+
+    @if (showToast()) {
+      <div [ngClass]="toastType() === 'success' ? 'toast-success' : 'toast-error'" class="toast-notification">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          @if (toastType() === 'success') {
+            <polyline points="20 6 9 17 4 12"></polyline>
+          } @else {
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          }
+        </svg>
+        <span>{{ toastMessage() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="appointment-form">
+      <!-- Service Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">Service Information</h2>
+
+        <!-- Service Title -->
+        <div class="form-group">
+          <label for="serviceTitle" class="form-label">
+            Service Title <span class="required">*</span>
+          </label>
+          <input
+            id="serviceTitle"
+            type="text"
+            formControlName="serviceTitle"
+            placeholder="e.g., Engine Oil Leak, Tire Puncture, Battery Issue"
+            class="form-input"
+            [class.error]="form.get('serviceTitle')?.invalid && form.get('serviceTitle')?.touched"
+          />
+          @if (form.get('serviceTitle')?.invalid && form.get('serviceTitle')?.touched) {
+            <p class="error-message">Please enter a service title (min 5 characters)</p>
+          }
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="description" class="form-label">
+            Detailed Description <span class="required">*</span>
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Describe the issue in detail. What problem are you experiencing?"
+            rows="4"
+            class="form-textarea"
+            [class.error]="form.get('description')?.invalid && form.get('description')?.touched"
+          ></textarea>
+          @if (form.get('description')?.invalid && form.get('description')?.touched) {
+            <p class="error-message">Please provide a description (min 10 characters)</p>
+          }
+        </div>
+      </div>
+
+      <!-- Vehicle & Date Section -->
+      <div class="form-section">
+        <h2 class="section-title">Vehicle & Schedule</h2>
+
+        <div class="form-row">
+          <!-- Vehicle Type -->
+          <div class="form-group">
+            <label for="vehicleType" class="form-label">
+              Vehicle Type <span class="required">*</span>
+            </label>
+            <select
+              id="vehicleType"
+              formControlName="vehicleType"
+              class="form-input"
+              [class.error]="form.get('vehicleType')?.invalid && form.get('vehicleType')?.touched"
+            >
+              <option value="">Select vehicle type...</option>
+              @for (type of vehicleTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+            @if (form.get('vehicleType')?.invalid && form.get('vehicleType')?.touched) {
+              <p class="error-message">Please select a vehicle type</p>
+            }
+          </div>
+
+          <!-- Preferred Date -->
+          <div class="form-group">
+            <label for="preferredDate" class="form-label">
+              Preferred Date <span class="required">*</span>
+            </label>
+            <input
+              id="preferredDate"
+              type="date"
+              formControlName="preferredDate"
+              [min]="minDate"
+              class="form-input"
+              [class.error]="form.get('preferredDate')?.invalid && form.get('preferredDate')?.touched"
+            />
+            @if (form.get('preferredDate')?.invalid && form.get('preferredDate')?.touched) {
+              <p class="error-message">Please select a date</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Images Section -->
+      <div class="form-section">
+        <h2 class="section-title">Upload Images (Optional)</h2>
+        <p class="section-description">Upload photos of the issue or vehicle damage for better diagnosis</p>
+
+        <div class="upload-area">
+          <input
+            #imageInput
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onImageSelected($event)"
+            class="upload-input"
+            id="imageUpload"
+          />
+          <label for="imageUpload" class="upload-label">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="upload-text">Click to upload or drag and drop</span>
+            <span class="upload-hint">PNG, JPG up to 5MB each</span>
+          </label>
+        </div>
+
+        <!-- Image Preview -->
+        @if (uploadedImages().length > 0) {
+          <div class="images-preview">
+            <h3 class="preview-title">Uploaded Images ({{ uploadedImages().length }})</h3>
+            <div class="preview-grid">
+              @for (image of uploadedImages(); track $index) {
+                <div class="preview-item">
+                  <img [src]="image" [alt]="'Image ' + ($index + 1)" />
+                  <button
+                    type="button"
+                    class="remove-button"
+                    (click)="removeImage($index)"
+                    title="Remove image"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          [disabled]="isLoading() || form.invalid"
+          class="btn btn-primary"
+        >
+          @if (isLoading()) {
+            <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2" opacity="0.25"></circle>
+              <path d="M12 2a10 10 0 0 1 10 10" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            {{ isEditMode() ? 'Updating...' : 'Submitting...' }}
+          } @else {
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="12 5 19 12 12 19"></polyline>
+              <polyline points="19 12 5 12"></polyline>
+            </svg>
+            {{ isEditMode() ? 'Update Request' : 'Submit Request' }}
+          }
+        </button>
+
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6l-12 12M6 6l12 12"></path>
+          </svg>
+          Cancel
+        </button>
+      </div>
+    </form>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <h3 class="info-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        How This Works
+      </h3>
+      <ul class="info-list">
+        <li>Submit your appointment request with service details and images</li>
+        <li>Our team will review your request within 24 hours</li>
+        <li>You'll see the status in "My Requests" section of your dashboard</li>
+        <li>When approved, it moves to "My Repairs"</li>
+        <li>You can edit or cancel pending requests anytime</li>
+      </ul>
+    </div>
+  </div>
+</div>

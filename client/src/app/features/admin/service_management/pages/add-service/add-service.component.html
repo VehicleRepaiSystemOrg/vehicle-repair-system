@@ -260,6 +260,66 @@
         }
       </div>
 
+      <!-- Staff Assignment Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">Assign Staff Members</h3>
+        <p class="form-help-text">Assign mechanics or technicians to work on this service.</p>
+        
+        <div class="staff-selector">
+          <button 
+            type="button" 
+            class="btn-assign-staff"
+            (click)="toggleStaffDropdown()"
+          >
+            + Add Staff Member
+          </button>
+
+          @if (showStaffDropdown()) {
+            <div class="staff-dropdown">
+              @if (availableStaff().length > 0) {
+                @for (staff of availableStaff(); track staff.id) {
+                  <button
+                    type="button"
+                    class="staff-option"
+                    (click)="assignStaff(staff)"
+                    [disabled]="isStaffAlreadyAssigned(staff.id)"
+                  >
+                    <span class="staff-name">{{ staff.name }}</span>
+                    <span class="staff-role">{{ staff.role }}</span>
+                  </button>
+                }
+              } @else {
+                <div class="no-staff-message">No active staff members available</div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (assignedStaff().length > 0) {
+          <div class="assigned-staff-container">
+            <h4 class="assigned-staff-title">Assigned Staff</h4>
+            <div class="assigned-staff-list">
+              @for (staff of assignedStaff(); track staff.id) {
+                <div class="assigned-staff-card">
+                  <div class="staff-info">
+                    <span class="staff-name">{{ staff.name }}</span>
+                    <span class="staff-role">{{ staff.role }}</span>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn-remove-staff"
+                    (click)="removeAssignedStaff(staff.id)"
+                    aria-label="Remove staff"
+                  >
+                    ×
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
       <!-- Action Buttons -->
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>

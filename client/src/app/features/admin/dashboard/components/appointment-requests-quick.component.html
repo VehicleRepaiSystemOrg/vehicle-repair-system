@@ -1,0 +1,45 @@
+<div class="requests-quick-wrapper">
+  <div class="card-header">
+    <div class="header-content">
+      <h3 class="card-title">📧 Appointment Requests</h3>
+      <span class="badge-count">{{ getPendingCount() }}</span>
+    </div>
+    <button 
+      class="expand-button"
+      (click)="toggleExpanded()"
+      [class.expanded]="isExpanded()"
+      title="Expand/Collapse"
+    >
+      ⋮
+    </button>
+  </div>
+
+  @if (getPendingAppointments().length > 0) {
+    <div class="requests-list" [class.expanded]="isExpanded()">
+      @for (request of getPendingAppointments(); track request.id) {
+        <div class="request-item">
+          <div class="request-header">
+            <h4 class="request-title" [title]="request.serviceTitle">
+              {{ getTruncatedTitle(request.serviceTitle, 18) }}
+            </h4>
+            <span class="request-date">{{ getDaysRemaining(request.preferredDate) }}</span>
+          </div>
+          <p class="request-vehicle">{{ request.vehicleType }}</p>
+          <p class="request-date-full">{{ request.preferredDate | date: 'MMM dd, yyyy' }}</p>
+        </div>
+      }
+    </div>
+
+    <button 
+      class="view-all-button"
+      (click)="viewAllRequests()"
+    >
+      View All Requests →
+    </button>
+  } @else {
+    <div class="empty-requests">
+      <p class="empty-message">✓ All caught up!</p>
+      <p class="empty-subtitle">No pending requests</p>
+    </div>
+  }
+</div>

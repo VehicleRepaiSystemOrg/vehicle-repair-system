@@ -1,23 +1,29 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <--- THIS IS THE FIX
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { AppointmentService } from '../../services/appointment.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
   selector: 'app-customer-service-history-page',
-  // Make sure CommonModule is in this imports array:
   imports: [CommonModule, RouterLink], 
   templateUrl: './customer-service-history.page.html',
   styleUrl: './customer-service-history.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerServiceHistoryPageComponent {
-  
-  // TODO (backend): Replace mock data with API call
-  // GET /customer/service-history - Fetch all service history records
-  // Expected response: Array of { date, type, workPerformed, partsUsed, invoiceId }
-  // Sample Data for the table
-  readonly rows = [
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly appointmentService = inject(AppointmentService);
+
+  readonly appointmentRequests = toSignal(
+    this.appointmentService.getAppointments(),
+    { initialValue: [] }
+  );
+
+  // Service history data (completed services)
+  readonly rows = signal([
     { 
       date: new Date('2023-08-15'), 
       type: 'Oil Change', 
@@ -48,12 +54,45 @@ export class CustomerServiceHistoryPageComponent {
       workPerformed: 'Comprehensive vehicle inspection', 
       partsUsed: 'N/A' 
     }
-  ];
+  ]);
 
   // TODO (backend): Implement navigation to invoice overview when "View Invoice" is clicked
   // Method should navigate to: /dashboard/invoice-overview/:invoiceId
   viewInvoice(invoiceId: string): void {
     // TODO (backend): Navigate to invoice overview page with invoice ID
     console.debug('[ServiceHistory] View Invoice clicked for:', invoiceId);
+  }
+
+  // Edit pending appointment request
+  editAppointment(appointmentId: string): void {
+    this.router.navigate(['/dashboard/book-service-appointment'], {
+      queryParams: { editId: appointmentId }
+    });
+  }
+
+  // Cancel appointment request
+  cancelAppointment(appointmentId: string): void {
+    if (confirm('Are you sure you want to cancel this appointment request?')) {
+      this.appointmentService.deleteAppointment(appointmentId);
+      console.debug('[ServiceHistory] Appointment cancelled:', appointmentId);
+    }
+  }
+
+  // Book another date for declined appointment
+  bookAnotherDate(appointment: any): void {
+    this.router.navigate(['/dashboard/book-service-appointment'], {
+      queryParams: {
+        editId: appointment.id,
+        prefill: JSON.stringify({
+          serviceTitle: appointment.serviceTitle,
+          description: appointment.description,
+          vehicleType: appointment.vehicleType,
+        })
+      }
+    });
+  }
+
+  getStatusBadgeClass(status: string): string {
+    return `status-${status}`;
   }
 }

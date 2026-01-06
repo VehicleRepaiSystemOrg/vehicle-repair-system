@@ -1,0 +1,51 @@
+<div class="ongoing-services-wrapper">
+  <div class="section-header">
+    <h2 class="section-title">📋 Ongoing Services</h2>
+    <p class="section-subtitle">Services currently in progress</p>
+  </div>
+
+  @if (getOngoingServices().length > 0) {
+    <div class="table-wrapper">
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Vehicle</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Assigned Staff</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (service of getOngoingServices(); track service.id) {
+            <tr class="service-row">
+              <td class="cell-customer">
+                <strong>{{ service.customerName }}</strong>
+              </td>
+              <td class="cell-vehicle">
+                {{ service.vehicle }}
+                <span class="plate">{{ service.numberPlate }}</span>
+              </td>
+              <td class="cell-service">{{ service.serviceType }}</td>
+              <td class="cell-status">
+                <span class="status-badge" [ngClass]="getStatusClass(service.status)">
+                  {{ service.status }}
+                </span>
+              </td>
+              <td class="cell-date">{{ service.date | date: 'MMM dd, yyyy' }}</td>
+              <td class="cell-staff">
+                <span class="staff-info">{{ getStaffNames(service) }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <p class="empty-message">✓ No ongoing services</p>
+      <p class="empty-subtitle">All services are completed or pending</p>
+    </div>
+  }
+</div>

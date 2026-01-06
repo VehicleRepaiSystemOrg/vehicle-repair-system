@@ -1,0 +1,210 @@
+<div class="appointment-requests-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Service Appointment Requests</h1>
+    <p class="description">Review and manage customer appointment requests</p>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <button 
+      class="tab-button" 
+      [class.active]="selectedTab() === 'pending'"
+      (click)="switchTab('pending')"
+    >
+      <span class="tab-label">Pending</span>
+      <span class="badge">{{ pendingCount() }}</span>
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="selectedTab() === 'approved'"
+      (click)="switchTab('approved')"
+    >
+      <span class="tab-label">Approved</span>
+      <span class="badge">{{ approvedCount() }}</span>
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="selectedTab() === 'declined'"
+      (click)="switchTab('declined')"
+    >
+      <span class="tab-label">Declined</span>
+      <span class="badge">{{ declinedCount() }}</span>
+    </button>
+  </div>
+
+  <!-- Pending Requests Tab -->
+  @if (selectedTab() === 'pending') {
+    <div class="tab-content">
+      @if (pendingRequests().length > 0) {
+        <div class="requests-table-wrapper">
+          <table class="requests-table">
+            <thead>
+              <tr>
+                <th>Service Title</th>
+                <th>Vehicle Type</th>
+                <th>Preferred Date</th>
+                <th>Description</th>
+                <th>Images</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (appointment of pendingRequests(); track appointment.id) {
+                <tr class="request-row">
+                  <td class="cell-title">
+                    <strong>{{ appointment.serviceTitle }}</strong>
+                  </td>
+                  <td>{{ appointment.vehicleType }}</td>
+                  <td>{{ appointment.preferredDate | date: 'MMM dd, yyyy' }}</td>
+                  <td class="cell-description">
+                    <span class="description-text">{{ appointment.description | slice:0:50 }}...</span>
+                  </td>
+                  <td class="cell-images">
+                    @if (appointment.images && appointment.images.length > 0) {
+                      <button 
+                        class="btn-view-images"
+                        (click)="viewImages(appointment)"
+                      >
+                        <span class="image-count">{{ appointment.images.length }} image(s)</span>
+                      </button>
+                    } @else {
+                      <span class="no-images">No images</span>
+                    }
+                  </td>
+                  <td class="cell-actions">
+                    <button 
+                      class="btn-accept"
+                      (click)="acceptAppointment(appointment)"
+                      title="Accept and create service"
+                    >
+                      Accept
+                    </button>
+                    <button 
+                      class="btn-decline"
+                      (click)="toggleDeclineForm(appointment.id)"
+                      title="Decline this appointment"
+                    >
+                      Decline
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- Decline Form Row -->
+                @if (showDeclineForm()[appointment.id]) {
+                  <tr class="decline-form-row">
+                    <td colspan="6">
+                      <div class="decline-form">
+                        <label for="reason-{{ appointment.id }}">Decline Reason:</label>
+                        <textarea 
+                          [id]="'reason-' + appointment.id"
+                          class="decline-reason-input"
+                          placeholder="Enter reason for declining this appointment..."
+                          [value]="declineReasons()[appointment.id] || ''"
+                          (input)="updateDeclineReason(appointment.id, $any($event.target).value)"
+                        ></textarea>
+                        <div class="form-actions">
+                          <button 
+                            class="btn-confirm-decline"
+                            (click)="declineAppointment(appointment)"
+                          >
+                            Confirm Decline
+                          </button>
+                          <button 
+                            class="btn-cancel-decline"
+                            (click)="toggleDeclineForm(appointment.id)"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <p class="empty-message">No pending appointment requests</p>
+          <p class="empty-subtitle">Check back later for new service requests from customers</p>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Approved Requests Tab -->
+  @if (selectedTab() === 'approved') {
+    <div class="tab-content">
+      @if (approvedRequests().length > 0) {
+        <div class="requests-table-wrapper">
+          <table class="requests-table">
+            <thead>
+              <tr>
+                <th>Service Title</th>
+                <th>Vehicle Type</th>
+                <th>Preferred Date</th>
+                <th>Approved At</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (appointment of approvedRequests(); track appointment.id) {
+                <tr class="request-row approved">
+                  <td class="cell-title">
+                    <strong>{{ appointment.serviceTitle }}</strong>
+                    <span class="badge-approved">Converted to Service</span>
+                  </td>
+                  <td>{{ appointment.vehicleType }}</td>
+                  <td>{{ appointment.preferredDate | date: 'MMM dd, yyyy' }}</td>
+                  <td>{{ appointment.createdAt | date: 'MMM dd, yyyy' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <p class="empty-message">No approved appointments</p>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Declined Requests Tab -->
+  @if (selectedTab() === 'declined') {
+    <div class="tab-content">
+      @if (declinedRequests().length > 0) {
+        <div class="requests-table-wrapper">
+          <table class="requests-table">
+            <thead>
+              <tr>
+                <th>Service Title</th>
+                <th>Vehicle Type</th>
+                <th>Preferred Date</th>
+                <th>Decline Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (appointment of declinedRequests(); track appointment.id) {
+                <tr class="request-row declined">
+                  <td class="cell-title">
+                    <strong>{{ appointment.serviceTitle }}</strong>
+                    <span class="badge-declined">Declined</span>
+                  </td>
+                  <td>{{ appointment.vehicleType }}</td>
+                  <td>{{ appointment.preferredDate | date: 'MMM dd, yyyy' }}</td>
+                  <td class="cell-reason">{{ appointment.declineReason || 'Not specified' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <p class="empty-message">No declined appointments</p>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -2,12 +2,13 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ServiceService, Service, ServiceStatus } from '../../services/service.service';
+import { ServiceService, Service, ServiceStatus, AssignedStaff } from '../../services/service.service';
+import { StaffService, StaffMember } from '../../../staff/services/staff.service';
 
 /**
  * Edit Service Component
  * Allows admin to manage service status and details
- * Includes status change with progress tracker and tag management
+ * Includes status change with progress tracker, tag management, and staff assignments
  */
 @Component({
   selector: 'app-edit-service',
@@ -18,6 +19,7 @@ import { ServiceService, Service, ServiceStatus } from '../../services/service.s
 })
 export class EditServiceComponent implements OnInit {
   private readonly serviceService = inject(ServiceService);
+  private readonly staffService = inject(StaffService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -47,6 +49,11 @@ export class EditServiceComponent implements OnInit {
   tags = signal<string[]>([]);
   tagInput = signal<string>('');
 
+  // Staff management
+  availableStaff = signal<StaffMember[]>([]);
+  assignedStaff = signal<AssignedStaff[]>([]);
+  showStaffDropdown = signal<boolean>(false);
+
   // Scheduling
   nextSessionDate = '';
 
@@ -65,12 +72,20 @@ export class EditServiceComponent implements OnInit {
           description: found.description || ''
         });
         this.tags.set([...found.tags]);
+        if (found.assignedStaff) {
+          this.assignedStaff.set([...found.assignedStaff]);
+        }
       } else {
         // TODO (backend): Handle service not found
         alert('Service not found');
         this.router.navigate(['/service_management']);
       }
     }
+
+    // Load all staff members
+    this.staffService.staff$.subscribe(staff => {
+      this.availableStaff.set(staff.filter(s => s.status === 'Active'));
+    });
   }
 
   /**
@@ -141,6 +156,38 @@ export class EditServiceComponent implements OnInit {
   }
 
   /**
+   * Assign a staff member to the service
+   */
+  assignStaff(staff: StaffMember): void {
+    const assigned = this.assignedStaff();
+    if (!assigned.find(s => s.id === staff.id)) {
+      this.assignedStaff.update(s => [...s, { id: staff.id, name: staff.name, role: staff.role }]);
+    }
+    this.showStaffDropdown.set(false);
+  }
+
+  /**
+   * Remove assigned staff member
+   */
+  removeAssignedStaff(staffId: number): void {
+    this.assignedStaff.update(s => s.filter(item => item.id !== staffId));
+  }
+
+  /**
+   * Toggle staff dropdown visibility
+   */
+  toggleStaffDropdown(): void {
+    this.showStaffDropdown.update(show => !show);
+  }
+
+  /**
+   * Check if a staff member is already assigned
+   */
+  isStaffAlreadyAssigned(staffId: number): boolean {
+    return this.assignedStaff().some((s: AssignedStaff) => s.id === staffId);
+  }
+
+  /**
    * Save all changes to the service
    */
   saveChanges(): void {
@@ -155,6 +202,7 @@ export class EditServiceComponent implements OnInit {
       time: form.time,
       status: form.status,
       tags: this.tags(),
+      assignedStaff: this.assignedStaff(),
       description: form.description || undefined,
       updatedAt: new Date().toISOString()
     };

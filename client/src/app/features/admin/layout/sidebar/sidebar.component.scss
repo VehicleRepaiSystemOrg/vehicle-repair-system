@@ -99,6 +99,54 @@
         cursor: default; 
       }
     }
+
+    // Submenu item
+    .nav-menu-item {
+      margin-bottom: 8px;
+
+      > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .submenu {
+        display: flex;
+        flex-direction: column;
+        margin-top: 4px;
+        margin-left: 10px;
+        border-left: 2px solid #eee;
+        padding-left: 0;
+
+        .submenu-link {
+          padding: 10px 12px !important;
+          margin-bottom: 4px !important;
+          margin-left: 8px;
+          font-size: 13px;
+          font-weight: 400;
+          color: #666;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .icon {
+            font-size: 14px;
+          }
+
+          &:not(.active):hover {
+            background-color: #f0f0f0;
+            color: #333;
+          }
+
+          &.active {
+            background-color: #EA2A33;
+            color: white;
+            border-left-color: #EA2A33;
+          }
+        }
+      }
+    }
   }
 // ...
 }

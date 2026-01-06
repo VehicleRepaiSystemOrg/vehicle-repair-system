@@ -249,6 +249,40 @@
   }
 }
 
+// Staff container in table
+.staff-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.staff-badge {
+  display: inline-block;
+  background-color: #DBEAFE;
+  color: #0C4A6E;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.staff-more {
+  display: inline-block;
+  background-color: #F0F4F8;
+  color: #4A5568;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.no-staff {
+  color: #A0AEC0;
+  font-size: 12px;
+  font-style: italic;
+}
+
 // Responsive adjustments
 @media (max-width: 768px) {
   .header-section {
