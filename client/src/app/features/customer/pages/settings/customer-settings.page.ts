@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface VehicleItem {
-  make: string;
-  model: string;
-  year: number;
+  name: string;
   plate: string;
 }
 
@@ -14,9 +12,7 @@ interface UserProfile {
   email: string;
   phone: string;
   vehicle: {
-    make: string;
-    model: string;
-    year: number;
+    name: string;
     plate: string;
   };
 }
@@ -36,26 +32,29 @@ export class CustomerSettingsPageComponent {
     email: 'customer@example.com',
     phone: '+1 (555) 123-4567',
     vehicle: {
-      make: 'Tesla',
-      model: 'Roadster',
-      year: 2024,
+      name: 'Tesla Roadster 2024',
       plate: 'ABC-1234'
     }
   };
 
   vehicleList: VehicleItem[] = [
-    { make: 'Tesla', model: 'Roadster', year: 2024, plate: 'ABC-1234' },
-    { make: 'Toyota', model: 'Prius', year: 2018, plate: 'XYZ-9876' },
-    { make: 'Ford', model: 'F-150', year: 2022, plate: 'TRK-5555' },
-    { make: 'Honda', model: 'Civic', year: 2020, plate: 'HON-2020' },
-    { make: 'Nissan', model: 'Leaf', year: 2019, plate: 'ELE-9999' },
-    { make: 'BMW', model: 'X5', year: 2023, plate: 'LUX-8888' }
+    { name: 'Tesla Roadster 2024', plate: 'ABC-1234' },
+    { name: 'Toyota Prius 2018', plate: 'XYZ-9876' },
+    { name: 'Ford F-150 2022', plate: 'TRK-5555' },
+    { name: 'Honda Civic 2020', plate: 'HON-2020' },
+    { name: 'Nissan Leaf 2019', plate: 'ELE-9999' },
+    { name: 'BMW X5 2023', plate: 'LUX-8888' }
   ];
 
   showToast = false;
   toastMessage = '';
   toastType: 'success' | 'error' = 'success';
   isPhoneUpdated = false;
+  showAddVehicleModal = false;
+  newVehicleForm = {
+    name: '',
+    plate: ''
+  };
 
   // UPDATED: Logic to extract initials from Full Name string
   getInitials(): string {
@@ -94,9 +93,33 @@ export class CustomerSettingsPageComponent {
   }
 
   removeVehicle(vehicle: VehicleItem): void {
-    if (confirm(`Are you sure you want to remove the ${vehicle.make} ${vehicle.model}?`)) {
+    if (confirm(`Are you sure you want to remove ${vehicle.name}?`)) {
       this.vehicleList = this.vehicleList.filter(v => v !== vehicle);
-      this.triggerToast(`${vehicle.make} ${vehicle.model} removed successfully`, 'error');
+      this.triggerToast(`${vehicle.name} removed successfully`, 'error');
+    }
+  }
+
+  openAddVehicleModal(): void {
+    this.showAddVehicleModal = true;
+    this.newVehicleForm = { name: '', plate: '' };
+  }
+
+  closeAddVehicleModal(): void {
+    this.showAddVehicleModal = false;
+    this.newVehicleForm = { name: '', plate: '' };
+  }
+
+  submitAddVehicle(): void {
+    if (this.newVehicleForm.name.trim() && this.newVehicleForm.plate.trim()) {
+      const newVehicle: VehicleItem = {
+        name: this.newVehicleForm.name,
+        plate: this.newVehicleForm.plate
+      };
+      this.vehicleList.push(newVehicle);
+      this.triggerToast(`${this.newVehicleForm.name} added successfully!`);
+      this.closeAddVehicleModal();
+    } else {
+      this.triggerToast('Please fill in all fields', 'error');
     }
   }
 }

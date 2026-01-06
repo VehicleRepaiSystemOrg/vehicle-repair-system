@@ -12,7 +12,7 @@
         <div class="profile-summary">
           <div class="profile-avatar">
             {{ getInitials() }}
-            <button class="btn-icon-edit" aria-label="Upload Photo">
+            <button type="button" class="btn-icon-edit" aria-label="Upload Photo">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                 <circle cx="12" cy="13" r="4"></circle>
@@ -43,9 +43,12 @@
           <div class="input-action-group">
             <input id="phone" type="tel" class="input" [(ngModel)]="user.phone">
             <button
+              type="button"
               class="btn-text"
               [class.text-success]="isPhoneUpdated"
-              (click)="onUpdatePhone()">
+              (click)="onUpdatePhone()"
+              (keydown.enter)="onUpdatePhone()"
+              (keydown.space)="onUpdatePhone()">
               {{ isPhoneUpdated ? 'Saved ✓' : 'Update' }}
             </button>
           </div>
@@ -57,23 +60,12 @@
         
         <div class="grid-2">
           <div class="form__group">
-            <label class="form__label" for="make">Make</label>
-            <input id="make" type="text" class="input" [(ngModel)]="user.vehicle.make">
+            <label class="form__label" for="name">Vehicle Name</label>
+            <input id="name" type="text" class="input" [(ngModel)]="user.vehicle.name" placeholder="e.g., Tesla Roadster 2024">
           </div>
           <div class="form__group">
-            <label class="form__label" for="model">Model</label>
-            <input id="model" type="text" class="input" [(ngModel)]="user.vehicle.model">
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-top: 24px;">
-          <div class="form__group">
-            <label class="form__label" for="year">Year</label>
-            <input id="year" type="number" class="input" [(ngModel)]="user.vehicle.year">
-          </div>
-          <div class="form__group">
-            <label class="form__label" for="plate">License Plate</label>
-            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate">
+            <label class="form__label" for="plate">Number Plate</label>
+            <input id="plate" type="text" class="input input--plate" [(ngModel)]="user.vehicle.plate" placeholder="e.g., ABC-1234">
           </div>
         </div>
 
@@ -87,12 +79,14 @@
         <h3 class="section-title">Registered Vehicles</h3>
 
         <div class="table-container">
+          <div class="table-header">
+            <h4 style="margin: 0;">Your Vehicles</h4>
+            <button type="button" class="btn btn--primary" (click)="openAddVehicleModal()">+ Add Vehicle</button>
+          </div>
           <table class="service-table">
             <thead>
               <tr>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Year</th>
+                <th>Vehicle Name</th>
                 <th>License Plate</th>
                 <th style="width: 60px; text-align: center;">Action</th>
               </tr>
@@ -100,15 +94,25 @@
             <tbody>
               @for (item of vehicleList; track item.plate) {
                 <tr>
-                  <td class="font-bold">{{ item.make }}</td>
-                  <td>{{ item.model }}</td>
-                  <td>{{ item.year }}</td>
+                  <td class="font-bold">{{ item.name }}</td>
                   <td>
                     <span class="plate-badge">{{ item.plate }}</span>
                   </td>
                   <td style="text-align: center;">
-                    <button class="btn-icon-delete" (click)="removeVehicle(item)" title="Remove Vehicle">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                    <button
+                      type="button"
+                      class="btn-icon-delete"
+                      (click)="removeVehicle(item)"
+                      (keydown.enter)="removeVehicle(item)"
+                      (keydown.space)="removeVehicle(item)"
+                      title="Remove Vehicle">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                      </svg>
                     </button>
                   </td>
                 </tr>
@@ -121,18 +125,75 @@
     </div>
   </main>
 
+  <!-- Add Vehicle Modal -->
+  @if (showAddVehicleModal) {
+    <div
+      class="modal-overlay"
+      tabindex="0"
+      role="dialog"
+      aria-modal="true"
+      (click)="closeAddVehicleModal()"
+      (keydown.enter)="closeAddVehicleModal()"
+      (keydown.space)="closeAddVehicleModal()"
+    >
+      <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" role="document">
+        <div class="modal-header">
+          <h3 class="modal-title">Add New Vehicle</h3>
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeAddVehicleModal()"
+            (keydown.enter)="closeAddVehicleModal()"
+            (keydown.space)="closeAddVehicleModal()"
+            aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form__group">
+            <label class="form__label" for="modal-vehicle-name">Vehicle Name</label>
+            <input
+              id="modal-vehicle-name"
+              type="text"
+              class="input"
+              [(ngModel)]="newVehicleForm.name"
+              placeholder="e.g., Toyota Camry 2020">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="modal-number-plate">Number Plate</label>
+            <input
+              id="modal-number-plate"
+              type="text"
+              class="input input--plate"
+              [(ngModel)]="newVehicleForm.plate"
+              placeholder="e.g., ABC-1234">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--secondary" (click)="closeAddVehicleModal()">Cancel</button>
+          <button type="button" class="btn btn--primary" (click)="submitAddVehicle()">Add Vehicle</button>
+        </div>
+      </div>
+    </div>
+  }
+
   @if (showToast) {
     <div class="toast-notification" [ngClass]="{'toast-success': toastType === 'success', 'toast-error': toastType === 'error'}">
       <div class="toast-icon">
         @if (toastType === 'success') {
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         }
         @if (toastType === 'error') {
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         }
       </div>
       <div class="toast-message">{{ toastMessage }}</div>
-      <button class="toast-close" (click)="showToast = false">×</button>
+      <button type="button" class="toast-close" (click)="showToast = false">×</button>
     </div>
   }
 </div>
