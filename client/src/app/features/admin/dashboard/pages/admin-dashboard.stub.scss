@@ -12,6 +12,21 @@
     width: 100%;
   }
 
+  .calendar-requests-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    width: 100%;
+
+    .calendar-section {
+      width: 100%;
+    }
+
+    .requests-section {
+      width: 100%;
+    }
+  }
+
   .full-width-section {
     width: 100%;
     // Ensures components are flush with the stats row
@@ -23,5 +38,24 @@
 
 // Ensure responsiveness
 @media (max-width: 1100px) {
-  .dashboard-page .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-page {
+    .stats-row { 
+      grid-template-columns: repeat(2, 1fr); 
+    }
+
+    .calendar-requests-row {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 15px;
+    gap: 15px;
+
+    .stats-row { 
+      grid-template-columns: 1fr;
+    }
+  }
 }

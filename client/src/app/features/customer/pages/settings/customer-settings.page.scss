@@ -17,7 +17,12 @@
 }
 
 /* --- Header --- */
-.page__header { margin-bottom: 24px; }
+.page__header { 
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .page__title {
   margin: 0;
   font-size: 28px;
@@ -30,6 +35,36 @@
   margin: 6px 0 0;
   color: var(--text-muted);
   font-size: 14px;
+}
+
+/* --- Page Header Actions --- */
+.page__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn--book-appointment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* --- Main White Panel --- */

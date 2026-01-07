@@ -18,8 +18,9 @@
         Spare Parts
       </a>
 
-      <a class="btn btn--primary" routerLink="/dashboard/book-service">
-        customer support
+      <a class="btn btn--primary" routerLink="/dashboard/book-service-appointment">
+        <span class="btn__icon" aria-hidden="true">📅</span>
+        Book Service Appointment
       </a>
     </div>
   </div>
@@ -42,6 +43,37 @@
     </div>
     <app-calendar-widget></app-calendar-widget>
   </section>
+
+  <!-- MY REQUESTS SECTION -->
+  @if (myRequests().length > 0) {
+    <section class="panel my-requests-panel" style="margin-top: 24px;" id="my-requests-section">
+      <div class="panel__header">
+        <div>
+          <div class="panel__title">
+            My Appointment Requests
+            @if (getPendingCount() > 0) {
+              <span class="badge-counter">{{ getPendingCount() }}</span>
+            }
+          </div>
+          <div class="panel__subtitle">Track your appointment booking requests</div>
+        </div>
+        <a routerLink="/dashboard/service-history" class="view-all-link">View All →</a>
+      </div>
+
+      <div class="requests-grid">
+        @for (request of myRequests(); track request.id) {
+          <div class="request-card" [ngClass]="'status-' + request.status">
+            <div class="request-status" [ngClass]="getStatusBadgeClass(request.status)">
+              {{ request.status | uppercase }}
+            </div>
+            <h3 class="request-title">{{ request.serviceTitle }}</h3>
+            <p class="request-date">{{ request.preferredDate | date:'MMM d, yyyy' }}</p>
+            <small class="request-meta">Requested {{ request.createdAt | date:'MMM d' }}</small>
+          </div>
+        }
+      </div>
+    </section>
+  }
 
   <div class="grid">
     <section class="panel panel--main">

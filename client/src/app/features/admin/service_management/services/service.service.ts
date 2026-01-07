@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
+ * Assigned staff member for a service
+ */
+export interface AssignedStaff {
+  id: number;
+  name: string;
+  role: string;
+}
+
+/**
  * Service record interface representing a repair/service entry
  * Each service is linked to a customer and can have multiple status updates
  */
@@ -16,6 +25,7 @@ export interface Service {
   time: string; // Service time
   status: ServiceStatus;
   tags: string[]; // Main things done - for invoicing
+  assignedStaff?: AssignedStaff[]; // Assigned mechanics/technicians
   description?: string; // Optional service description
   createdAt: string; // When service was created
   updatedAt: string; // Last update timestamp

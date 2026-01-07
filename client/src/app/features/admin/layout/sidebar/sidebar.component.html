@@ -15,7 +15,22 @@
       <a routerLink="/staff" routerLinkActive="active">Staff</a>
       <a routerLink="/inventory" routerLinkActive="active">Inventory</a>
       <a routerLink="/customer_overview" routerLinkActive="active">Customer</a>
-      <a routerLink="/service_management" routerLinkActive="active">Service</a>
+      
+      <!-- Service Menu with Submenu -->
+      <div class="nav-menu-item">
+        <a routerLink="/service_management" routerLinkActive="active">Service</a>
+        <div class="submenu">
+          <a routerLink="/service_management" routerLinkActive="active" class="submenu-link">
+            <span class="icon">📋</span>
+            <span>Manage Services</span>
+          </a>
+          <a routerLink="/service_management/requests" routerLinkActive="active" class="submenu-link">
+            <span class="icon">📧</span>
+            <span>Appointment Requests</span>
+          </a>
+        </div>
+      </div>
+
       <a routerLink="/messages" routerLinkActive="active">Messages</a>
       <a routerLink="/settings" routerLinkActive="active">Settings</a>
     </nav>

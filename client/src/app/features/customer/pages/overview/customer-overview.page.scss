@@ -477,6 +477,119 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
+/* --- MY REQUESTS SECTION --- */
+.my-requests-panel {
+  border-top: 4px solid #667eea;
+
+  .panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .badge-counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 8px;
+  }
+
+  .view-all-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #5568d3;
+    }
+  }
+}
+
+.requests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.request-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  &.status-pending {
+    border-left-color: #f59e0b;
+
+    .request-status {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+  }
+
+  &.status-approved {
+    border-left-color: #10b981;
+
+    .request-status {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+  }
+
+  &.status-declined {
+    border-left-color: #ef4444;
+
+    .request-status {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+  }
+
+  .request-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .request-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .request-date {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #4b5563;
+  }
+
+  .request-meta {
+    color: #9ca3af;
+    font-size: 0.8rem;
+  }
+}
+
 /* Gradients for badges */
 .reminder-badge--warning {
   background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);

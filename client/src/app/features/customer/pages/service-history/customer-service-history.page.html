@@ -4,9 +4,108 @@
     <div class="header-text">
       <p class="page-subtitle">View and manage your vehicle maintenance records</p>
     </div>
-    </header>
+  </header>
 
+  <!-- APPOINTMENT REQUESTS SECTION -->
+  @if (appointmentRequests().length > 0) {
+    <section class="appointments-section">
+      <div class="section-header">
+        <h2 class="section-title">My Appointment Requests</h2>
+      </div>
+
+      <!-- Appointment Cards -->
+      <div class="appointments-grid">
+        @for (request of appointmentRequests(); track request.id) {
+          <div class="appointment-card" [ngClass]="'status-' + request.status">
+            <div class="card-header">
+              <div class="header-top">
+                <h3 class="service-title">{{ request.serviceTitle }}</h3>
+                <span class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">
+                  {{ request.status | uppercase }}
+                </span>
+              </div>
+              <p class="vehicle-info">{{ request.vehicleType }} • {{ request.preferredDate | date:'MMM d, yyyy' }}</p>
+            </div>
+
+            <div class="card-body">
+              <p class="description">{{ request.description }}</p>
+              
+              @if (request.images && request.images.length > 0) {
+                <div class="images-small">
+                  @for (image of request.images.slice(0, 3); track $index) {
+                    <img [src]="image" [alt]="'Image ' + ($index + 1)" />
+                  }
+                  @if (request.images.length > 3) {
+                    <div class="image-count">+{{ request.images.length - 3 }}</div>
+                  }
+                </div>
+              }
+
+              @if (request.status === 'declined' && request.declineReason) {
+                <div class="decline-reason">
+                  <p class="reason-label">Reason for decline:</p>
+                  <p class="reason-text">{{ request.declineReason }}</p>
+                </div>
+              }
+
+              <div class="card-meta">
+                <small>Requested on {{ request.createdAt | date:'MMM d, yyyy HH:mm' }}</small>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              @switch (request.status) {
+                @case ('pending') {
+                  <button 
+                    type="button"
+                    class="btn-action btn-edit"
+                    (click)="editAppointment(request.id)"
+                    title="Edit request">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Edit
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn-action btn-cancel"
+                    (click)="cancelAppointment(request.id)"
+                    title="Cancel request">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6h16z"></path>
+                    </svg>
+                    Cancel
+                  </button>
+                }
+                @case ('declined') {
+                  <button 
+                    type="button"
+                    class="btn-action btn-rebook"
+                    (click)="bookAnotherDate(request)"
+                    title="Book another date">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Book Another Date
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- SERVICE HISTORY SECTION -->
   <section class="history-card">
+    <div class="section-header">
+      <h2 class="section-title">Service History</h2>
+    </div>
     <div class="table-responsive">
       <div class="history-table" role="table">
         
@@ -18,10 +117,11 @@
           <div class="th col-type">Service Type</div>
           <div class="th col-work">Work Performed</div>
           <div class="th col-parts">Parts Used</div>
-          <div class="th col-action"></div> </div>
+          <div class="th col-action"></div>
+        </div>
 
         <div class="table-body">
-          @for (row of rows; track row.date) {
+          @for (row of rows(); track row.date) {
             <div class="table-row" role="row">
             
             <div class="td col-date">
@@ -50,9 +150,7 @@
             </div>
 
             <div class="td col-action">
-              <!-- TODO (backend): Wire "View Invoice" link to navigate with invoice ID -->
-              <!-- routerLink="/dashboard/invoice-overview/:invoiceId" - Need to add invoiceId to row data -->
-              <a routerLink="/dashboard/invoice-overview" class="btn-icon-label">
+              <a routerLink="/customer/invoice-overview" class="btn-icon-label">
                 <span>View Invoice</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
               </a>

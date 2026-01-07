@@ -10,6 +10,10 @@ export const SERVICE_ROUTES: Routes = [
     loadComponent: () => import('./pages/service-management.component').then(c => c.ServiceManagementComponent)
   },
   {
+    path: 'requests',
+    loadComponent: () => import('./pages/appointment-requests/appointment-requests.component').then(c => c.AppointmentRequestsComponent)
+  },
+  {
     path: 'add',
     loadComponent: () => import('./pages/add-service/add-service.component').then(c => c.AddServiceComponent)
   },

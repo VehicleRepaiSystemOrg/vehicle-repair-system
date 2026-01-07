@@ -34,6 +34,13 @@ export const CUSTOMER_ROUTES: Routes = [
           import('./pages/settings/customer-settings.page').then(m => m.CustomerSettingsPageComponent),
       },
       {
+        path: 'book-service-appointment',
+        loadComponent: () =>
+          import('./pages/book-service-appointment/book-service-appointment.page').then(
+            m => m.BookServiceAppointmentPageComponent,
+          ),
+      },
+      {
         path: 'book-service',
         loadComponent: () =>
           import('./pages/book-service/customer-book-service.page').then(m => m.CustomerBookServicePageComponent),

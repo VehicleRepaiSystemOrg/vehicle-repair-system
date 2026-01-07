@@ -2,8 +2,8 @@
   
   <!-- ROW 1: STATS (4 Cards) -->
   <div class="stats-row">
-    <app-stat-card label="Pending Requests" value="10"></app-stat-card>
-    <app-stat-card label="Active Repairs" value="5"></app-stat-card>
+    <app-stat-card label="Pending Requests" [value]="pendingRequestsCount().toString()"></app-stat-card>
+    <app-stat-card label="Active Repairs" [value]="inProgressServicesCount().toString()"></app-stat-card>
     
     <!-- Revenue Card -->
     <app-stat-card label="Revenue Today" value="Rs.12,000.00"></app-stat-card>
@@ -15,14 +15,19 @@
     </app-stat-card>
   </div>
 
-  <!-- ROW 2: CALENDAR -->
-  <div class="full-width-section">
-    <app-calendar-widget></app-calendar-widget>
+  <!-- ROW 2: CALENDAR AND QUICK APPOINTMENTS -->
+  <div class="calendar-requests-row">
+    <div class="calendar-section">
+      <app-calendar-widget></app-calendar-widget>
+    </div>
+    <div class="requests-section">
+      <app-appointment-requests-quick></app-appointment-requests-quick>
+    </div>
   </div>
 
-  <!-- ROW 3: REPAIR TABLE -->
+  <!-- ROW 3: ONGOING SERVICES TABLE -->
   <div class="full-width-section">
-    <app-repair-table></app-repair-table>
+    <app-ongoing-services-table></app-ongoing-services-table>
   </div>
 
 </div>

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface VehicleItem {
   name: string;
@@ -26,6 +27,8 @@ interface UserProfile {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerSettingsPageComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   
   user: UserProfile = {
     fullName: 'Customer Name', // UPDATED
@@ -121,5 +124,9 @@ export class CustomerSettingsPageComponent {
     } else {
       this.triggerToast('Please fill in all fields', 'error');
     }
+  }
+
+  bookServiceAppointment(): void {
+    this.router.navigate(['/dashboard/book-service-appointment']);
   }
 }
