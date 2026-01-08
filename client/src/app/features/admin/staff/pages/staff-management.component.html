@@ -91,7 +91,7 @@
   <!-- Employee Attendance Details Modal -->
   @if (showEmployeeAttendance()) {
     <div class="modal-overlay" (click)="closeEmployeeAttendance()" (keydown.enter)="closeEmployeeAttendance()" tabindex="0" role="button" aria-label="Close modal">
-      <div class="modal-content modal-content-large" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+      <div class="modal-content modal-content-large" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3>
             @if (staff$ | async; as staff) {
@@ -182,7 +182,7 @@
   <!-- Mark Attendance Modal -->
   @if (showMarkAttendance()) {
     <div class="modal-overlay" (click)="closeMarkAttendance()" (keydown.enter)="closeMarkAttendance()" tabindex="0" role="button" aria-label="Close modal">
-      <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3>Mark Attendance</h3>
           <button class="btn-close" (click)="closeMarkAttendance()" (keydown.enter)="closeMarkAttendance()" aria-label="Close modal">×</button>
