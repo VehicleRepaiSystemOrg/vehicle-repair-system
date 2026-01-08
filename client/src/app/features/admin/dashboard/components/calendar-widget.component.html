@@ -46,7 +46,7 @@
 <!-- Add Appointment Modal -->
 @if (showAddAppointmentModal) {
   <div class="modal-overlay" (click)="closeModal()" (keydown.enter)="closeModal()" tabindex="0" role="button" aria-label="Close modal">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Add New Appointment</h3>
         <button class="modal-close" (click)="closeModal()" (keydown.enter)="closeModal()" aria-label="Close modal">&times;</button>
@@ -129,7 +129,7 @@
 <!-- Call Appointment Modal -->
 @if (showCallAppointmentModal) {
   <div class="modal-overlay" (click)="closeCallAppointmentModal()" (keydown.enter)="closeCallAppointmentModal()" tabindex="0" role="button" aria-label="Close modal">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>📞 Add Call Appointment</h3>
         <button class="modal-close" (click)="closeCallAppointmentModal()" (keydown.enter)="closeCallAppointmentModal()" aria-label="Close modal">&times;</button>
@@ -230,7 +230,7 @@
 <!-- Add Holiday Modal -->
 @if (showAddHolidayModal) {
   <div class="modal-overlay" (click)="closeHolidayModal()" (keydown.enter)="closeHolidayModal()" tabindex="0" role="button" aria-label="Close modal">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Add Special Holiday / Poya Day</h3>
         <button class="modal-close" (click)="closeHolidayModal()" (keydown.enter)="closeHolidayModal()" aria-label="Close modal">&times;</button>
