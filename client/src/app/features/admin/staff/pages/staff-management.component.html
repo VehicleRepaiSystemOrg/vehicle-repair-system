@@ -4,13 +4,258 @@
   <div class="action-bar">
     <div class="search-staff">
       <span class="search-icon">🔍</span>
-      <!-- Note: You would usually link this to a search function in your component -->
-      <input type="text" placeholder="Search staff">
+      <input 
+        type="text" 
+        placeholder="Search staff by name or role"
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)">
     </div>
 
-    <!-- The shared component button -->
-    <app-add-employee-button></app-add-employee-button>
+    <div class="action-buttons-group">
+      <button 
+        class="btn-attendance" 
+        [class.active]="showAttendance()"
+        (click)="toggleAttendanceView()">
+        {{ showAttendance() ? 'Hide' : 'Show' }} Attendance
+      </button>
+      <app-add-employee-button></app-add-employee-button>
+    </div>
   </div>
+
+  <!-- Attendance Section -->
+  @if (showAttendance()) {
+    <div class="attendance-section">
+      <div class="attendance-header">
+        <h3>Monthly Attendance</h3>
+        <div class="month-selector">
+          <label for="month-select">Select Month:</label>
+          <input 
+            type="month" 
+            id="month-select"
+            [value]="selectedMonth()"
+            (input)="onMonthChange($any($event.target).value)"
+            class="month-input">
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table class="attendance-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Role</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Late</th>
+              <th>Leave</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (attendance of monthlyAttendance(); track attendance.employeeId) {
+              <tr>
+                <td>{{ attendance.employeeName }}</td>
+                <td>
+                  @if (staff$ | async; as staff) {
+                    {{ getEmployeeRole(attendance.employeeId, staff) }}
+                  }
+                </td>
+                <td class="count-present">{{ attendance.totalPresent }}</td>
+                <td class="count-absent">{{ attendance.totalAbsent }}</td>
+                <td class="count-late">{{ attendance.totalLate }}</td>
+                <td class="count-leave">{{ attendance.totalLeave }}</td>
+                <td>
+                  <div class="attendance-actions">
+                    <button 
+                      class="action-link btn-view-attendance"
+                      (click)="viewEmployeeAttendance(attendance.employeeId)"
+                      title="View attendance details">
+                      View Details
+                    </button>
+                    <button 
+                      class="action-link btn-mark-attendance"
+                      (click)="openMarkAttendance(attendance.employeeId)"
+                      title="Mark attendance">
+                      Mark
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- Employee Attendance Details Modal -->
+  @if (showEmployeeAttendance()) {
+    <div class="modal-overlay" (click)="closeEmployeeAttendance()" (keydown.enter)="closeEmployeeAttendance()" tabindex="0" role="button" aria-label="Close modal">
+      <div class="modal-content modal-content-large" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" tabindex="-1">
+        <div class="modal-header">
+          <h3>
+            @if (staff$ | async; as staff) {
+              {{ getEmployeeName(selectedEmployeeForDetails()!, staff) }} - Attendance Details
+            }
+          </h3>
+          <button class="btn-close" (click)="closeEmployeeAttendance()" (keydown.enter)="closeEmployeeAttendance()" aria-label="Close modal">×</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="attendance-details-header">
+            <div class="month-display">
+              <strong>Month:</strong> {{ selectedMonth() }}
+            </div>
+          <div class="summary-cards">
+            @if (getSelectedEmployeeSummary(); as summary) {
+              <div class="summary-card present">
+                <div class="summary-label">Present</div>
+                <div class="summary-value">{{ summary.totalPresent }}</div>
+              </div>
+              <div class="summary-card absent">
+                <div class="summary-label">Absent</div>
+                <div class="summary-value">{{ summary.totalAbsent }}</div>
+              </div>
+              <div class="summary-card late">
+                <div class="summary-label">Late</div>
+                <div class="summary-value">{{ summary.totalLate }}</div>
+              </div>
+              <div class="summary-card leave">
+                <div class="summary-label">Leave</div>
+                <div class="summary-value">{{ summary.totalLeave }}</div>
+              </div>
+            }
+          </div>
+          </div>
+
+          <div class="attendance-records-table">
+            <table class="records-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Check In</th>
+                  <th>Check Out</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (employeeAttendanceRecords().length > 0) {
+                  @for (record of employeeAttendanceRecords(); track record.id) {
+                    <tr>
+                      <td>{{ formatDate(record.date) }}</td>
+                      <td>
+                        <span 
+                          class="attendance-badge"
+                          [ngClass]="getAttendanceStatusClass(record.status)">
+                          {{ getAttendanceStatusText(record.status) }}
+                        </span>
+                      </td>
+                      <td>{{ record.checkIn || '-' }}</td>
+                      <td>{{ record.checkOut || '-' }}</td>
+                      <td>
+                        <button 
+                          class="btn-edit-attendance"
+                          (click)="editAttendanceRecord(record)">
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                } @else {
+                  <tr>
+                    <td colspan="5" class="no-records">No attendance records for this month</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeEmployeeAttendance()">Close</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Mark Attendance Modal -->
+  @if (showMarkAttendance()) {
+    <div class="modal-overlay" (click)="closeMarkAttendance()" (keydown.enter)="closeMarkAttendance()" tabindex="0" role="button" aria-label="Close modal">
+      <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" tabindex="-1">
+        <div class="modal-header">
+          <h3>Mark Attendance</h3>
+          <button class="btn-close" (click)="closeMarkAttendance()" (keydown.enter)="closeMarkAttendance()" aria-label="Close modal">×</button>
+        </div>
+        
+        <div class="modal-body">
+          @if (staff$ | async; as staff) {
+            <div class="form-group">
+              <label for="attendance-employee">Employee</label>
+              <input 
+                type="text" 
+                id="attendance-employee"
+                [value]="getEmployeeName(selectedEmployeeId()!, staff)"
+                readonly
+                class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="attendance-date">Date</label>
+              <input 
+                type="date" 
+                id="attendance-date"
+                [value]="selectedDate()"
+                (input)="selectedDate.set($any($event.target).value)"
+                class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="attendance-status">Status</label>
+              <select 
+                id="attendance-status"
+                [value]="attendanceStatus()"
+                (change)="attendanceStatus.set($any($event.target).value)"
+                class="form-select">
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+                <option value="late">Late</option>
+                <option value="leave">Leave</option>
+              </select>
+            </div>
+
+            @if (attendanceStatus() === 'present' || attendanceStatus() === 'late') {
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="check-in">Check In Time</label>
+                  <input 
+                    type="time" 
+                    id="check-in"
+                    [value]="checkInTime()"
+                    (input)="checkInTime.set($any($event.target).value)"
+                    class="form-input">
+                </div>
+                <div class="form-group">
+                  <label for="check-out">Check Out Time</label>
+                  <input 
+                    type="time" 
+                    id="check-out"
+                    [value]="checkOutTime()"
+                    (input)="checkOutTime.set($any($event.target).value)"
+                    class="form-input">
+                </div>
+              </div>
+            }
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeMarkAttendance()">Cancel</button>
+          <button class="btn-save" (click)="markAttendance()">Mark Attendance</button>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Staff Table -->
   <div class="table-card">
@@ -19,15 +264,18 @@
         <tr>
           <th>Name</th>
           <th>Role</th>
+          <th>Phone</th>
           <th>Status</th>
+          <th>Today's Attendance</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody *ngIf="staff$ | async as staff">
-        <ng-container *ngFor="let member of staff">
+        <ng-container *ngFor="let member of getFilteredStaff(staff)">
           <tr>
             <td>{{ member.name }}</td>
             <td>{{ member.role }}</td>
+            <td>{{ member.phone }}</td>
             <td>
               <!-- Integrated: Status Pill converted to an interactive Toggle Button -->
               <button 
@@ -40,12 +288,28 @@
               </button>
             </td>
             <td>
+              @if (getTodayAttendanceStatus(member.id)) {
+                <span 
+                  class="attendance-badge"
+                  [ngClass]="getAttendanceStatusClass(getTodayAttendanceStatus(member.id))">
+                  {{ getAttendanceStatusText(getTodayAttendanceStatus(member.id)) }}
+                </span>
+              } @else {
+                <span class="attendance-badge status-not-marked">Not Marked</span>
+              }
+            </td>
+            <td>
               <button class="action-link" [routerLink]="['/staff/edit', member.id]">
                 Edit
               </button>
             </td>
           </tr>
         </ng-container>
+        @if (getFilteredStaff(staff).length === 0) {
+          <tr>
+            <td colspan="5" class="no-results">No employees found</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

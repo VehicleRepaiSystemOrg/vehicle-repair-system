@@ -105,6 +105,100 @@
           }
         </div>
       </div>
+
+      <!-- Warranty Items Section -->
+      <div class="warranty-section">
+        <div class="warranty-header">
+          <div class="warranty-header-left">
+            <h4>Warranty Items</h4>
+            @if (customerWarrantyItems().length > 0) {
+              <span class="warranty-count-badge">{{ customerWarrantyItems().length }} Item{{ customerWarrantyItems().length > 1 ? 's' : '' }}</span>
+            }
+          </div>
+          <button 
+            type="button" 
+            class="btn-toggle-warranty" 
+            (click)="toggleWarrantySection()"
+          >
+            {{ showWarrantySection() ? 'Hide' : 'Show' }} Warranty Items
+          </button>
+        </div>
+        
+        @if (showWarrantySection()) {
+          <p class="warranty-help">View warranty items for this customer. Items are added from the Service Edit page when inventory items with warranty are used during a service.</p>
+          
+          <!-- Customer Warranty Items List -->
+          @if (customerWarrantyItems().length > 0) {
+            <div class="warranty-items-list">
+              <h5>Customer Warranty Items ({{ customerWarrantyItems().length }})</h5>
+              <div class="warranty-items-grid">
+                @for (warrantyItem of customerWarrantyItems(); track warrantyItem.id) {
+                  <div class="warranty-item-card" [ngClass]="'card--' + warrantyItem.status">
+                    <div class="warranty-card__top">
+                      <span class="provider-label">{{ warrantyItem.supplier }}</span>
+                      <div class="pill" [ngClass]="'pill--' + warrantyItem.status">
+                        @if (warrantyItem.status === 'expiring') {
+                          Expiring Soon
+                        } @else if (warrantyItem.status === 'expired') {
+                          Expired
+                        } @else {
+                          Active
+                        }
+                      </div>
+                    </div>
+
+                    <div class="info-group">
+                      <div class="info-label">Covered Item</div>
+                      <div class="info-value highlight">{{ warrantyItem.partName }}</div>
+                    </div>
+
+                    <div class="info-group">
+                      <div class="info-label">Part Details</div>
+                      <div class="info-value detail-text">
+                        Part Number: {{ warrantyItem.partNumber }}<br>
+                        Warranty: {{ formatWarranty(warrantyItem.warrantyMonths, warrantyItem.warrantyYears) }}
+                      </div>
+                    </div>
+
+                    <div class="date-row">
+                      <div class="date-group">
+                        <div class="info-label">Installed Date</div>
+                        <span>{{ formatDate(warrantyItem.installedDate) }}</span>
+                      </div>
+                      <div class="date-arrow">→</div>
+                      <div class="date-group text-right">
+                        <div class="info-label">Warranty End</div>
+                        <span [class.text-danger]="warrantyItem.status === 'expiring' || warrantyItem.status === 'expired'">
+                          {{ formatDate(warrantyItem.endDate) }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="warranty-item-actions">
+                      <button 
+                        type="button" 
+                        class="btn-remove-warranty-card" 
+                        (click)="removeWarrantyItem(warrantyItem.id)"
+                        aria-label="Remove warranty item"
+                      >
+                        Remove Item
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="empty-state">
+              <div class="empty-state__icon">📋</div>
+              <div class="empty-state__title">No Warranty Items</div>
+              <div class="empty-state__message">
+                No warranty items have been added for this customer yet. Add items from inventory that have warranty coverage.
+              </div>
+            </div>
+          }
+        }
+      </div>
     </div>
   } @else {
     <div class="error-message">

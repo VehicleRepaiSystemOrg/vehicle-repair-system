@@ -230,6 +230,131 @@
       }
     </div>
 
+    <!-- Warranty Items Section -->
+    <div class="warranty-section">
+      <div class="warranty-header">
+        <h3 class="section-subtitle">Warranty Items</h3>
+        <button 
+          type="button" 
+          class="btn-toggle-warranty" 
+          (click)="toggleWarrantySection()"
+        >
+          {{ showWarrantySection() ? 'Hide' : 'Show' }} Warranty Items
+        </button>
+      </div>
+      
+      @if (showWarrantySection()) {
+        <p class="section-help">Add inventory items with warranty that were used in this service. These will be tracked for the customer.</p>
+        
+        <!-- Add Warranty Item Form -->
+        <div class="warranty-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inventoryItem">Select Inventory Item (with warranty)</label>
+              <select
+                id="inventoryItem"
+                class="form-select"
+                [value]="selectedInventoryItemId() ?? ''"
+                (change)="selectedInventoryItemId.set(+$any($event.target).value)"
+              >
+                <option value="">-- Select Item --</option>
+                @if (inventoryItems().length > 0) {
+                  @for (item of inventoryItems(); track item.id) {
+                    <option [value]="item.id">
+                      {{ item.partName }} ({{ item.supplier }}) - {{ formatWarranty(item.warranty.months, item.warranty.years) }}
+                    </option>
+                  }
+                } @else {
+                  <option value="" disabled>No items with warranty available. Add items in Inventory page.</option>
+                }
+              </select>
+              @if (inventoryItems().length === 0) {
+                <small class="form-help-text">
+                  No inventory items with warranty found. Go to <a routerLink="/inventory" class="link-text">Inventory</a> page to add items with warranty.
+                </small>
+              }
+            </div>
+            
+            <div class="form-group">
+              <label for="installDate">Installation Date</label>
+              <input
+                type="date"
+                id="installDate"
+                class="form-input"
+                [value]="warrantyInstallDate()"
+                (input)="warrantyInstallDate.set($any($event.target).value)"
+              />
+            </div>
+            
+            <div class="form-group form-group-button">
+              <button 
+                type="button" 
+                class="btn-add-warranty" 
+                (click)="addWarrantyItem()"
+                [disabled]="!selectedInventoryItemId() || !warrantyInstallDate()"
+              >
+                Add Warranty Item
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Added Warranty Items List -->
+        @if (addedWarrantyItems().length > 0) {
+          <div class="warranty-items-list">
+            <h4 class="warranty-items-title">Added Warranty Items</h4>
+            <div class="warranty-items-grid">
+              @for (warrantyItem of addedWarrantyItems(); track warrantyItem.id) {
+                <div class="warranty-item-card">
+                  <div class="warranty-item-header">
+                    <span class="warranty-item-name">{{ warrantyItem.partName }}</span>
+                    <button 
+                      type="button" 
+                      class="btn-remove-warranty" 
+                      (click)="removeWarrantyItem(warrantyItem.id)"
+                      aria-label="Remove warranty item"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div class="warranty-item-details">
+                    <div class="detail-row">
+                      <span class="detail-label">Supplier:</span>
+                      <span class="detail-value">{{ warrantyItem.supplier }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Part Number:</span>
+                      <span class="detail-value">{{ warrantyItem.partNumber }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Installed Date:</span>
+                      <span class="detail-value">{{ warrantyItem.installedDate }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Warranty Period:</span>
+                      <span class="detail-value">{{ formatWarranty(warrantyItem.warrantyMonths, warrantyItem.warrantyYears) }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Warranty End:</span>
+                      <span class="detail-value">{{ warrantyItem.endDate }}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Status:</span>
+                      <span class="warranty-status" [ngClass]="'status-' + warrantyItem.status">
+                        {{ warrantyItem.status === 'expiring' ? 'Expiring Soon' : warrantyItem.status === 'expired' ? 'Expired' : 'Active' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <p class="no-warranty-message">No warranty items added yet. Add items from inventory that have warranty coverage.</p>
+        }
+      }
+    </div>
+
     <!-- Schedule Next Session -->
     <div class="schedule-card">
       <h3 class="card-title">Schedule Next Session</h3>
@@ -241,14 +366,47 @@
           id="nextSessionDate"
           [value]="nextSessionDate"
           (input)="nextSessionDate = $any($event.target).value"
+          [min]="getMinDate()"
         />
       </div>
-      <button class="btn-save-schedule" (click)="saveSchedule()">Save Schedule</button>
+      <div class="input-group">
+        <label for="nextSessionTime">Select Time</label>
+        <input 
+          type="time" 
+          id="nextSessionTime"
+          [value]="nextSessionTime"
+          (input)="nextSessionTime = $any($event.target).value"
+        />
+      </div>
+      <div class="input-group">
+        <label for="nextSessionNotes">Notes (Optional)</label>
+        <textarea 
+          id="nextSessionNotes"
+          class="schedule-notes"
+          [value]="nextSessionNotes"
+          (input)="nextSessionNotes = $any($event.target).value"
+          placeholder="Add any notes for this appointment..."
+          rows="3"
+        ></textarea>
+      </div>
+      <button class="btn-save-schedule" (click)="saveSchedule()">
+        <span>📅</span> Save Schedule
+      </button>
+      <p class="schedule-info">
+        This appointment will appear in the admin dashboard calendar and be visible to the customer.
+      </p>
     </div>
 
     <!-- Action Buttons -->
     <div class="action-buttons">
       <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn-invoice" (click)="createInvoice()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        Create Invoice
+      </button>
       <button type="button" class="btn-save" (click)="saveChanges()">Save Changes</button>
     </div>
   </div>

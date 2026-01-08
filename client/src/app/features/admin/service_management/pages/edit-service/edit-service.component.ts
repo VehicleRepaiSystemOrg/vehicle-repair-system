@@ -1,9 +1,15 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { ServiceService, Service, ServiceStatus, AssignedStaff } from '../../services/service.service';
 import { StaffService, StaffMember } from '../../../staff/services/staff.service';
+import { InventoryService, InventoryItem } from '../../../inventory/services/inventory.service';
+import { WarrantyService, WarrantyItem } from '../../../../../core/services/warranty.service';
+import { CustomerService } from '../../../customer_overview/services/customer.service';
+import { InvoiceService } from '../../../../../core/services/invoice.service';
+import { AppointmentService } from '../../../../../core/services/appointment.service';
 
 /**
  * Edit Service Component
@@ -13,15 +19,21 @@ import { StaffService, StaffMember } from '../../../staff/services/staff.service
 @Component({
   selector: 'app-edit-service',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './edit-service.component.html',
   styleUrls: ['./edit-service.component.scss']
 })
-export class EditServiceComponent implements OnInit {
+export class EditServiceComponent implements OnInit, OnDestroy {
   private readonly serviceService = inject(ServiceService);
   private readonly staffService = inject(StaffService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly inventoryService = inject(InventoryService);
+  private readonly warrantyService = inject(WarrantyService);
+  private readonly customerService = inject(CustomerService);
+  private readonly invoiceService = inject(InvoiceService);
+  private readonly appointmentService = inject(AppointmentService);
+  private subscriptions = new Subscription();
 
   serviceId: number | null = null;
   service = signal<Service | null>(null);
@@ -56,6 +68,15 @@ export class EditServiceComponent implements OnInit {
 
   // Scheduling
   nextSessionDate = '';
+  nextSessionTime = '10:00';
+  nextSessionNotes = '';
+
+  // Warranty items management
+  inventoryItems = signal<InventoryItem[]>([]);
+  selectedInventoryItemId = signal<number | null>(null);
+  warrantyInstallDate = signal<string>('');
+  addedWarrantyItems = signal<WarrantyItem[]>([]);
+  showWarrantySection = signal<boolean>(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -75,6 +96,10 @@ export class EditServiceComponent implements OnInit {
         if (found.assignedStaff) {
           this.assignedStaff.set([...found.assignedStaff]);
         }
+        
+        // Load existing warranty items for this service
+        const existingWarranties = this.warrantyService.getWarrantyItemsByServiceId(this.serviceId);
+        this.addedWarrantyItems.set(existingWarranties);
       } else {
         // TODO (backend): Handle service not found
         alert('Service not found');
@@ -86,6 +111,23 @@ export class EditServiceComponent implements OnInit {
     this.staffService.staff$.subscribe(staff => {
       this.availableStaff.set(staff.filter(s => s.status === 'Active'));
     });
+
+    // Load inventory items with warranty - subscribe to get real-time updates
+    const inventorySub = this.inventoryService.parts$.subscribe(items => {
+      // Filter items that have warranty (years > 0 OR months > 0)
+      const itemsWithWarranty = items.filter(item => 
+        item.warranty && (item.warranty.years > 0 || item.warranty.months > 0)
+      );
+      this.inventoryItems.set(itemsWithWarranty);
+    });
+    this.subscriptions.add(inventorySub);
+
+    // Set default install date to today
+    this.warrantyInstallDate.set(new Date().toISOString().split('T')[0]);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   /**
@@ -216,10 +258,99 @@ export class EditServiceComponent implements OnInit {
    * Save schedule for next session
    */
   saveSchedule(): void {
-    // TODO (backend): Save next session date to backend
-    // This could be stored in the service or as a separate appointment
-    console.log('Saving schedule:', this.nextSessionDate);
-    alert('Next session scheduled for: ' + this.nextSessionDate);
+    if (!this.nextSessionDate) {
+      alert('Please select a date for the next session');
+      return;
+    }
+
+    const service = this.service();
+    if (!service) {
+      alert('Service information not available');
+      return;
+    }
+
+    // Validate date format (should be YYYY-MM-DD)
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(this.nextSessionDate)) {
+      alert('Invalid date format. Please select a valid date.');
+      return;
+    }
+
+    // Get customer ID if available
+    let customerId: number | undefined;
+    if (service.customerId) {
+      customerId = service.customerId;
+    } else {
+      // Try to get customer ID by name
+      const customer = this.customerService.getCustomerByName(service.customerName);
+      if (customer) {
+        customerId = customer.id;
+      }
+    }
+
+    // Format time for display - ensure it's in proper format
+    const timeDisplay = this.formatTimeForDisplay(this.nextSessionTime);
+    
+    // Validate time format
+    if (!timeDisplay || !timeDisplay.match(/\d+:\d+\s*(AM|PM)/i)) {
+      alert('Invalid time format. Please enter a valid time.');
+      return;
+    }
+
+    // Create appointment with validated data
+    const appointment = this.appointmentService.createAppointment({
+      customerId,
+      customerName: service.customerName || 'Unknown Customer',
+      vehicle: service.vehicle || 'Unknown Vehicle',
+      numberPlate: service.numberPlate,
+      service: service.serviceType || 'Service',
+      serviceId: this.serviceId!,
+      date: this.nextSessionDate, // Already validated as YYYY-MM-DD format
+      time: timeDisplay, // Already validated format
+      status: 'Scheduled',
+      notes: this.nextSessionNotes || `Next session for service: ${service.serviceType}`
+    });
+
+    // Show success message
+    alert(
+      `✅ Appointment scheduled successfully!\n\n` +
+      `Date: ${this.nextSessionDate}\n` +
+      `Time: ${timeDisplay}\n\n` +
+      `The appointment has been automatically added to Google Calendar.`
+    );
+
+    // If Google Calendar link is available, offer to open it
+    if (appointment.googleCalendarLink) {
+      const openCalendar = confirm('Would you like to view the appointment in Google Calendar?');
+      if (openCalendar) {
+        window.open(appointment.googleCalendarLink, '_blank');
+      }
+    }
+
+    // Clear the inputs
+    this.nextSessionDate = '';
+    this.nextSessionTime = '10:00';
+    this.nextSessionNotes = '';
+  }
+
+  /**
+   * Get minimum date (today) for date picker
+   */
+  getMinDate(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  /**
+   * Format time for display (HH:mm to HH:MM AM/PM)
+   */
+  formatTimeForDisplay(time: string): string {
+    if (!time) return '10:00 AM';
+    
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
   }
 
   /**
@@ -227,6 +358,33 @@ export class EditServiceComponent implements OnInit {
    */
   cancel(): void {
     this.router.navigate(['/service_management']);
+  }
+
+  /**
+   * Create invoice for this service
+   */
+  createInvoice(): void {
+    const currentService = this.service();
+    if (!currentService) {
+      alert('Service not found');
+      return;
+    }
+
+    // Check if invoice already exists for this service
+    const existingInvoices = this.invoiceService.getInvoicesByServiceId(currentService.id);
+    if (existingInvoices.length > 0) {
+      const confirmCreate = confirm(
+        `An invoice already exists for this service (Invoice #${existingInvoices[0].id}). Do you want to create another one?`
+      );
+      if (!confirmCreate) {
+        // Navigate to existing invoice
+        this.router.navigate(['/dashboard/invoice-overview', existingInvoices[0].id]);
+        return;
+      }
+    }
+
+    // Navigate to invoice creation page
+    this.router.navigate(['/service_management/create-invoice', currentService.id]);
   }
 
   /**
@@ -249,6 +407,109 @@ export class EditServiceComponent implements OnInit {
    */
   updateFormField(field: 'serviceType' | 'date' | 'time' | 'description', value: string): void {
     this.serviceForm.update(form => ({ ...form, [field]: value }));
+  }
+
+  /**
+   * Toggle warranty section visibility
+   */
+  toggleWarrantySection(): void {
+    this.showWarrantySection.update(val => !val);
+  }
+
+  /**
+   * Add warranty item to service
+   */
+  addWarrantyItem(): void {
+    const currentService = this.service();
+    const selectedItemId = this.selectedInventoryItemId();
+    const installDate = this.warrantyInstallDate();
+
+    if (!currentService || !selectedItemId || !installDate) {
+      alert('Please select an inventory item and installation date');
+      return;
+    }
+
+    const inventoryItem = this.inventoryService.getPartById(selectedItemId);
+    if (!inventoryItem) {
+      alert('Selected inventory item not found');
+      return;
+    }
+
+    // Check if item already added
+    const alreadyAdded = this.addedWarrantyItems().some(
+      item => item.inventoryItemId === selectedItemId && item.serviceId === currentService.id
+    );
+
+    if (alreadyAdded) {
+      alert('This item has already been added to this service');
+      return;
+    }
+
+    // Resolve customer ID - try from service first, then find by name
+    let customerId = currentService.customerId || 0;
+    if (!customerId && currentService.customerName) {
+      // Try to find customer by name
+      const customer = this.customerService.getCustomerByName(currentService.customerName);
+      if (customer) {
+        customerId = customer.id;
+      }
+    }
+
+    if (!customerId) {
+      alert('Warning: Customer ID not found. Warranty item will be added but may not appear in customer view.');
+    }
+
+    // Add warranty item
+    this.warrantyService.addWarrantyItem(
+      currentService.id,
+      customerId,
+      inventoryItem.id,
+      inventoryItem.partName,
+      inventoryItem.supplier,
+      inventoryItem.partNumber,
+      installDate,
+      inventoryItem.warranty.months,
+      inventoryItem.warranty.years
+    );
+
+    // Refresh added items list
+    const updatedWarranties = this.warrantyService.getWarrantyItemsByServiceId(currentService.id);
+    this.addedWarrantyItems.set(updatedWarranties);
+
+    // Reset form
+    this.selectedInventoryItemId.set(null);
+    this.warrantyInstallDate.set(new Date().toISOString().split('T')[0]);
+  }
+
+  /**
+   * Remove warranty item
+   */
+  removeWarrantyItem(warrantyItemId: number): void {
+    if (confirm('Are you sure you want to remove this warranty item?')) {
+      this.warrantyService.removeWarrantyItem(warrantyItemId);
+      const currentService = this.service();
+      if (currentService) {
+        const updatedWarranties = this.warrantyService.getWarrantyItemsByServiceId(currentService.id);
+        this.addedWarrantyItems.set(updatedWarranties);
+      }
+    }
+  }
+
+  /**
+   * Format warranty period
+   */
+  formatWarranty(months: number, years: number): string {
+    if (years === 0 && months === 0) {
+      return 'No Warranty';
+    }
+    const parts: string[] = [];
+    if (years > 0) {
+      parts.push(`${years} year${years > 1 ? 's' : ''}`);
+    }
+    if (months > 0) {
+      parts.push(`${months} month${months > 1 ? 's' : ''}`);
+    }
+    return parts.join(' ');
   }
 }
 

@@ -69,4 +69,9 @@ export class StaffService {
     const currentStaff = [...this.staffSubject.value, newMember];
     this.staffSubject.next(currentStaff);
   }
+
+  // Get all staff (helper method)
+  getAllStaff(): StaffMember[] {
+    return this.staffSubject.value;
+  }
 }

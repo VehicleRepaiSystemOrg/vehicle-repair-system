@@ -20,6 +20,14 @@ export const SERVICE_ROUTES: Routes = [
   {
     path: 'edit/:id',
     loadComponent: () => import('./pages/edit-service/edit-service.component').then(c => c.EditServiceComponent)
+  },
+  {
+    path: 'create-invoice/:id',
+    loadComponent: () => import('./pages/create-invoice/create-invoice.component').then(c => c.CreateInvoiceComponent)
+  },
+  {
+    path: 'view-invoice/:id',
+    loadComponent: () => import('./pages/view-invoice/view-invoice.component').then(c => c.ViewInvoiceComponent)
   }
 ];
 

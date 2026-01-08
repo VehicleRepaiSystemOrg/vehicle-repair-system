@@ -1,6 +1,9 @@
 @if (member) {
 <div class="edit-container">
-  <h2>Edit Employee</h2>
+  <div class="page-header">
+    <h2>Edit Employee</h2>
+    <button class="btn-back" (click)="onCancel()">← Back</button>
+  </div>
 
   <div class="form-group">
     <label for="edit-emp-name">Employee Name</label>

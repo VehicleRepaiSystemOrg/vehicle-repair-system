@@ -83,4 +83,11 @@
     color: #007aff;
     border-left: 3px solid #007aff;
   }
+
+  ::ng-deep .event-appointment {
+    background-color: #EA2A33 !important;
+    color: #ffffff !important;
+    border-left: 3px solid #d11a22 !important;
+    font-weight: 600;
+  }
 }

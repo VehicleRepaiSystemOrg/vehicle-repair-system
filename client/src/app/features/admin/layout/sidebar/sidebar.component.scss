@@ -91,9 +91,10 @@
 
       // 3. ACTIVE STATE (SELECTED)
       &.active {
-        background-color: #EA2A33;
+        background-color: #3182CE;
         color: #FFFFFF !important; 
-        box-shadow: 0 4px 12px rgba(234, 42, 51, 0.25);
+        box-shadow: 0 4px 12px rgba(49, 130, 206, 0.25);
+        font-weight: 600;
         
         // This ensures that even if you hover while active, it stays exactly as is
         cursor: default; 
@@ -140,9 +141,10 @@
           }
 
           &.active {
-            background-color: #EA2A33;
+            background-color: #3182CE;
             color: white;
-            border-left-color: #EA2A33;
+            border-left-color: #3182CE;
+            font-weight: 500;
           }
         }
       }
