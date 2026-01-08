@@ -18,9 +18,9 @@
       
       <!-- Service Menu with Submenu -->
       <div class="nav-menu-item">
-        <a routerLink="/service_management" routerLinkActive="active">Service</a>
+        <a routerLink="/service_management" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Service</a>
         <div class="submenu">
-          <a routerLink="/service_management" routerLinkActive="active" class="submenu-link">
+          <a routerLink="/service_management" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="submenu-link">
             <span class="icon">📋</span>
             <span>Manage Services</span>
           </a>
