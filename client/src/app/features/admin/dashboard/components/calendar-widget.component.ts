@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -38,7 +38,7 @@ export class CalendarWidgetComponent implements OnInit, OnDestroy {
   // TODO: Replace with your actual Google Calendar ID
   // To find your calendar ID: Google Calendar → Settings → Calendar Settings → Calendar ID
   private readonly googleCalendarId = 'primary'; // Use 'primary' for default calendar, or your specific calendar ID
-  googleCalendarUrl: string | undefined;
+  googleCalendarUrl: SafeResourceUrl | undefined;
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',

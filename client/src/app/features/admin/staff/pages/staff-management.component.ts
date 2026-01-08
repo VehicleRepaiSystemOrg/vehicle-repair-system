@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 // Import the shared button component and the service
 import { AddEmployeeButtonComponent } from '../components/add-employee-button/add-employee-button.component';
 import { StaffService, StaffMember } from '../services/staff.service';
-import { AttendanceService, MonthlyAttendance } from '../services/attendance.service';
+import { AttendanceService, MonthlyAttendance, AttendanceRecord } from '../services/attendance.service';
 
 @Component({
   selector: 'app-staff-management',
@@ -45,7 +45,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   // Employee attendance details view
   showEmployeeAttendance = signal<boolean>(false);
   selectedEmployeeForDetails = signal<number | null>(null);
-  employeeAttendanceRecords = signal<{ employeeId: number; date: string; status: string; checkIn?: string; checkOut?: string }[]>([]);
+  employeeAttendanceRecords = signal<AttendanceRecord[]>([]);
 
   ngOnInit(): void {
     // Connect the local observable to the service's data stream
@@ -257,7 +257,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   /**
    * Edit attendance record
    */
-  editAttendanceRecord(record: { employeeId: number; date: string; status: string; checkIn?: string; checkOut?: string }): void {
+  editAttendanceRecord(record: AttendanceRecord): void {
     this.selectedEmployeeId.set(record.employeeId);
     this.selectedDate.set(record.date);
     this.attendanceStatus.set(record.status);

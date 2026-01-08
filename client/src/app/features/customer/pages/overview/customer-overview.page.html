@@ -66,9 +66,9 @@
             <div class="request-status" [ngClass]="getStatusBadgeClass(request.status)">
               {{ request.status | uppercase }}
             </div>
-            <h3 class="request-title">{{ request.serviceTitle }}</h3>
-            <p class="request-date">{{ request.preferredDate | date:'MMM d, yyyy' }}</p>
-            <small class="request-meta">Requested {{ request.createdAt | date:'MMM d' }}</small>
+            <h3 class="request-title">{{ request.service }}</h3>
+            <p class="request-date">{{ request.date | date:'MMM d, yyyy' }}</p>
+            <small class="request-meta">Time: {{ request.time }}</small>
           </div>
         }
       </div>
