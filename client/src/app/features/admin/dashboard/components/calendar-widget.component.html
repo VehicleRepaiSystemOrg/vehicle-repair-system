@@ -45,57 +45,62 @@
 
 <!-- Add Appointment Modal -->
 @if (showAddAppointmentModal) {
-  <div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-overlay" (click)="closeModal()" (keydown.enter)="closeModal()" tabindex="0" role="button" aria-label="Close modal">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Add New Appointment</h3>
-        <button class="modal-close" (click)="closeModal()">&times;</button>
+        <button class="modal-close" (click)="closeModal()" (keydown.enter)="closeModal()" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Date</label>
-          <input type="date" [value]="selectedDate" disabled class="form-control" />
+          <label for="appointment-date">Date</label>
+          <input type="date" id="appointment-date" [value]="selectedDate" disabled class="form-control" />
         </div>
         <div class="form-group">
-          <label>Customer Name <span class="required">*</span></label>
+          <label for="appointment-customer-name">Customer Name <span class="required">*</span></label>
           <input 
             type="text" 
+            id="appointment-customer-name"
             [(ngModel)]="appointmentForm.customerName"
             placeholder="Enter customer name"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Vehicle <span class="required">*</span></label>
+          <label for="appointment-vehicle">Vehicle <span class="required">*</span></label>
           <input 
             type="text" 
+            id="appointment-vehicle"
             [(ngModel)]="appointmentForm.vehicle"
             placeholder="e.g., 2018 Sedan"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Number Plate</label>
+          <label for="appointment-number-plate">Number Plate</label>
           <input 
             type="text" 
+            id="appointment-number-plate"
             [(ngModel)]="appointmentForm.numberPlate"
             placeholder="e.g., WP-CAS-1234"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Service Type <span class="required">*</span></label>
+          <label for="appointment-service">Service Type <span class="required">*</span></label>
           <input 
             type="text" 
+            id="appointment-service"
             [(ngModel)]="appointmentForm.service"
             placeholder="e.g., Oil Change, Brake Repair"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Time <span class="required">*</span></label>
+          <label for="appointment-time">Time <span class="required">*</span></label>
           <input 
             type="time" 
+            id="appointment-time"
             [value]="appointmentForm.timeInput"
             class="form-control"
             (change)="onTimeChange($any($event.target).value)"
@@ -103,8 +108,9 @@
           <small class="time-display">{{ appointmentForm.time }}</small>
         </div>
         <div class="form-group">
-          <label>Notes (Optional)</label>
+          <label for="appointment-notes">Notes (Optional)</label>
           <textarea 
+            id="appointment-notes"
             [(ngModel)]="appointmentForm.notes"
             placeholder="Add any additional notes..."
             class="form-control"
@@ -122,73 +128,80 @@
 
 <!-- Call Appointment Modal -->
 @if (showCallAppointmentModal) {
-  <div class="modal-overlay" (click)="closeCallAppointmentModal()">
+  <div class="modal-overlay" (click)="closeCallAppointmentModal()" (keydown.enter)="closeCallAppointmentModal()" tabindex="0" role="button" aria-label="Close modal">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>📞 Add Call Appointment</h3>
-        <button class="modal-close" (click)="closeCallAppointmentModal()">&times;</button>
+        <button class="modal-close" (click)="closeCallAppointmentModal()" (keydown.enter)="closeCallAppointmentModal()" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
         <div class="call-appointment-info">
           <p><strong>📞 Phone Call Appointment</strong> - Add appointment details from customer phone call</p>
         </div>
         <div class="form-group">
-          <label>Customer Name <span class="required">*</span></label>
+          <label for="call-customer-name">Customer Name <span class="required">*</span></label>
           <input 
             type="text" 
+            id="call-customer-name"
             [(ngModel)]="callAppointmentForm.customerName"
             placeholder="Enter customer name"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Phone Number <span class="required">*</span></label>
+          <label for="call-phone-number">Phone Number <span class="required">*</span></label>
           <input 
             type="tel" 
+            id="call-phone-number"
             [(ngModel)]="callAppointmentForm.phoneNumber"
             placeholder="e.g., 0771234567"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Vehicle <span class="required">*</span></label>
+          <label for="call-vehicle">Vehicle <span class="required">*</span></label>
           <input 
             type="text" 
+            id="call-vehicle"
             [(ngModel)]="callAppointmentForm.vehicle"
             placeholder="e.g., 2018 Sedan"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Number Plate</label>
+          <label for="call-number-plate">Number Plate</label>
           <input 
             type="text" 
+            id="call-number-plate"
             [(ngModel)]="callAppointmentForm.numberPlate"
             placeholder="e.g., WP-CAS-1234"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Service Type <span class="required">*</span></label>
+          <label for="call-service">Service Type <span class="required">*</span></label>
           <input 
             type="text" 
+            id="call-service"
             [(ngModel)]="callAppointmentForm.service"
             placeholder="e.g., Oil Change, Brake Repair"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Date <span class="required">*</span></label>
+          <label for="call-date">Date <span class="required">*</span></label>
           <input 
             type="date" 
+            id="call-date"
             [(ngModel)]="callAppointmentForm.date"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Time <span class="required">*</span></label>
+          <label for="call-time">Time <span class="required">*</span></label>
           <input 
             type="time" 
+            id="call-time"
             [value]="callAppointmentForm.timeInput"
             class="form-control"
             (change)="onCallAppointmentTimeChange($any($event.target).value)"
@@ -196,8 +209,9 @@
           <small class="time-display">{{ callAppointmentForm.time }}</small>
         </div>
         <div class="form-group">
-          <label>Notes (Optional)</label>
+          <label for="call-notes">Notes (Optional)</label>
           <textarea 
+            id="call-notes"
             [(ngModel)]="callAppointmentForm.notes"
             placeholder="Add any additional notes from the call..."
             class="form-control"
@@ -215,33 +229,36 @@
 
 <!-- Add Holiday Modal -->
 @if (showAddHolidayModal) {
-  <div class="modal-overlay" (click)="closeHolidayModal()">
+  <div class="modal-overlay" (click)="closeHolidayModal()" (keydown.enter)="closeHolidayModal()" tabindex="0" role="button" aria-label="Close modal">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Add Special Holiday / Poya Day</h3>
-        <button class="modal-close" (click)="closeHolidayModal()">&times;</button>
+        <button class="modal-close" (click)="closeHolidayModal()" (keydown.enter)="closeHolidayModal()" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Holiday Name <span class="required">*</span></label>
+          <label for="holiday-name">Holiday Name <span class="required">*</span></label>
           <input 
             type="text" 
+            id="holiday-name"
             [(ngModel)]="holidayForm.name"
             placeholder="e.g., Full Moon Poya, New Year, Christmas"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Date <span class="required">*</span></label>
+          <label for="holiday-date">Date <span class="required">*</span></label>
           <input 
             type="date" 
+            id="holiday-date"
             [(ngModel)]="holidayForm.date"
             class="form-control"
           />
         </div>
         <div class="form-group">
-          <label>Type <span class="required">*</span></label>
+          <label for="holiday-type">Type <span class="required">*</span></label>
           <select 
+            id="holiday-type"
             [(ngModel)]="holidayForm.type"
             class="form-control"
           >

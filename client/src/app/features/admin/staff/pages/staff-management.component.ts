@@ -45,7 +45,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   // Employee attendance details view
   showEmployeeAttendance = signal<boolean>(false);
   selectedEmployeeForDetails = signal<number | null>(null);
-  employeeAttendanceRecords = signal<any[]>([]);
+  employeeAttendanceRecords = signal<{ employeeId: number; date: string; status: string; checkIn?: string; checkOut?: string }[]>([]);
 
   ngOnInit(): void {
     // Connect the local observable to the service's data stream
@@ -257,7 +257,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   /**
    * Edit attendance record
    */
-  editAttendanceRecord(record: any): void {
+  editAttendanceRecord(record: { employeeId: number; date: string; status: string; checkIn?: string; checkOut?: string }): void {
     this.selectedEmployeeId.set(record.employeeId);
     this.selectedDate.set(record.date);
     this.attendanceStatus.set(record.status);

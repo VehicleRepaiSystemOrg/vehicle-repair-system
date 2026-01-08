@@ -148,12 +148,12 @@
                     </div>
 
                     <div class="info-group">
-                      <label>Covered Item</label>
+                      <div class="info-label">Covered Item</div>
                       <div class="info-value highlight">{{ warrantyItem.partName }}</div>
                     </div>
 
                     <div class="info-group">
-                      <label>Part Details</label>
+                      <div class="info-label">Part Details</div>
                       <div class="info-value detail-text">
                         Part Number: {{ warrantyItem.partNumber }}<br>
                         Warranty: {{ formatWarranty(warrantyItem.warrantyMonths, warrantyItem.warrantyYears) }}
@@ -162,12 +162,12 @@
 
                     <div class="date-row">
                       <div class="date-group">
-                        <label>Installed Date</label>
+                        <div class="info-label">Installed Date</div>
                         <span>{{ formatDate(warrantyItem.installedDate) }}</span>
                       </div>
                       <div class="date-arrow">→</div>
                       <div class="date-group text-right">
-                        <label>Warranty End</label>
+                        <div class="info-label">Warranty End</div>
                         <span [class.text-danger]="warrantyItem.status === 'expiring' || warrantyItem.status === 'expired'">
                           {{ formatDate(warrantyItem.endDate) }}
                         </span>

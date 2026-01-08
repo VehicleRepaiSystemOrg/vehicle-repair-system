@@ -195,7 +195,7 @@ export class ViewCustomerComponent implements OnInit, OnDestroy {
     // Load customer warranty items
     if (this.customer) {
       // Subscribe to warranty items changes
-      const warrantySub = this.warrantyService.allWarrantyItems$.subscribe(items => {
+      const warrantySub = this.warrantyService.allWarrantyItems$.subscribe(() => {
         // Refresh statuses first
         this.warrantyService.refreshWarrantyStatuses();
         

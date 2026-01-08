@@ -5,7 +5,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import interactionPlugin from '@fullcalendar/interaction';
 import { AppointmentService, Appointment } from '../../core/services/appointment.service';
 import { Subscription } from 'rxjs';
 
@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs';
 })
 export class CalendarWidgetComponent implements OnInit, OnDestroy {
   @Input() customerId?: number; // Optional customer ID to filter appointments
-  @Input() showTeamAvailability: boolean = true; // Show team availability by default
+  @Input() showTeamAvailability = true; // Show team availability by default
 
   private readonly appointmentService = inject(AppointmentService);
   private subscription?: Subscription;
@@ -87,7 +87,7 @@ export class CalendarWidgetComponent implements OnInit, OnDestroy {
     // Add customer appointments
     customerAppointments.forEach(apt => {
       const dateStr = apt.date; // Format: YYYY-MM-DD
-      let timeStr = apt.time; // Format: "10:00 AM" or "14:30"
+      const timeStr = apt.time; // Format: "10:00 AM" or "14:30"
       
       // Parse time to 24-hour format if needed
       let hours = 10;

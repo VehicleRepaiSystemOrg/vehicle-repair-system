@@ -280,7 +280,7 @@ export class AppointmentService {
     
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour default
 
-    const formatDate = (date: any): string => {
+    const formatDate = (date: Date | string): string => {
       try {
         const d = new Date(date);
         // Check if date is valid

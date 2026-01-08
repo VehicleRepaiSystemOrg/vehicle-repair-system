@@ -90,7 +90,7 @@
 
   <!-- Employee Attendance Details Modal -->
   @if (showEmployeeAttendance()) {
-    <div class="modal-overlay" (click)="closeEmployeeAttendance()">
+    <div class="modal-overlay" (click)="closeEmployeeAttendance()" (keydown.enter)="closeEmployeeAttendance()" tabindex="0" role="button" aria-label="Close modal">
       <div class="modal-content modal-content-large" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3>
@@ -181,7 +181,7 @@
 
   <!-- Mark Attendance Modal -->
   @if (showMarkAttendance()) {
-    <div class="modal-overlay" (click)="closeMarkAttendance()">
+    <div class="modal-overlay" (click)="closeMarkAttendance()" (keydown.enter)="closeMarkAttendance()" tabindex="0" role="button" aria-label="Close modal">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h3>Mark Attendance</h3>
@@ -191,9 +191,10 @@
         <div class="modal-body">
           @if (staff$ | async; as staff) {
             <div class="form-group">
-              <label>Employee</label>
+              <label for="attendance-employee">Employee</label>
               <input 
                 type="text" 
+                id="attendance-employee"
                 [value]="getEmployeeName(selectedEmployeeId()!, staff)"
                 readonly
                 class="form-input">

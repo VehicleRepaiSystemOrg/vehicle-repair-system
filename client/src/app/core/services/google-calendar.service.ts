@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Appointment } from './appointment.service';
 
 export interface GoogleCalendarEvent {
@@ -18,10 +18,10 @@ export interface GoogleCalendarEvent {
   location?: string;
   reminders?: {
     useDefault: boolean;
-    overrides?: Array<{
+    overrides?: {
       method: string;
       minutes: number;
-    }>;
+    }[];
   };
 }
 
@@ -61,7 +61,7 @@ export class GoogleCalendarService {
    * 
    * Note: For production, consider using backend API for better security.
    */
-  createCalendarEvent(appointment: Appointment): Observable<any> {
+  createCalendarEvent(appointment: Appointment): Observable<{ htmlLink?: string; id?: string; error?: string; method?: string }> {
     const event: GoogleCalendarEvent = {
       summary: `Service: ${appointment.service} - ${appointment.vehicle}`,
       description: this.formatEventDescription(appointment),
@@ -252,7 +252,7 @@ export class GoogleCalendarService {
     
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour default
 
-    const formatDate = (date: any): string => {
+    const formatDate = (date: Date | string): string => {
       try {
         const d = new Date(date);
         // Check if date is valid
@@ -279,7 +279,7 @@ export class GoogleCalendarService {
   /**
    * Update calendar event
    */
-  updateCalendarEvent(eventId: string, appointment: Appointment): Observable<any> {
+  updateCalendarEvent(eventId: string, appointment: Appointment): Observable<{ htmlLink?: string; error?: string }> {
     const event: GoogleCalendarEvent = {
       summary: `Service: ${appointment.service} - ${appointment.vehicle}`,
       description: this.formatEventDescription(appointment),
@@ -324,7 +324,7 @@ export class GoogleCalendarService {
   /**
    * Delete calendar event
    */
-  deleteCalendarEvent(eventId: string): Observable<any> {
+  deleteCalendarEvent(eventId: string): Observable<{ error?: string }> {
     if (this.apiKey && eventId) {
       const url = `${this.apiBaseUrl}/calendars/${this.calendarId}/events/${eventId}`;
       return this.http.delete(url, {

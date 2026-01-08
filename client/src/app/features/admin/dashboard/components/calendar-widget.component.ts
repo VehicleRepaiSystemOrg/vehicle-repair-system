@@ -7,7 +7,7 @@ import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { AppointmentService } from '../../../../core/services/appointment.service';
+import { AppointmentService, Appointment } from '../../../../core/services/appointment.service';
 import { ServiceService } from '../../service_management/services/service.service';
 import { Subscription } from 'rxjs';
 
@@ -38,7 +38,7 @@ export class CalendarWidgetComponent implements OnInit, OnDestroy {
   // TODO: Replace with your actual Google Calendar ID
   // To find your calendar ID: Google Calendar → Settings → Calendar Settings → Calendar ID
   private readonly googleCalendarId = 'primary'; // Use 'primary' for default calendar, or your specific calendar ID
-  googleCalendarUrl: any;
+  googleCalendarUrl: string | undefined;
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -478,7 +478,7 @@ export class CalendarWidgetComponent implements OnInit, OnDestroy {
   /**
    * Update calendar events from appointments
    */
-  private updateCalendarEvents(appointments: any[]): void {
+  private updateCalendarEvents(appointments: Appointment[]): void {
     const events: EventInput[] = [
       // Keep existing mock data for staff availability
       { title: 'Liam H. (Available)', start: '2026-01-05', color: '#28a745' },
@@ -515,7 +515,7 @@ export class CalendarWidgetComponent implements OnInit, OnDestroy {
     appointments.forEach(apt => {
       // Format date and time properly for FullCalendar
       const dateStr = apt.date; // Format: YYYY-MM-DD
-      let timeStr = apt.time; // Format: "10:00 AM" or "14:30"
+      const timeStr = apt.time; // Format: "10:00 AM" or "14:30"
       
       // Parse time to 24-hour format if needed
       let hours = 10;

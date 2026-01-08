@@ -13,13 +13,6 @@ interface Warranty {
   status: 'active' | 'expiring' | 'expired';
 }
 
-interface WarrantyHistory {
-  id: number;
-  provider: string;
-  item: string;
-  startDate: string;
-  endDate: string;
-}
 
 @Component({
   standalone: true,
@@ -79,7 +72,7 @@ export class CustomerWarrantyPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Load warranty items for this customer
-    this.subscription = this.warrantyService.allWarrantyItems$.subscribe(items => {
+    this.subscription = this.warrantyService.allWarrantyItems$.subscribe(() => {
       // Refresh statuses first
       this.warrantyService.refreshWarrantyStatuses();
       

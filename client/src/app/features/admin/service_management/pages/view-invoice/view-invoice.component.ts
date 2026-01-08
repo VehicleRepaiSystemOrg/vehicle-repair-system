@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { InvoiceService, InvoiceItem, InvoiceDetails } from '../../../../../core/services/invoice.service';
+import { InvoiceService, InvoiceItem } from '../../../../../core/services/invoice.service';
 
 interface InvoiceHistoryItem {
   id: string;

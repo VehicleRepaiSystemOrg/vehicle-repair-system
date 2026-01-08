@@ -198,10 +198,7 @@ export class CustomerInvoiceOverviewPageComponent implements OnInit, OnDestroy {
     // Use customer name from loaded invoice if available, otherwise use default
     const customerName = this.customerName || this.customerNameForHistory;
     
-    // Get invoice history from service for this customer
-    const serviceHistory = this.invoiceService.getInvoiceHistory(customerName);
-    
-    // Also get all invoices and filter by customer name to catch any that might not be in history
+    // Get all invoices and filter by customer name to catch any that might not be in history
     const allInvoices = this.invoiceService.getAllInvoices();
     const customerInvoices = allInvoices.filter(
       inv => inv.customerName.toLowerCase() === customerName.toLowerCase()
