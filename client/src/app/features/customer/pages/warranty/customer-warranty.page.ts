@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, inject, signal, computed, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WarrantyService, WarrantyItem } from '../../../../core/services/warranty.service';
+import { Subscription } from 'rxjs';
 
 interface Warranty {
   id: number;
@@ -27,9 +29,111 @@ interface WarrantyHistory {
   styleUrl: './customer-warranty.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomerWarrantyPageComponent {
+export class CustomerWarrantyPageComponent implements OnInit, OnDestroy {
+  private readonly warrantyService = inject(WarrantyService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private subscription?: Subscription;
   
-  warranties: Warranty[] = [
+  // TODO: Get customer ID from auth service or route
+  // For now, using a mock customer ID - replace with actual customer ID
+  private readonly customerId = 1; // This should come from authentication/route
+  
+  warrantyItems = signal<WarrantyItem[]>([]);
+  
+  // Convert warranty items to display format - show all items including expired in main section
+  warranties = computed(() => {
+    // Sort items: expired first (highlighted), then expiring, then active
+    const sortedItems = [...this.warrantyItems()].sort((a, b) => {
+      const statusOrder = { 'expired': 0, 'expiring': 1, 'active': 2 };
+      return (statusOrder[a.status] || 3) - (statusOrder[b.status] || 3);
+    });
+    
+    return sortedItems.map(item => ({
+      id: item.id,
+      provider: item.supplier,
+      item: item.partName,
+      details: `Part Number: ${item.partNumber} - Warranty: ${this.formatWarranty(item.warrantyMonths, item.warrantyYears)}`,
+      startDate: this.formatDate(item.startDate),
+      endDate: this.formatDate(item.endDate),
+      status: item.status
+    }));
+  });
+
+  // Count warranties by status
+  activeCount = computed(() => this.warranties().filter(w => w.status === 'active').length);
+  expiringCount = computed(() => this.warranties().filter(w => w.status === 'expiring').length);
+  expiredCount = computed(() => this.warranties().filter(w => w.status === 'expired').length);
+  
+  warrantyHistory = computed(() => {
+    // Get expired warranties for history
+    return this.warrantyItems()
+      .filter(item => item.status === 'expired')
+      .map(item => ({
+        id: item.id,
+        provider: item.supplier,
+        item: item.partName,
+        startDate: this.formatDate(item.startDate),
+        endDate: this.formatDate(item.endDate)
+      }));
+  });
+
+  ngOnInit(): void {
+    // Load warranty items for this customer
+    this.subscription = this.warrantyService.allWarrantyItems$.subscribe(items => {
+      // Refresh statuses first
+      this.warrantyService.refreshWarrantyStatuses();
+      
+      // Get updated items after refresh
+      const allItems = this.warrantyService.getAllWarrantyItems();
+      const customerItems = allItems.filter(item => item.customerId === this.customerId);
+      this.warrantyItems.set(customerItems);
+      
+      // Trigger change detection for OnPush
+      this.cdr.markForCheck();
+    });
+    
+    // Initial load
+    this.loadWarrantyItems();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
+  private loadWarrantyItems(): void {
+    // Refresh statuses
+    this.warrantyService.refreshWarrantyStatuses();
+    
+    // Get all warranty items
+    const allItems = this.warrantyService.getAllWarrantyItems();
+    const customerItems = allItems.filter(item => item.customerId === this.customerId);
+    this.warrantyItems.set(customerItems);
+    
+    // Trigger change detection
+    this.cdr.markForCheck();
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  }
+
+  formatWarranty(months: number, years: number): string {
+    if (years === 0 && months === 0) {
+      return 'No Warranty';
+    }
+    const parts: string[] = [];
+    if (years > 0) {
+      parts.push(`${years} year${years > 1 ? 's' : ''}`);
+    }
+    if (months > 0) {
+      parts.push(`${months} month${months > 1 ? 's' : ''}`);
+    }
+    return parts.join(' ');
+  }
+  
+  // Keep old mock data for fallback/display purposes if needed
+  oldWarranties: Warranty[] = [
     {
       id: 1,
       provider: 'Michelin Tires',
@@ -65,58 +169,6 @@ export class CustomerWarrantyPageComponent {
       startDate: '05/20/2021',
       endDate: '05/20/2024',
       status: 'expired'
-    }
-  ];
-
-  warrantyHistory: WarrantyHistory[] = [
-    {
-      id: 101,
-      provider: 'Brembo',
-      item: 'Ceramic Brake Pads',
-      startDate: '01/01/2021',
-      endDate: '01/01/2023',
-    },
-    {
-      id: 102,
-      provider: 'Dealership',
-      item: 'Powertrain Coverage',
-      startDate: '06/15/2018',
-      endDate: '06/15/2023',
-    },
-    {
-      id: 103,
-      provider: 'Valvoline',
-      item: 'Synthetic Oil Change',
-      startDate: '01/10/2022',
-      endDate: '01/10/2022',
-    },
-    {
-      id: 104,
-      provider: 'Bridgestone',
-      item: 'All-Weather Tires',
-      startDate: '03/05/2020',
-      endDate: '03/05/2022',
-    },
-    {
-      id: 105,
-      provider: 'NAPA Auto',
-      item: 'Wiper Blades',
-      startDate: '08/12/2021',
-      endDate: '08/12/2022',
-    },
-    {
-      id: 106,
-      provider: 'Service Center',
-      item: 'AC Compressor',
-      startDate: '02/20/2019',
-      endDate: '02/20/2021',
-    },
-    {
-      id: 107,
-      provider: 'AutoZone',
-      item: 'Spark Plugs',
-      startDate: '11/15/2019',
-      endDate: '11/15/2020',
     }
   ];
 }

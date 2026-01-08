@@ -120,3 +120,34 @@
     }
   }
 }
+
+// Mobile Responsive
+@media (max-width: 768px) {
+  .inventory-container {
+    padding: 15px;
+
+    .inventory-actions {
+      flex-direction: column;
+      gap: 15px;
+
+      .local-search {
+        width: 100%;
+      }
+
+      .btn-red-action {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .inventory-stats {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .table-card-container {
+      padding: 10px;
+      overflow-x: auto;
+    }
+  }
+}

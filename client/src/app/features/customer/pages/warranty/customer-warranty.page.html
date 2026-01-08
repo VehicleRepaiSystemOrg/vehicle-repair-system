@@ -1,98 +1,137 @@
-<div class="page-container">
-  <header class="page__header">
+<div class="page">
+  <div class="page__header">
     <div>
       <div class="page__welcome">
-        <span class="welcome-text">Tracking coverage for</span>
-        <span class="vehicle-badge">VEHICLE #1234</span>
+        <div class="page__welcome-title">Warranty Tracking</div>
+        <div class="page__welcome-sub">Track your vehicle warranty coverage</div>
       </div>
     </div>
-  </header>
+  </div>
 
   <main class="panel">
     <section class="section">
-      <div class="section__header">
-        <div class="header-left">
-          <h2 class="section__title">Active Coverage</h2>
-          <span class="badge-count">{{ warranties.length }} Items</span>
-        </div>
-        <button class="btn-show-more">Show More</button>
-      </div>
-
-      <div class="card-grid">
-        @for (warranty of warranties; track warranty.id) {
-          <div class="warranty-card" [ngClass]="'card--' + warranty.status">
-            
-            <div class="warranty-card__top">
-              <span class="provider-label">{{ warranty.provider }}</span>
-              
-              <div class="pill" [ngClass]="'pill--' + warranty.status">
-                @if (warranty.status === 'expiring') {
-                  Expiring Soon
-                } @else if (warranty.status === 'expired') {
-                  Expired
-                } @else {
-                  Active
-                }
-              </div>
-            </div>
-
-            <div class="info-group">
-              <label for="item{{warranty.id}}">Covered Item</label>
-              <div id="item{{warranty.id}}" class="info-value highlight">{{ warranty.item }}</div>
-            </div>
-
-            <div class="info-group">
-              <label for="details{{warranty.id}}">Coverage Details</label>
-              <div id="details{{warranty.id}}" class="info-value detail-text">
-                {{ warranty.details }}
-              </div>
-            </div>
-
-            <div class="date-row">
-              <div class="date-group">
-                <label for="start{{warranty.id}}">Valid From</label>
-                <span id="start{{warranty.id}}">{{ warranty.startDate }}</span>
-              </div>
-              <div class="date-arrow">→</div>
-              <div class="date-group text-right">
-                <label for="end{{warranty.id}}">Expires</label>
-                <span id="end{{warranty.id}}" [class.text-danger]="warranty.status === 'expiring'">
-                  {{ warranty.endDate }}
-                </span>
-              </div>
-            </div>
+      <div class="panel__header">
+        <div>
+          <div class="panel__title">Warranty Coverage</div>
+          <div class="panel__subtitle">
+            {{ activeCount() }} Active, 
+            {{ expiringCount() }} Expiring Soon, 
+            {{ expiredCount() }} Expired
           </div>
-        }
+        </div>
       </div>
+
+      @if (warranties().length > 0) {
+        <div class="card-grid">
+          @for (warranty of warranties(); track warranty.id) {
+            <div class="warranty-card" [ngClass]="'card--' + warranty.status">
+              
+              <div class="warranty-card__top">
+                <span class="provider-label">{{ warranty.provider }}</span>
+                
+                <div class="pill" [ngClass]="'pill--' + warranty.status">
+                  @if (warranty.status === 'expiring') {
+                    Expiring Soon
+                  } @else if (warranty.status === 'expired') {
+                    Expired
+                  } @else {
+                    Active
+                  }
+                </div>
+              </div>
+
+              <div class="info-group">
+                <label for="item{{warranty.id}}">Covered Item</label>
+                <div id="item{{warranty.id}}" class="info-value highlight">{{ warranty.item }}</div>
+              </div>
+
+              <div class="info-group">
+                <label for="details{{warranty.id}}">Coverage Details</label>
+                <div id="details{{warranty.id}}" class="info-value detail-text">
+                  {{ warranty.details }}
+                </div>
+              </div>
+
+              <div class="date-row" [class.date-row--expired]="warranty.status === 'expired'">
+                <div class="date-group">
+                  <label for="start{{warranty.id}}">Valid From</label>
+                  <span id="start{{warranty.id}}">{{ warranty.startDate }}</span>
+                </div>
+                <div class="date-arrow">→</div>
+                <div class="date-group text-right">
+                  <label for="end{{warranty.id}}">Expires</label>
+                  <span id="end{{warranty.id}}" 
+                    [class.text-danger]="warranty.status === 'expiring' || warranty.status === 'expired'"
+                    [class.text-expired]="warranty.status === 'expired'">
+                    {{ warranty.endDate }}
+                  </span>
+                </div>
+              </div>
+              
+              @if (warranty.status === 'expired') {
+                <div class="expired-banner">
+                  <span class="expired-icon">⚠️</span>
+                  <span class="expired-text">This warranty has expired</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-state__icon">📋</div>
+          <div class="empty-state__title">No Active Warranties</div>
+          <div class="empty-state__message">
+            You don't have any active warranty items yet. Warranty items will appear here once they are added to your services.
+          </div>
+        </div>
+      }
     </section>
 
     <section class="section section--spaced">
-      <div class="section__header">
-        <h2 class="section__title">Warranty History</h2>
-      </div>
-
-      <div class="history-list">
-        <div class="history-row history-row--head">
-          <span>Provider / Item</span>
-          <span>Coverage Period</span>
-          <span>Status</span>
+      <div class="panel__header">
+        <div>
+          <div class="panel__title">Warranty History</div>
+          <div class="panel__subtitle">Expired warranty records</div>
         </div>
-
-        @for (history of warrantyHistory; track history.id) {
-          <div class="history-row">
-            <div>
-              <div class="row-provider">{{ history.provider }}</div>
-              <div class="row-sub">{{ history.item }}</div>
-            </div>
-            <div class="row-date">
-              {{ history.startDate }} - {{ history.endDate }}
-            </div>
-            <div>
-              <span class="pill pill--expired">Expired</span>
-            </div>
-          </div>
-        }
       </div>
+
+      @if (warrantyHistory().length > 0) {
+        <div class="history-table-container">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Item</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (history of warrantyHistory(); track history.id) {
+                <tr>
+                  <td class="table-provider">{{ history.provider }}</td>
+                  <td class="table-item">{{ history.item }}</td>
+                  <td class="table-date">{{ history.startDate }}</td>
+                  <td class="table-date">{{ history.endDate }}</td>
+                  <td class="table-status">
+                    <span class="pill pill--expired">Expired</span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-state__icon">📜</div>
+          <div class="empty-state__title">No Warranty History</div>
+          <div class="empty-state__message">
+            Expired warranty records will appear here.
+          </div>
+        </div>
+      }
     </section>
   </main>
 </div>

@@ -61,4 +61,8 @@ export class EditCustomerComponent implements OnInit {
   trackByIndex(index: number): number {
     return index;
   }
+
+  goBack(): void {
+    this.router.navigate(['/customer_overview']);
+  }
 }

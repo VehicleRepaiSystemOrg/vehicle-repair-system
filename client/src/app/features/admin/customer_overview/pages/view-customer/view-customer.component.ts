@@ -1,7 +1,10 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { WarrantyService, WarrantyItem } from '../../../../../core/services/warranty.service';
+import { CustomerService } from '../../services/customer.service';
 
 interface Payment {
   id: number;
@@ -44,14 +47,21 @@ interface Customer {
   templateUrl: './view-customer.component.html',
   styleUrls: ['./view-customer.component.scss']
 })
-export class ViewCustomerComponent implements OnInit {
+export class ViewCustomerComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly warrantyService = inject(WarrantyService);
+  private readonly customerService = inject(CustomerService);
+  private subscriptions = new Subscription();
 
   customer: Customer | null = null;
   selectedVehicle = signal<string>('');
   startDate = signal<string>('');
   endDate = signal<string>('');
+
+  // Warranty management
+  customerWarrantyItems = signal<WarrantyItem[]>([]);
+  showWarrantySection = signal<boolean>(true); // Show by default
 
   // Mock data
   private mockCustomers: Customer[] = [
@@ -159,12 +169,55 @@ export class ViewCustomerComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    // Get customer ID from route
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.customer = this.mockCustomers.find(c => c.id === id) || null;
+    
+    // Load customer from CustomerService (not mock data)
+    const foundCustomer = this.customerService.getCustomerById(id);
+    if (foundCustomer) {
+      // Convert CustomerService customer to view component customer format
+      this.customer = {
+        id: foundCustomer.id,
+        name: foundCustomer.name,
+        phone: foundCustomer.phone,
+        email: foundCustomer.email,
+        vehicles: foundCustomer.vehicles
+      };
+    } else {
+      // Fallback to mock data if not found in CustomerService
+      this.customer = this.mockCustomers.find(c => c.id === id) || null;
+    }
 
     if (this.customer && this.customer.vehicles.length > 0) {
       this.selectedVehicle.set(this.customer.vehicles[0].numberPlate);
     }
+
+    // Load customer warranty items
+    if (this.customer) {
+      // Subscribe to warranty items changes
+      const warrantySub = this.warrantyService.allWarrantyItems$.subscribe(items => {
+        // Refresh statuses first
+        this.warrantyService.refreshWarrantyStatuses();
+        
+        // Get updated items after refresh
+        const allItems = this.warrantyService.getAllWarrantyItems();
+        const customerItems = allItems.filter(item => item.customerId === this.customer!.id);
+        this.customerWarrantyItems.set(customerItems);
+        
+        // Auto-show warranty section if there are items
+        if (customerItems.length > 0) {
+          this.showWarrantySection.set(true);
+        }
+      });
+      this.subscriptions.add(warrantySub);
+      
+      // Initial load
+      this.loadCustomerWarrantyItems();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   goBack(): void {
@@ -208,5 +261,58 @@ export class ViewCustomerComponent implements OnInit {
   clearDateFilters(): void {
     this.startDate.set('');
     this.endDate.set('');
+  }
+
+  toggleWarrantySection(): void {
+    this.showWarrantySection.update(val => !val);
+  }
+
+  removeWarrantyItem(warrantyItemId: number): void {
+    if (confirm('Are you sure you want to remove this warranty item?')) {
+      this.warrantyService.removeWarrantyItem(warrantyItemId);
+      if (this.customer) {
+        const updatedItems = this.warrantyService.getWarrantyItemsByCustomerId(this.customer.id);
+        this.customerWarrantyItems.set(updatedItems);
+      }
+    }
+  }
+
+  formatWarranty(months: number, years: number): string {
+    if (years === 0 && months === 0) {
+      return 'No Warranty';
+    }
+    const parts: string[] = [];
+    if (years > 0) {
+      parts.push(`${years} year${years > 1 ? 's' : ''}`);
+    }
+    if (months > 0) {
+      parts.push(`${months} month${months > 1 ? 's' : ''}`);
+    }
+    return parts.join(' ');
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  }
+
+  /**
+   * Load warranty items for the current customer
+   */
+  private loadCustomerWarrantyItems(): void {
+    if (!this.customer) return;
+    
+    // Refresh warranty statuses first
+    this.warrantyService.refreshWarrantyStatuses();
+    
+    // Get all warranty items and filter by customer ID
+    const allItems = this.warrantyService.getAllWarrantyItems();
+    const customerItems = allItems.filter(item => item.customerId === this.customer!.id);
+    this.customerWarrantyItems.set(customerItems);
+    
+    // Auto-show warranty section if there are items
+    if (customerItems.length > 0) {
+      this.showWarrantySection.set(true);
+    }
   }
 }

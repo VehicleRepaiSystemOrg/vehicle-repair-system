@@ -37,11 +37,11 @@
   <section class="panel" style="margin-top: 24px;">
     <div class="panel__header">
       <div>
-        <div class="panel__title">Availability Schedule</div>
-        <div class="panel__subtitle">Check team availability</div>
+        <div class="panel__title">My Appointments Calendar</div>
+        <div class="panel__subtitle">View your scheduled services and appointments</div>
       </div>
     </div>
-    <app-calendar-widget></app-calendar-widget>
+    <app-calendar-widget [customerId]="customerId" [showTeamAvailability]="false"></app-calendar-widget>
   </section>
 
   <!-- MY REQUESTS SECTION -->
@@ -169,29 +169,45 @@
           </div>
 
           <div class="reminders">
-            <div class="reminder-card">
-              <div class="reminder-card__info">
-                <div class="reminder-card__title">Oil Change</div>
-                <div class="reminder-card__date">Due: 1/12/2025</div>
+            @if (upcomingAppointments.length > 0) {
+              @for (appointment of upcomingAppointments; track appointment.id) {
+                <div class="reminder-card">
+                  <div class="reminder-card__info">
+                    <div class="reminder-card__title">{{ appointment.service }}</div>
+                    <div class="reminder-card__date">
+                      {{ formatDate(appointment.date) }} at {{ appointment.time }}
+                    </div>
+                    <div class="reminder-card__vehicle" style="font-size: 11px; color: #718096; margin-top: 4px;">
+                      {{ appointment.vehicle }}
+                    </div>
+                  </div>
+                  <div class="reminder-card__actions">
+                    @let daysUntil = getDaysUntil(appointment.date);
+                    <div 
+                      class="reminder-badge"
+                      [ngClass]="{
+                        'reminder-badge--warning': daysUntil <= 1,
+                        'reminder-badge--info': daysUntil > 1 && daysUntil <= 7,
+                        'reminder-badge--success': daysUntil > 7
+                      }">
+                      {{ daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : daysUntil + ' days' }}
+                    </div>
+                    @if (appointment.googleCalendarLink) {
+                      <button 
+                        class="btn-calendar-link"
+                        (click)="openGoogleCalendar(appointment.googleCalendarLink)"
+                        title="Add to Google Calendar">
+                        📅
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="no-appointments">
+                <p>No upcoming appointments scheduled.</p>
               </div>
-              <div class="reminder-badge reminder-badge--warning">0 days</div>
-            </div>
-
-            <div class="reminder-card">
-              <div class="reminder-card__info">
-                <div class="reminder-card__title">Tire Rotation</div>
-                <div class="reminder-card__date">Due: 1/12/2025</div>
-              </div>
-              <div class="reminder-badge reminder-badge--neutral">0 days</div>
-            </div>
-
-            <div class="reminder-card">
-              <div class="reminder-card__info">
-                <div class="reminder-card__title">Brake Inspection</div>
-                <div class="reminder-card__date">Due: 1/12/2025</div>
-              </div>
-              <div class="reminder-badge reminder-badge--danger">0 days</div>
-            </div>
+            }
           </div>
         </div>
       </div>

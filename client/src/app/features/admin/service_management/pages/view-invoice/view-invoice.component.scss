@@ -1,0 +1,375 @@
+// --- Variables ---
+$primary: #4f46e5;
+$primary-hover: #4338ca;
+$bg-app: #f3f4f6;
+$bg-surface: #ffffff;
+$text-main: #1f2937;
+$text-muted: #6b7280;
+$border-color: #e5e7eb;
+$success: #10b981;
+$danger: #EA2A33;
+$warning: #f59e0b;
+
+// --- Global Layout ---
+.invoice-container {
+  width: 100%;
+  padding: 12px 24px 24px 24px; 
+  background-color: $bg-app;
+  min-height: 100vh;
+  color: $text-main;
+  box-sizing: border-box;
+}
+
+// --- Page Header ---
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px; 
+  padding-bottom: 0;
+  border-bottom: 1px solid transparent;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #F7FAFC;
+  color: #4A5568;
+  border: 1px solid #E2E8F0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #EDF2F7;
+    border-color: #CBD5E0;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// --- Layout Grid ---
+.layout-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr; 
+  gap: 20px; 
+  align-items: start;
+}
+
+// --- LEFT COLUMN: History Panel ---
+.history-panel {
+  background: $bg-surface;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  
+  @media (min-width: 1025px) {
+    margin-top: 0; 
+  }
+}
+
+.history-header {
+  margin-bottom: 12px;
+  h3 { font-size: 1.1rem; font-weight: 800; margin: 0; color: $text-main; letter-spacing: -0.02em; }
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-card {
+  display: block;
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover { border-color: $primary; background: #fdfdfd; }
+
+  &.active {
+    background: #eff6ff;
+    border-color: $primary;
+    box-shadow: 0 0 0 1px $primary;
+    .h-id, .h-amount { color: $primary; }
+  }
+}
+
+.h-row-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  .h-id { font-size: 0.9rem; font-weight: 700; color: $text-main; }
+  .h-amount { font-size: 0.9rem; font-weight: 700; color: $text-main; }
+}
+
+.h-row-btm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .h-date { font-size: 0.75rem; color: $text-muted; }
+}
+
+// --- RIGHT COLUMN: Content Actions ---
+.content-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  &--primary {
+    background-color: $primary;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba($primary, 0.2);
+    &:hover { background-color: $primary-hover; transform: translateY(-1px); }
+  }
+
+  &--secondary {
+    background-color: white;
+    border-color: $border-color;
+    color: $text-main;
+    &:hover { background-color: #f9fafb; border-color: darken($border-color, 10%); }
+  }
+}
+
+// --- Invoice Sheet ---
+.invoice-sheet {
+  background: $bg-surface;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+// Sheet Header
+.sheet-header {
+  margin-bottom: 32px;
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .logo-area {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .logo-placeholder {
+    width: 48px;
+    height: 48px;
+    background: lighten($primary, 42%);
+    color: $primary;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .invoice-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: $text-main;
+    margin: 0;
+    line-height: 1.1;
+  }
+  .invoice-subtitle {
+    font-size: 0.9rem;
+    color: $text-muted;
+  }
+}
+
+// --- STATUS BADGES & DOTS ---
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &--paid {
+    background-color: lighten($success, 46%);
+    color: darken($success, 10%);
+    border: 1px solid lighten($success, 35%);
+  }
+  
+  &--overdue {
+    background-color: lighten($danger, 42%);
+    color: darken($danger, 10%);
+    border: 1px solid lighten($danger, 30%);
+  }
+
+  &--pending {
+    background-color: lighten($warning, 42%);
+    color: darken($warning, 10%);
+    border: 1px solid lighten($warning, 30%);
+  }
+}
+
+.status-dot {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  &::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  
+  &.paid { color: darken($success, 10%); &::before { background: $success; } }
+  &.pending { color: #d97706; &::before { background: #f59e0b; } }
+  &.overdue { color: $danger; &::before { background: $danger; } }
+}
+
+.divider { border: 0; height: 1px; background: $border-color; margin: 32px 0; }
+
+// Meta Grid
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: #f9fafb;
+  border-radius: 12px;
+
+  .meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    .meta-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: $text-muted; font-weight: 700; }
+    .value { font-size: 1rem; font-weight: 500; color: $text-main; 
+      &.highlight { color: $primary; font-weight: 700; }
+      &.link { color: $primary; cursor: pointer; text-decoration: underline; }
+    }
+  }
+}
+
+// Table Styling
+.table-container { margin-bottom: 40px; }
+.responsive-table { width: 100%; }
+
+.table-header, .table-row {
+  display: grid;
+  grid-template-columns: 4fr 1fr 1.5fr 1.5fr 1.5fr;
+  padding: 16px;
+  align-items: center;
+}
+
+.table-header {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: $text-muted; letter-spacing: 0.05em;
+  border-bottom: 2px solid $border-color; margin-bottom: 8px;
+}
+
+.table-row {
+  border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; transition: background-color 0.15s; border-radius: 8px;
+  &:hover { background-color: #f9fafb; }
+  &:last-child { border-bottom: none; }
+}
+
+.col {
+  &.col-qty, &.col-price, &.col-tax, &.col-total { text-align: right; font-variant-numeric: tabular-nums; }
+}
+
+.item-name { font-weight: 600; color: $text-main; }
+.text-muted { color: lighten($text-muted, 10%); }
+.fw-bold { font-weight: 700; }
+.text-success { color: $success; }
+.text-danger { color: $danger; }
+
+// Footer & Totals
+.invoice-footer {
+  display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px;
+}
+.payment-info { flex: 1; min-width: 250px; }
+.footer-title { font-size: 0.9rem; font-weight: 700; color: $text-muted; margin-bottom: 12px; text-transform: uppercase; }
+
+.payment-details {
+  background: #f9fafb; padding: 20px; border-radius: 12px; border: 1px dashed $border-color;
+  .payment-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; &:last-child { margin-bottom: 0; } }
+}
+
+.totals-box { flex: 0 0 300px; display: flex; flex-direction: column; gap: 12px; }
+
+.totals-row {
+  display: flex; justify-content: space-between; font-size: 0.95rem; color: $text-muted;
+  span:last-child { color: $text-main; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  &.grand-total {
+    font-size: 1.4rem; color: $text-main; margin-top: 12px;
+    span:first-child { font-weight: 700; }
+    span:last-child { font-weight: 800; color: $primary; }
+  }
+}
+
+.totals-divider { height: 1px; background: $border-color; margin: 4px 0; }
+
+.amount-paid {
+  display: flex; justify-content: space-between; margin-top: 16px; padding-top: 16px;
+  border-top: 1px dashed $border-color; font-size: 1rem; color: $success; font-weight: 700;
+}
+
+// Mobile Responsive
+@media (max-width: 1024px) {
+  .layout-grid { grid-template-columns: 1fr; }
+  .history-panel { position: static; margin-bottom: 2rem; max-height: none; margin-top: 0; }
+  .history-list { flex-direction: row; overflow-x: auto; padding-bottom: 0.5rem; }
+  .history-card { min-width: 200px; }
+  .content-actions { justify-content: flex-start; margin-bottom: 2rem; }
+  .invoice-container { padding: 16px; } 
+}
+
+@media (max-width: 768px) {
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 24px; }
+  .invoice-sheet { padding: 20px; }
+  .sheet-header .header-content { flex-direction: column; gap: 16px; }
+  .table-header { display: none; }
+  
+  .table-row {
+    grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 8px; border-bottom: 1px solid $border-color;
+    .col-item { grid-column: 1 / -1; font-weight: 700; }
+    .col-qty::before { content: "Qty: "; color: $text-muted; }
+    .col-price::before { content: "Price: "; color: $text-muted; }
+    .col-tax::before { content: "Tax: "; color: $text-muted; }
+    .col-total::before { content: "Total: "; color: $text-muted; }
+    .col { text-align: left; }
+    .col-total { text-align: right; grid-column: 2; }
+  }
+  
+  .invoice-footer { flex-direction: column; }
+  .totals-box { width: 100%; }
+  .history-list { flex-direction: column; }
+  .history-card { min-width: auto; }
+}

@@ -86,6 +86,10 @@ export class CustomerService {
     return this.customers$.value.find(c => c.id === id);
   }
 
+  getCustomerByName(name: string) {
+    return this.customers$.value.find(c => c.name.toLowerCase() === name.toLowerCase());
+  }
+
   removeCustomer(id: number) {
     const list = this.customers$.value.filter(c => c.id !== id);
     this.customers$.next(list);

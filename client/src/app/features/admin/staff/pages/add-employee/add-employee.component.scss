@@ -4,6 +4,36 @@
   max-width: 600px;
   font-family: Arial, Helvetica, sans-serif; /* Maintaining consistency with your dashboard */
 
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0;
+      color: #000;
+    }
+
+    .btn-back {
+      background-color: #E2E8F0;
+      color: #4A5568;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #CBD5E0;
+      }
+    }
+  }
+
   h2 {
     font-size: 32px;
     font-weight: bold;
@@ -81,9 +111,24 @@
 }
 
 /* Mobile Adjustment */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .add-employee-container {
-    padding: 20px;
+    padding: 20px 15px;
+
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+      margin-bottom: 20px;
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .btn-back {
+        width: 100%;
+      }
+    }
     
     .button-group {
       flex-direction: column; /* Stack buttons on very small screens */

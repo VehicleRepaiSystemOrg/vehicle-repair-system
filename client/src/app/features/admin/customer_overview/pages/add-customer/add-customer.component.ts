@@ -67,4 +67,8 @@ export class AddCustomerComponent {
   trackByIndex(index: number): number {
     return index;
   }
+
+  goBack(): void {
+    this.router.navigate(['/customer_overview']);
+  }
 }

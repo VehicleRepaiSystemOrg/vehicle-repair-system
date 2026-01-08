@@ -1,12 +1,268 @@
 <div class="calendar-card">
   <div class="calendar-header">
     <h3 class="calendar-todo-header">Calendar & To-Do</h3>
+    <div class="calendar-actions">
+      @if (!showGoogleCalendar) {
+        <button class="btn-call-appointment" (click)="openCallAppointmentModal()">
+          📞 Call Appointment
+        </button>
+        <button class="btn-add-holiday" (click)="openAddHolidayModal()">
+          🎉 Add Holiday
+        </button>
+      }
+      <button class="btn-toggle-view" (click)="toggleView()">
+        {{ showGoogleCalendar ? 'Show App Calendar' : 'Show Google Calendar' }}
+      </button>
+    </div>
   </div>
 
   <div class="calendar-content">
-    <div class="calendar-container">
-      <!-- Direct use of full-calendar -->
-      <full-calendar [options]="calendarOptions"></full-calendar>
-    </div>
+    @if (showGoogleCalendar) {
+      <!-- Google Calendar Embed -->
+      <div class="google-calendar-container">
+        <iframe 
+          [src]="googleCalendarUrl" 
+          style="border: 0"
+          width="100%" 
+          height="600" 
+          frameborder="0" 
+          scrolling="no">
+        </iframe>
+        <div class="calendar-info">
+          <p>📅 <strong>Google Calendar</strong> - View and manage all appointments</p>
+          <p class="info-text">To customize: Update the calendar ID in the component settings</p>
+        </div>
+      </div>
+    } @else {
+      <!-- FullCalendar Widget -->
+      <div class="calendar-container">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+        <p class="calendar-hint">💡 Click on any date to add a new appointment</p>
+      </div>
+    }
   </div>
 </div>
+
+<!-- Add Appointment Modal -->
+@if (showAddAppointmentModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Add New Appointment</h3>
+        <button class="modal-close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" [value]="selectedDate" disabled class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Customer Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="appointmentForm.customerName"
+            placeholder="Enter customer name"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Vehicle <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="appointmentForm.vehicle"
+            placeholder="e.g., 2018 Sedan"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Number Plate</label>
+          <input 
+            type="text" 
+            [(ngModel)]="appointmentForm.numberPlate"
+            placeholder="e.g., WP-CAS-1234"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Service Type <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="appointmentForm.service"
+            placeholder="e.g., Oil Change, Brake Repair"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Time <span class="required">*</span></label>
+          <input 
+            type="time" 
+            [value]="appointmentForm.timeInput"
+            class="form-control"
+            (change)="onTimeChange($any($event.target).value)"
+          />
+          <small class="time-display">{{ appointmentForm.time }}</small>
+        </div>
+        <div class="form-group">
+          <label>Notes (Optional)</label>
+          <textarea 
+            [(ngModel)]="appointmentForm.notes"
+            placeholder="Add any additional notes..."
+            class="form-control"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+        <button class="btn-save" (click)="createAppointment()">Create Appointment</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Call Appointment Modal -->
+@if (showCallAppointmentModal) {
+  <div class="modal-overlay" (click)="closeCallAppointmentModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>📞 Add Call Appointment</h3>
+        <button class="modal-close" (click)="closeCallAppointmentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="call-appointment-info">
+          <p><strong>📞 Phone Call Appointment</strong> - Add appointment details from customer phone call</p>
+        </div>
+        <div class="form-group">
+          <label>Customer Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="callAppointmentForm.customerName"
+            placeholder="Enter customer name"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span class="required">*</span></label>
+          <input 
+            type="tel" 
+            [(ngModel)]="callAppointmentForm.phoneNumber"
+            placeholder="e.g., 0771234567"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Vehicle <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="callAppointmentForm.vehicle"
+            placeholder="e.g., 2018 Sedan"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Number Plate</label>
+          <input 
+            type="text" 
+            [(ngModel)]="callAppointmentForm.numberPlate"
+            placeholder="e.g., WP-CAS-1234"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Service Type <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="callAppointmentForm.service"
+            placeholder="e.g., Oil Change, Brake Repair"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Date <span class="required">*</span></label>
+          <input 
+            type="date" 
+            [(ngModel)]="callAppointmentForm.date"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Time <span class="required">*</span></label>
+          <input 
+            type="time" 
+            [value]="callAppointmentForm.timeInput"
+            class="form-control"
+            (change)="onCallAppointmentTimeChange($any($event.target).value)"
+          />
+          <small class="time-display">{{ callAppointmentForm.time }}</small>
+        </div>
+        <div class="form-group">
+          <label>Notes (Optional)</label>
+          <textarea 
+            [(ngModel)]="callAppointmentForm.notes"
+            placeholder="Add any additional notes from the call..."
+            class="form-control"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeCallAppointmentModal()">Cancel</button>
+        <button class="btn-save" (click)="createCallAppointment()">Create Appointment</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Add Holiday Modal -->
+@if (showAddHolidayModal) {
+  <div class="modal-overlay" (click)="closeHolidayModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Add Special Holiday / Poya Day</h3>
+        <button class="modal-close" (click)="closeHolidayModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Holiday Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            [(ngModel)]="holidayForm.name"
+            placeholder="e.g., Full Moon Poya, New Year, Christmas"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Date <span class="required">*</span></label>
+          <input 
+            type="date" 
+            [(ngModel)]="holidayForm.date"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Type <span class="required">*</span></label>
+          <select 
+            [(ngModel)]="holidayForm.type"
+            class="form-control"
+          >
+            <option value="Holiday">Holiday</option>
+            <option value="Poya">Poya Day</option>
+            <option value="Special Event">Special Event</option>
+          </select>
+        </div>
+        <div class="holiday-info">
+          <p><strong>💡 Tip:</strong> Holidays will appear on the calendar with different colors:</p>
+          <ul>
+            <li><span class="color-indicator" style="background: #FF6B6B;"></span> Regular Holidays</li>
+            <li><span class="color-indicator" style="background: #4ECDC4;"></span> Poya Days</li>
+            <li><span class="color-indicator" style="background: #FFE66D;"></span> Special Events</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeHolidayModal()">Cancel</button>
+        <button class="btn-save" (click)="addHoliday()">Add Holiday</button>
+      </div>
+    </div>
+  </div>
+}

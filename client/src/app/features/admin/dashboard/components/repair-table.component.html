@@ -16,7 +16,7 @@
       <!-- Loop through your data. I've kept 'Liam Harper' as a fallback for your demo -->
       <tr *ngFor="let repair of repairs$ | async">
         <!-- Using the observable data when available; fallbacks kept for safety -->
-        <td class="bold-text">{{ repair?.customer ?? '—' }}</td>
+        <td class="bold-text">{{ repair?.customerId ?? '—' }}</td>
         <td>{{ repair?.vehicle ?? '—' }}</td>
         <td>{{ repair?.service ?? '—' }}</td>
         <td>{{ repair?.date ?? '—' }}</td>

@@ -1,0 +1,174 @@
+@if (service) {
+  <div class="create-invoice-container">
+    <div class="page-header">
+      <div>
+        <h2 class="section-title">Create Invoice</h2>
+        <p class="page-subtitle">Service: {{ service.serviceType }} - {{ service.customerName }}</p>
+      </div>
+      <button class="btn-cancel" (click)="cancel()">Cancel</button>
+    </div>
+
+    <div class="invoice-form-section">
+      <!-- Service Information -->
+      <div class="info-card">
+        <h3 class="card-title">Service Information</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Customer:</span>
+            <span class="info-value">{{ service.customerName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Vehicle:</span>
+            <span class="info-value">{{ service.vehicle }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Number Plate:</span>
+            <span class="info-value">{{ service.numberPlate }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Service Type:</span>
+            <span class="info-value">{{ service.serviceType }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Dates -->
+      <div class="info-card">
+        <h3 class="card-title">Invoice Dates</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="invoiceDate">Invoice Date</label>
+            <input
+              type="date"
+              id="invoiceDate"
+              class="form-input"
+              [value]="invoiceDate()"
+              (input)="invoiceDate.set($any($event.target).value)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input
+              type="date"
+              id="dueDate"
+              class="form-input"
+              [value]="dueDate()"
+              (input)="dueDate.set($any($event.target).value)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Items -->
+      <div class="info-card">
+        <div class="card-header">
+          <h3 class="card-title">Invoice Items</h3>
+          <button type="button" class="btn-add-item" (click)="addInvoiceItem()">+ Add Item</button>
+        </div>
+
+        <div class="invoice-items-table">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Tax</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of invoiceItems(); track $index) {
+                <tr>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-input"
+                      [value]="item.item"
+                      (input)="updateItem($index, 'item', $any($event.target).value)"
+                      placeholder="Item description"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-input"
+                      min="1"
+                      [value]="item.quantity"
+                      (input)="updateItem($index, 'quantity', +$any($event.target).value)"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-input"
+                      min="0"
+                      step="0.01"
+                      [value]="item.price"
+                      (input)="updateItem($index, 'price', +$any($event.target).value)"
+                      placeholder="0.00"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-input"
+                      min="0"
+                      step="0.01"
+                      [value]="item.tax"
+                      (input)="updateItem($index, 'tax', +$any($event.target).value)"
+                      placeholder="0.00"
+                    />
+                  </td>
+                  <td class="total-cell">
+                    ${{ item.total.toFixed(2) }}
+                  </td>
+                  <td>
+                    @if (invoiceItems().length > 1) {
+                      <button
+                        type="button"
+                        class="btn-remove"
+                        (click)="removeInvoiceItem($index)"
+                        aria-label="Remove item"
+                      >
+                        ×
+                      </button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals -->
+        <div class="totals-section">
+          <div class="totals-row">
+            <span class="totals-label">Subtotal:</span>
+            <span class="totals-value">${{ subtotal.toFixed(2) }}</span>
+          </div>
+          <div class="totals-row">
+            <span class="totals-label">Total Tax:</span>
+            <span class="totals-value">${{ totalTax.toFixed(2) }}</span>
+          </div>
+          <div class="totals-row totals-row--grand">
+            <span class="totals-label">Grand Total:</span>
+            <span class="totals-value">${{ grandTotal.toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+        <button type="button" class="btn-save" (click)="saveInvoice()">Create Invoice</button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="loading-container">
+    <p>Loading service details...</p>
+  </div>
+}
+

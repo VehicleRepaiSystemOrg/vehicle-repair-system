@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ServiceService, Service, ServiceStatus, AssignedStaff } from '../../services/service.service';
 import { CustomerService, Customer } from '../../../customer_overview/services/customer.service';
 import { StaffService, StaffMember } from '../../../staff/services/staff.service';
+import { AppointmentService } from '../../../../../core/services/appointment.service';
 
 /**
  * Add Service Component
@@ -22,6 +23,7 @@ export class AddServiceComponent implements OnInit {
   private readonly serviceService = inject(ServiceService);
   private readonly customerService = inject(CustomerService);
   private readonly staffService = inject(StaffService);
+  private readonly appointmentService = inject(AppointmentService);
   private readonly router = inject(Router);
 
   // Customer type toggle
@@ -266,6 +268,29 @@ export class AddServiceComponent implements OnInit {
 
     // TODO (backend): Add loading state and error handling
     this.serviceService.addService(newService);
+    
+    // Also create an appointment for the calendar
+    // Format time to AM/PM if needed
+    let timeDisplay = form.time;
+    if (!timeDisplay.includes('AM') && !timeDisplay.includes('PM')) {
+      const [hours, minutes] = timeDisplay.split(':');
+      const hour = parseInt(hours, 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const hour12 = hour % 12 || 12;
+      timeDisplay = `${hour12}:${minutes || '00'} ${ampm}`;
+    }
+    
+    this.appointmentService.createAppointment({
+      customerId,
+      customerName,
+      vehicle,
+      numberPlate,
+      service: form.serviceType,
+      date: form.date,
+      time: timeDisplay,
+      status: 'Scheduled',
+      notes: form.description || undefined
+    });
     
     // Navigate back to service management
     this.router.navigate(['/service_management']);

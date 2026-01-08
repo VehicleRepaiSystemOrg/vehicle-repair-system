@@ -1,8 +1,11 @@
 <!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 <div class="inventory-page-container" *ngIf="part">
+  <div class="page-header">
+    <h2>Edit Parts</h2>
+    <button class="btn-back" (click)="onCancel()">← Back</button>
+  </div>
   <div class="main-layout">
     <div class="form-section">
-      <h2>Edit Parts</h2>
       <!-- ... (keep your existing form fields) ... -->
       <div class="form-group">
         <label for="part-name">Part Name</label>

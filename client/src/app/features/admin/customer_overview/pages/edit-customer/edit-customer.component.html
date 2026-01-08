@@ -1,6 +1,9 @@
 @if (customer) {
 <div class="edit-customer-container">
-  <h2>Edit Customer</h2>
+  <div class="page-header">
+    <h2>Edit Customer</h2>
+    <button class="btn-back" (click)="goBack()">← Back</button>
+  </div>
 
   <!-- Name Field -->
   <div class="form-group">

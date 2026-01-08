@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { InvoiceService } from '../../../../core/services/invoice.service';
 
 // --- Interfaces ---
 interface InvoiceHistoryItem {
@@ -38,11 +40,17 @@ interface InvoiceDetails {
   styleUrl: './customer-invoice-overview.page.scss',
   changeDetection: ChangeDetectionStrategy.Default, // Changed to Default for easier updates
 })
-export class CustomerInvoiceOverviewPageComponent implements OnInit {
+export class CustomerInvoiceOverviewPageComponent implements OnInit, OnDestroy {
   
   private route = inject(ActivatedRoute);
+  private invoiceService = inject(InvoiceService);
+  private subscription?: Subscription;
+  
+  // TODO: Get customer name from auth service or route
+  // For now, using a default customer name - replace with actual customer name from auth
+  private readonly customerNameForHistory = 'Sophia Clark'; // This should come from authentication
 
-  // --- Mock Database ---
+  // --- Mock Database (fallback) ---
   private readonly invoiceDatabase: Record<string, InvoiceDetails> = {
     '0042': {
       id: '0042',
@@ -103,7 +111,7 @@ export class CustomerInvoiceOverviewPageComponent implements OnInit {
   };
 
   // --- Sidebar List ---
-  readonly invoiceHistory: InvoiceHistoryItem[] = [
+  invoiceHistory: InvoiceHistoryItem[] = [
     { id: '0042', date: new Date('2024-06-15'), amount: 340.00, status: 'paid' },
     { id: '0039', date: new Date('2024-05-20'), amount: 126.00, status: 'paid' },
     { id: '0035', date: new Date('2024-02-10'), amount: 850.00, status: 'overdue' },
@@ -122,29 +130,119 @@ export class CustomerInvoiceOverviewPageComponent implements OnInit {
   amountPaid = 0;
 
   ngOnInit(): void {
+    // Load invoice history on init
+    this.loadInvoiceHistory();
+    
+    // Subscribe to invoice service updates
+    this.subscription = this.invoiceService.allInvoices$.subscribe(() => {
+      this.loadInvoiceHistory();
+      // If we have a current invoice ID, reload it to get updates
+      if (this.currentInvoiceId) {
+        this.loadInvoice(this.currentInvoiceId);
+      }
+    });
+    
     // Listen to URL changes
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
-      if (id && this.invoiceDatabase[id]) {
+      if (id) {
         this.loadInvoice(id);
       } else {
-        // Fallback if ID is missing or invalid
-        this.loadInvoice('0042');
+        // If no ID, show the most recent invoice or default
+        this.loadMostRecentInvoice();
       }
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
   loadInvoice(id: string) {
-    const data = this.invoiceDatabase[id];
-    this.currentInvoiceId = data.id;
-    this.customerName = data.customerName;
-    this.vehicleLabel = data.vehicleLabel;
-    this.invoiceDate = data.invoiceDate;
-    this.dueDate = data.dueDate;
-    this.status = data.status;
-    this.items = data.items;
-    this.paymentMethod = data.paymentMethod;
-    this.amountPaid = data.amountPaid;
+    // Try to load from invoice service first
+    const invoiceData = this.invoiceService.getInvoiceById(id);
+    
+    if (invoiceData) {
+      // Load from service
+      this.currentInvoiceId = invoiceData.id;
+      this.customerName = invoiceData.customerName;
+      this.vehicleLabel = invoiceData.vehicleLabel;
+      this.invoiceDate = invoiceData.invoiceDate;
+      this.dueDate = invoiceData.dueDate;
+      this.status = invoiceData.status;
+      this.items = invoiceData.items;
+      this.paymentMethod = invoiceData.paymentMethod;
+      this.amountPaid = invoiceData.amountPaid;
+      
+      // Update invoice history from service
+      this.updateInvoiceHistory();
+    } else if (this.invoiceDatabase[id]) {
+      // Fallback to mock database
+      const data = this.invoiceDatabase[id];
+      this.currentInvoiceId = data.id;
+      this.customerName = data.customerName;
+      this.vehicleLabel = data.vehicleLabel;
+      this.invoiceDate = data.invoiceDate;
+      this.dueDate = data.dueDate;
+      this.status = data.status;
+      this.items = data.items;
+      this.paymentMethod = data.paymentMethod;
+      this.amountPaid = data.amountPaid;
+    } else {
+      // Default fallback
+      this.loadInvoice('0042');
+    }
+  }
+
+  private loadInvoiceHistory(): void {
+    // Use customer name from loaded invoice if available, otherwise use default
+    const customerName = this.customerName || this.customerNameForHistory;
+    
+    // Get invoice history from service for this customer
+    const serviceHistory = this.invoiceService.getInvoiceHistory(customerName);
+    
+    // Also get all invoices and filter by customer name to catch any that might not be in history
+    const allInvoices = this.invoiceService.getAllInvoices();
+    const customerInvoices = allInvoices.filter(
+      inv => inv.customerName.toLowerCase() === customerName.toLowerCase()
+    );
+    
+    // Convert to history items
+    const allCustomerHistory: InvoiceHistoryItem[] = customerInvoices.map(inv => ({
+      id: inv.id,
+      date: inv.invoiceDate,
+      amount: inv.items.reduce((sum, item) => sum + item.total, 0),
+      status: inv.status
+    }));
+    
+    // Merge with existing mock history, avoiding duplicates
+    const existingIds = new Set(this.invoiceHistory.map(h => h.id));
+    const newHistory = allCustomerHistory.filter(h => !existingIds.has(h.id));
+    
+    if (newHistory.length > 0) {
+      this.invoiceHistory.push(...newHistory);
+      // Sort by date descending
+      this.invoiceHistory.sort((a, b) => b.date.getTime() - a.date.getTime());
+    } else if (allCustomerHistory.length > 0) {
+      // If all service history items already exist, just update the list
+      this.invoiceHistory = [...allCustomerHistory];
+      this.invoiceHistory.sort((a, b) => b.date.getTime() - a.date.getTime());
+    }
+  }
+
+  private loadMostRecentInvoice(): void {
+    // Try to load the most recent invoice from history
+    if (this.invoiceHistory.length > 0) {
+      this.loadInvoice(this.invoiceHistory[0].id);
+    } else {
+      // Fallback to default
+      this.loadInvoice('0042');
+    }
+  }
+
+  private updateInvoiceHistory(): void {
+    // Refresh invoice history
+    this.loadInvoiceHistory();
   }
 
   get subtotal(): number {

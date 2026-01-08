@@ -1,8 +1,11 @@
 <div class="inventory-page-container">
+  <div class="page-header">
+    <h2>Add New Part</h2>
+    <button class="btn-back" (click)="onCancel()">← Back</button>
+  </div>
   <div class="main-layout">
     <!-- Left Section: Form -->
     <div class="form-section">
-      <h2>Add New Part</h2>
       <div class="form-group"><label for="partName">Part Name</label><input id="partName" type="text" [(ngModel)]="part.partName" placeholder="Enter part name"></div>
       <div class="form-group"><label for="category">Category</label><input id="category" type="text" [(ngModel)]="part.category" placeholder="Enter category"></div>
       <div class="form-group"><label for="supplier">Supplier</label><input id="supplier" type="text" [(ngModel)]="part.supplier" placeholder="Enter supplier"></div>

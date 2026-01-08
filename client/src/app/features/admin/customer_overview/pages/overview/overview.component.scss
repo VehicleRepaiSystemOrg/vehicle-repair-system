@@ -170,3 +170,38 @@
     &:hover { text-decoration: underline; }
   }
 }
+
+// Mobile Responsive
+@media (max-width: 768px) {
+  .page-container {
+    padding: 10px;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+
+    .header-actions {
+      flex-direction: column;
+      width: 100%;
+
+      .search-container {
+        width: 100%;
+
+        .search-input {
+          width: 100%;
+        }
+      }
+
+      .btn-add-customer {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .table-card-container {
+    overflow-x: auto;
+  }
+}
